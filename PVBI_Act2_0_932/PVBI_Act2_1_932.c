@@ -1,7 +1,7 @@
 /*
 Brayan Ivan Perez Ventura - 372781
 
-Código creado: 22 de agosto del 2023 / Código modificado: 26 de agosto del 2023
+Código creado: 01 de septiembre del 2023 / Código modificado: 02 de septiembre del 2023
 
 Programa que utiliza un menú para realizar 4 operaciones básicas, donde el usuario introduce
 2 números enteros y realizará la operación según sea su selección del menú.
