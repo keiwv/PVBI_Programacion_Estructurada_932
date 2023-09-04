@@ -16,13 +16,13 @@ int main(){
     int cali_exam[4];
     float promedio;
 
-    printf("Ingresa el valor de la primera calificaion del examen: ");
+    printf("Ingresa el valor de la primera calificacion del examen: ");
     scanf("%d", &cali_exam[0]);
-    printf("Ingresa el valor de la segunda calificaion del examen: ");
+    printf("Ingresa el valor de la segunda calificacion del examen: ");
     scanf("%d", &cali_exam[1]);
-    printf("Ingresa el valor de la tercera calificaion del examen: ");
+    printf("Ingresa el valor de la tercera calificacion del examen: ");
     scanf("%d", &cali_exam[2]);
-    printf("Ingresa el valor de la cuarta calificaion del examen: ");
+    printf("Ingresa el valor de la cuarta calificacion del examen: ");
     scanf("%d", &cali_exam[3]);
 
     if (cali_exam[0] < cali_exam[1]){
