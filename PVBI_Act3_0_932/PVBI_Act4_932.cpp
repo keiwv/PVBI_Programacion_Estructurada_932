@@ -349,6 +349,7 @@ Hecho por selección múltiple
 */
 void chinchampu_selec()
 {
+    system("CLS");
     int jugador, computadora;
 
     printf("Juguemos a Piedra, Papel, Tijera!\n");
@@ -534,7 +535,7 @@ void menor_and()
 }
 //***************
 /*
-Pide que introduzcas el mes y día de nacimiento del usuario y el programa le despliega el signo del zodiaco que le corresponde 
+Pide que introduzcas el mes y día de nacimiento del usuario y el programa le despliega el signo del zodiaco que le corresponde
 y su correspondiente horoscopo según el signo.
 */
 void horoscopo()
@@ -953,6 +954,5 @@ void tabla_multi()
     {
         tempnum = num * i;
         printf("%dx%d = %d\n", num, i, tempnum);
-
     }
 }
