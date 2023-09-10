@@ -27,7 +27,7 @@ void chinchampu_cond();
 void chinchampu_selec();
 void mayor_and();
 void medio_and();
-void menor_and();
+void asc_and();
 void horoscopo();
 //******** PROTOTIPO DE FUNCIONES ACTIVIDAD 5***************
 void descen_nums();
@@ -121,7 +121,7 @@ void menu_act3()
             medio_and();
             break;
         case 6:
-            menor_and();
+            asc_and();
             break;
         case 7:
             horoscopo();
@@ -500,12 +500,12 @@ void medio_and()
 /*
 El usuario introduce 3 números y se despliega el número menor (usando AND)
 */
-void menor_and()
+void asc_and()
 {
     system("CLS");
     int num1, num2, num3;
 
-    printf("Programa que lee 3 numeros y despliega cual numero es el mayor (usando AND u OR)\n");
+    printf("Programa que lee 3 numeros y los muestra en forma ascendente\n");
 
     printf("Ingresa el primer numero: ");
     scanf("%d", &num1);
@@ -516,21 +516,43 @@ void menor_and()
     printf("Ingresa el tercer numero: ");
     scanf("%d", &num3);
 
-    if ((num1 < num2) && (num1 < num3))
+    if (num1 <= num2)
     {
-        printf("El numero menor es: %d\n", num1);
-    }
-    else
-    {
-        if ((num2 < num1) && (num2 < num3))
+        if (num1 <= num3)
         {
-            printf("El numero menor es: %d\n", num2);
+            printf("%d, ", num1);
+            if (num2 <= num3)
+            {
+                printf("%d, %d\n", num2, num3);
+            }
+            else
+            {
+                printf("%d, %d\n", num3, num2);
+            }
         }
         else
         {
-            printf("El numero menor es: %d\n", num3);
+            printf("%d, %d, %d\n", num3, num1, num2);
         }
-        printf("\n");
+    }
+    else
+    {
+        if (num2 <= num3)
+        {
+            printf("%d, ", num2);
+            if (num1 <= num3)
+            {
+                printf("%d, %d\n", num1, num3);
+            }
+            else
+            {
+                printf("%d, %d\n", num3, num1);
+            }
+        }
+        else
+        {
+            printf("%d, %d, %d\n", num3, num2, num1);
+        }
     }
 }
 //***************
