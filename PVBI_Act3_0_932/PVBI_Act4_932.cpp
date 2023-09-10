@@ -910,7 +910,7 @@ Esta función genera 35 numeros aleatorios del 100 al 200, al final despliega el
 void MayorMenor_Num()
 {
     system("CLS");
-    int num[35], i, menorNum, mayorNum;
+    int num, i, menorNum, mayorNum;
 
     i = 0;
     menorNum = 200; // Ambos se inicializan en sus valores contrarios. (El menor nunca será 200)
@@ -919,14 +919,14 @@ void MayorMenor_Num()
 
     for (i = 0; i < 35; i++)
     {
-        num[i] = rand() % 100 + 100;
-        if (num[i] < menorNum)
+        num = rand() % 100 + 100;
+        if (num < menorNum)
         {
-            menorNum = num[i];
+            menorNum = num;
         }
-        if (num[i] > mayorNum)
+        if (num > mayorNum)
         {
-            mayorNum = num[i];
+            mayorNum = num;
         }
     }
 
