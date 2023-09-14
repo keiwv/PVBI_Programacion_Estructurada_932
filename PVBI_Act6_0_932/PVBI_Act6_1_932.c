@@ -19,9 +19,12 @@ PVBI_Act6_1_932
 //***** FUNCTION PROTOTYPE *********
 void menu();
 int msge_menu();
-void fibonacci();
+void fibonacci_menu();
+int msge_fibonacci();
+
+void fibonacci_for();
+void fibonacci_while();
 void factorial();
-void counter_dgts();
 
 //***** MAIN FUNCTION *************
 int main()
@@ -41,15 +44,14 @@ void menu()
 
         switch (op)
         {
-            case 1:
-                fibonacci();
-                break;
-            case 2:
-                factorial();
-                break;
-            case 3:
-                counter_dgts();
-                break;
+        case 1:
+            fibonacci_menu();
+            break;
+        case 2:
+            factorial();
+            break;
+        case 3:
+            break;
         }
     } while (op != 0);
 }
@@ -68,14 +70,43 @@ int msge_menu()
     return op;
 }
 
-void fibonacci()
+void fibonacci_menu()
+{
+    int op;
+    do
+    {
+        op = msge_fibonacci();
+        switch (op)
+        {
+            case 1:
+                fibonacci_for();
+                break;
+        }
+    } while (op != 0);
+}
+
+int msge_fibonacci()
+{
+    int op;
+    system("CLS");
+    printf("FIBONACCI\n");
+    printf("1.- Fibonacci con for\n");
+    printf("2.- Fibonacci con while\n");
+    printf("3.- Fibonacci con do while\n");
+    printf("0.- Salir\n");
+    printf("Selecciona una opción: ");
+    scanf("%d", &op);
+    return op;
+}
+
+void fibonacci_for()
 {
     int op, num, i, tempnum, tempnum2, result;
     result = 0;
     do
     {
-        printf("\nMETODO FIBONACCI\n");
-        printf("Introduce un la cantidad de numeros Fibonacci que desees imprimir: ");
+        printf("\nMETODO DE FIBONACCI POR FOR\n");
+        printf("Introduce la cantidad de numeros Fibonacci que desees imprimir: ");
         scanf("%d", &num);
 
         for (i = 0, tempnum = 0, tempnum2 = 1; i <= num; i++)
@@ -87,6 +118,35 @@ void fibonacci()
             tempnum2 = result;
         }
         printf("\nDesea salir?\n");
+        printf("0.- No\n");
+        printf("1.- Si\n");
+        printf("Selecciona una opcion: ");
+        scanf("%d", &op);
+
+    } while (op != 1);
+}
+
+void fibonacci_while()
+{
+    int op, num, i, tempnum, tempnum2, result;
+    result = 0;
+    do
+    {
+        printf("METODO DE FIBONACCI POR WHILE\n");
+        printf("Introduce la cantidad de números Fibonacci que desees imprimir: ");
+        scanf("%d", &num);
+        i = 0;
+        tempnum = 0;
+        tempnum2 = 1;
+
+        while (i <= num)
+        {
+            printf("%d ", tempnum);
+            result = tempnum2 + tempnum;
+            tempnum = tempnum2;
+            tempnum2 = result;
+        }
+        printf("\n Desea salir? \n");
         printf("0.- No\n");
         printf("1.- Si\n");
         printf("Selecciona una opcion: ");
@@ -124,9 +184,4 @@ void factorial()
         scanf("%d", &op);
 
     } while (op != 1);
-}
-
-void counter_dgts()
-{
-
 }
