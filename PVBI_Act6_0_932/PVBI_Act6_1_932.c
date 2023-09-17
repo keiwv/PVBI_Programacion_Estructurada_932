@@ -390,7 +390,8 @@ void dgts_for()
         for (i = 1, tempnum = 1, result = 1; tempnum <= num; i++)
         {
             tempnum *= 10;
-            if (tempnum >= num){
+            if (tempnum >= num)
+            {
                 result = i;
             }
         }
@@ -404,7 +405,59 @@ void dgts_for()
 }
 void dgts_while()
 {
+    int i, num, op, tempnum, result;
+    do
+    {
+        printf("\nOBTENER CANTIDAD DE DIGITOS POR FOR\n");
+        printf("Por favor, ingresa un numero al que desee conocer la cantidad de digitos: ");
+        scanf("%d", &num);
+        i = 1;
+        tempnum = 1;
+        result = 0;
+        while (tempnum <= num)
+        {
+            tempnum *= 10;
+            if (tempnum >= num)
+            {
+                result = i;
+            }
+            i++;
+        }
+
+        printf("El numero %d tiene %d digitos", num, result);
+        printf("\n\nDesea salir?\n");
+        printf("0.- No\n");
+        printf("1.- Si\n");
+        printf("Selecciona una opcion: ");
+        scanf("%d", &op);
+    } while (op != 1);
 }
 void dgts_dowhile()
 {
+    int i, num, op, tempnum, result;
+    do
+    {
+        printf("\nOBTENER CANTIDAD DE DIGITOS POR FOR\n");
+        printf("Por favor, ingresa un numero al que desee conocer la cantidad de digitos: ");
+        scanf("%d", &num);
+        i = 1;
+        tempnum = 1;
+        result = 0;
+        do
+        {
+            tempnum *= 10;
+            if (tempnum >= num)
+            {
+                result = i;
+            }
+            i++;
+        } while (tempnum <= num);
+
+        printf("El numero %d tiene %d digitos", num, result);
+        printf("\n\nDesea salir?\n");
+        printf("0.- No\n");
+        printf("1.- Si\n");
+        printf("Selecciona una opcion: ");
+        scanf("%d", &op);
+    } while (op != 1);
 }
