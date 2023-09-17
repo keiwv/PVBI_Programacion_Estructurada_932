@@ -21,11 +21,15 @@ void menu();
 int msge_menu();
 void fibonacci_menu();
 int msge_fibonacci();
+void factorial_menu();
+int msge_factorial();
 
 void fibonacci_for();
 void fibonacci_while();
 void fibonacci_dowhile();
-void factorial();
+
+void factorial_for();
+void factorial_while();
 
 //***** MAIN FUNCTION *************
 int main()
@@ -49,7 +53,7 @@ void menu()
             fibonacci_menu();
             break;
         case 2:
-            factorial();
+            factorial_menu();
             break;
         case 3:
             break;
@@ -104,6 +108,54 @@ int msge_fibonacci()
     scanf("%d", &op);
     return op;
 }
+
+void factorial_menu()
+{
+    int op;
+    do
+    {
+        op = msge_factorial();
+        switch(op)
+        {
+            case 1:
+                factorial_for();
+                break;
+            case 2:
+                factorial_while();
+                break;
+
+        }
+    } while (op != 0);
+
+}
+
+int msge_factorial()
+{
+    int op;
+    system("CLS");
+    printf("FACTORIAL DE UN NUMERO\n");
+    printf("1.- Factorial con for\n");
+    printf("2.- Factorial con while\n");
+    printf("3.- Factorial con do while\n");
+    printf("0.- Salir\n");
+    printf("Selecciona una opcion: ");
+    scanf("%d", &op);
+    return op;
+}
+
+void dgts_menu()
+{
+
+}
+
+int msge_dgts()
+{
+
+}
+
+//*******************
+
+
 //********************
 void fibonacci_for()
 {
@@ -188,8 +240,12 @@ void fibonacci_dowhile()
         scanf("%d", &op);
     } while (op != 1);
 }
+
+
+
+
 //********************
-void factorial()
+void factorial_for()
 {
     int op, num, i, result, tempnum;
     do
@@ -218,4 +274,10 @@ void factorial()
         scanf("%d", &op);
 
     } while (op != 1);
+}
+
+//********************
+void factorial_while()
+{
+
 }
