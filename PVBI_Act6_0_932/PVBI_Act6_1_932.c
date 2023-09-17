@@ -46,6 +46,7 @@ int main()
     return 0;
 }
 //***** FUNCTION DEVELOPMENT **********
+//***** MENU DEVELOPMENT ********
 void menu()
 {
     int op;
@@ -115,7 +116,7 @@ int msge_fibonacci()
     scanf("%d", &op);
     return op;
 }
-
+//********************
 void factorial_menu()
 {
     int op;
@@ -136,7 +137,7 @@ void factorial_menu()
         }
     } while (op != 0);
 }
-
+//********************
 int msge_factorial()
 {
     int op;
@@ -150,7 +151,7 @@ int msge_factorial()
     scanf("%d", &op);
     return op;
 }
-
+//********************
 void dgts_menu()
 {
     int op;
@@ -171,7 +172,7 @@ void dgts_menu()
         }
     } while (op != 0);
 }
-
+//********************
 int msge_dgts()
 {
     int op;
@@ -464,4 +465,3 @@ void dgts_dowhile()
     } while (op != 1);
 }
 //********************
-
