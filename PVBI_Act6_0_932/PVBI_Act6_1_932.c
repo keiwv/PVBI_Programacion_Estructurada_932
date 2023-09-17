@@ -403,6 +403,7 @@ void dgts_for()
         scanf("%d", &op);
     } while (op != 1);
 }
+//********************
 void dgts_while()
 {
     int i, num, op, tempnum, result;
@@ -432,6 +433,7 @@ void dgts_while()
         scanf("%d", &op);
     } while (op != 1);
 }
+//********************
 void dgts_dowhile()
 {
     int i, num, op, tempnum, result;
@@ -461,3 +463,5 @@ void dgts_dowhile()
         scanf("%d", &op);
     } while (op != 1);
 }
+//********************
+
