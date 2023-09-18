@@ -201,50 +201,107 @@ void range_mdia()
 //**********************
 void weight_user()
 {
+    int numTourists, op;
+    float touristWeight, totalWeight, averageWeight, excessWeight, weightWithExcess;
+    do
+    {
+
+        totalWeight = 0;
+        weightWithExcess = 0;
+        printf("Ingrese el numero de turistas a bordo: ");
+        scanf("%d", &numTourists);
+
+        for (int i = 0; i < numTourists; i++)
+        {
+            printf("Ingrese el peso del turista %d: ", i + 1);
+            scanf("%f", &touristWeight);
+            totalWeight += touristWeight;
+        }
+
+        averageWeight = totalWeight / numTourists;
+
+        if (numTourists <= 10)
+        {
+            printf("Se cumple la condicion 1: Maximo de 10 turistas.\n");
+        }
+        else
+        {
+            printf("No se cumple la condicion 1: Exceso de turistas a bordo.\n");
+        }
+
+        excessWeight = totalWeight * 0.15;
+        weightWithExcess = totalWeight + excessWeight;
+
+        if (weightWithExcess <= 700)
+        {
+            printf("Se cumple la condicion 2: Maximo de 700 kilos de pasajeros con un máximo de 15%% de sobrepeso.\n");
+        }
+        else
+        {
+            printf("No se cumple la condicion 2: Exceso de peso total con sobrepeso.\n");
+        }
+
+        printf("El peso promedio de los turistas es: %.2f kilos.\n", averageWeight);
+        printf("\nDesea salir?\n");
+        printf("0.- No\n");
+        printf("1.- Si\n");
+        printf("Selecciona una opcion: ");
+        scanf("%d", &op);
+    } while (op != 1);
 }
 
 void asig_grade()
 {
-    int calp1, calp2, calp3, promedio, i, intentos;
+    int calp1, calp2, calp3, promedio, i, intentos, op;
     intentos = 0;
-    for (i = 0; i <= 3; i++)
+    do
     {
-        printf("Ingrese la calificación del primer parcial: ");
-        scanf("%d", &calp1);
-
-        printf("Ingrese la calificación del segundo parcial: ");
-        scanf("%d", &calp2);
-
-        printf("Ingrese la calificación del tercer parcial: ");
-        scanf("%d", &calp3);
-
-        promedio = (calp1 + calp2 + calp3) / 3;
-        if (promedio >= 60)
+        for (i = 0; i <= 3; i++)
         {
-            if (intentos < 3)
+            printf("Ingrese la calificacion del primer parcial: ");
+            scanf("%d", &calp1);
+
+            printf("Ingrese la calificacion del segundo parcial: ");
+            scanf("%d", &calp2);
+
+            printf("Ingrese la calificacion del tercer parcial: ");
+            scanf("%d", &calp3);
+
+            promedio = (calp1 + calp2 + calp3) / 3F;
+            if (promedio >= 60)
             {
-                printf("Aprobado con un promedio de %d\n", promedio);
-                i = 4;
+                if (intentos < 3)
+                {
+                    printf("Aprobado con un promedio de %d\n", promedio);
+                    i = 4;
+                }
+                else
+                {
+                    printf("Has sido dado de baja por alcanzar el maximo de intentos.\n");
+                    i = 4;
+                }
             }
             else
             {
-                printf("Has sido dado de baja por alcanzar el máximo de intentos.\n");
-                i = 4;
+                if (intentos < 3)
+                {
+                    printf("Debes repetir la materia, con un promedio de %d\n", promedio);
+                    intentos++;
+                }
+                else
+                {
+                    printf("Has sido dado de baja por alcanzar el maximo de intentos. \n");
+                    i = 4;
+                }
             }
         }
-        else
-        {
-            if (intentos < 3)
-            {
-                printf("Debes repetir la materia, con un promedio de %d\n", promedio);
-                intentos++;
-            }
-            else
-            {
-                printf("Has sido dado de baja por alcanzar el maximo de intentos. \n");
-                i = 4;
-            }
-        }
-    }
+        printf("El peso promedio de los turistas es: %.2f kilos.\n", averageWeight);
+        printf("\nDesea salir?\n");
+        printf("0.- No\n");
+        printf("1.- Si\n");
+        printf("Selecciona una opcion: ");
+        scanf("%d", &op);
+    } while (op != 1);
+
     system("PAUSE");
 }
