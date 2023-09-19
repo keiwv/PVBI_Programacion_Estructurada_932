@@ -15,6 +15,7 @@ PVBI_Act6_1_932
 //**** LIBRARIES ******
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 
 //***** FUNCTION PROTOTYPE *********
 void menu();
@@ -25,6 +26,9 @@ void factorial_menu();
 int msge_factorial();
 void dgts_menu();
 int msge_dgts();
+
+int valid(char msge[], int ri, int rf);
+int leave();
 
 void fibonacci_for();
 void fibonacci_while();
@@ -37,6 +41,7 @@ void factorial_dowhile();
 void dgts_for();
 void dgts_while();
 void dgts_dowhile();
+
 //***** MAIN FUNCTION *************
 int main()
 {
@@ -78,8 +83,7 @@ int msge_menu()
     printf("2.- FACTORIAL\n");
     printf("3.- CANTIDAD DE DIGITOS\n");
     printf("0.- SALIR\n");
-    printf("Selecciona una opcion: ");
-    scanf("%d", &op);
+    op = valid("Selecciona una opcion: ", 0, 3);
     return op;
 }
 //********************
@@ -112,8 +116,7 @@ int msge_fibonacci()
     printf("2.- Fibonacci con while\n");
     printf("3.- Fibonacci con do while\n");
     printf("0.- Salir\n");
-    printf("Selecciona una opcion: ");
-    scanf("%d", &op);
+    op = valid("Selecciona una opcion: ", 0, 3);
     return op;
 }
 //********************
@@ -147,8 +150,7 @@ int msge_factorial()
     printf("2.- Factorial con while\n");
     printf("3.- Factorial con do while\n");
     printf("0.- Salir\n");
-    printf("Selecciona una opcion: ");
-    scanf("%d", &op);
+    op = valid("Selecciona una opcion: ", 0, 3);
     return op;
 }
 //********************
@@ -182,11 +184,35 @@ int msge_dgts()
     printf("2.- Digitos con while\n");
     printf("3.- Digitos con do while\n");
     printf("0.- Salir\n");
-    printf("Selecciona una opcion: ");
-    scanf("%d", &op);
+    op = valid("Selecciona una opcion: ", 0, 3);
     return op;
 }
+//********************
+int valid(char msge[], int ri, int rf)
+{
+    int num;
+    char cadena[100];
+    do
+    {
+        printf("%s", msge);
+        fflush(stdin);
+        gets(cadena);
+        num = atoi(cadena);
+    } while (num < ri || num > rf);
 
+    return num;
+}
+//********************
+int leave()
+{
+    int op;
+    printf("\n\nDesea salir?\n");
+    printf("0.- No\n");
+    printf("1.- Si\n");
+    op = valid("Selecciona una opcion: ", 0, 1);
+    return op;
+}
+//********************
 //*** FIBBONACI DEVELOPMENT ********
 //*********************************
 void fibonacci_for()
@@ -196,8 +222,7 @@ void fibonacci_for()
     do
     {
         printf("\nMETODO DE FIBONACCI POR FOR\n");
-        printf("Introduce la cantidad de numeros Fibonacci que desees imprimir: ");
-        scanf("%d", &num);
+        num = valid("Introduce la cantidad de numeros Fibonacci que desees imprimir: ", 0, INT_MAX);
 
         for (i = 0, tempnum = 0, tempnum2 = 1; i <= num; i++)
         {
@@ -207,11 +232,7 @@ void fibonacci_for()
             tempnum = tempnum2;
             tempnum2 = result;
         }
-        printf("\nDesea salir?\n");
-        printf("0.- No\n");
-        printf("1.- Si\n");
-        printf("Selecciona una opcion: ");
-        scanf("%d", &op);
+        op = leave();
 
     } while (op != 1);
 }
@@ -223,8 +244,7 @@ void fibonacci_while()
     do
     {
         printf("\nMETODO DE FIBONACCI POR WHILE\n");
-        printf("Introduce la cantidad de numeros Fibonacci que desees imprimir: ");
-        scanf("%d", &num);
+        num = valid("Introduce la cantidad de numeros Fibonacci que desees imprimir: ", 0, INT_MAX);
         i = 0;
         tempnum = 0;
         tempnum2 = 1;
@@ -237,11 +257,7 @@ void fibonacci_while()
             tempnum2 = result;
             i++;
         }
-        printf("\n Desea salir? \n");
-        printf("0.- No\n");
-        printf("1.- Si\n");
-        printf("Selecciona una opcion: ");
-        scanf("%d", &op);
+        op = leave();
 
     } while (op != 1);
 }
@@ -252,8 +268,7 @@ void fibonacci_dowhile()
     do
     {
         printf("\nMETODO DE FIBONACCI POR WHILE\n");
-        printf("Introduce la cantidad de numeros Fibonacci que desees imprimir: ");
-        scanf("%d", &num);
+        num = valid("Introduce la cantidad de numeros Fibonacci que desees imprimir: ", 0, INT_MAX);
         i = 0;
         tempnum = 0;
         tempnum2 = 1;
@@ -265,11 +280,7 @@ void fibonacci_dowhile()
             tempnum2 = result;
             i++;
         } while (i <= num);
-        printf("\n Desea salir? \n");
-        printf("0.- No\n");
-        printf("1.- Si\n");
-        printf("Selecciona una opcion: ");
-        scanf("%d", &op);
+        op = leave();
     } while (op != 1);
 }
 
@@ -281,8 +292,7 @@ void factorial_for()
     do
     {
         printf("\nOBTENER UN FACTORIAL POR FOR\n");
-        printf("Por favor, ingresa un numero al que desee conocer su factorial: ");
-        scanf("%d", &num);
+        num = valid("Por favor, ingresa un numero al que desee conocer su factorial: ", 0, INT_MAX);
 
         if (num < 0)
         {
@@ -296,13 +306,9 @@ void factorial_for()
                 printf("\n%d * %d = %d", tempnum, i, result);
                 tempnum = result;
             }
-            printf("El factorial de %d es: %d", num, result);
+            printf("\nEl factorial de %d es: %d", num, result);
         }
-        printf("\n\nDesea salir?\n");
-        printf("0.- No\n");
-        printf("1.- Si\n");
-        printf("Selecciona una opcion: ");
-        scanf("%d", &op);
+        op = leave();
 
     } while (op != 1);
 }
@@ -316,8 +322,7 @@ void factorial_while()
     do
     {
         printf("\nOBTENER UN FACTORIAL POR WHILE\n");
-        printf("Por favor, ingresa un numero al que desee conocer su factorial: ");
-        scanf("%d", &num);
+        num = valid("Por favor, ingresa un numero al que desee conocer su factorial: ", 0, INT_MAX);
         if (num < 0)
         {
             printf("Introduce un valor positivo\n");
@@ -334,11 +339,7 @@ void factorial_while()
             }
             printf("\nEl factorial de %d es: %d", num, result);
         }
-        printf("\n\nDesea salir?\n");
-        printf("0.- No\n");
-        printf("1.- Si\n");
-        printf("Selecciona una opcion: ");
-        scanf("%d", &op);
+        op = leave();
     } while (op != 1);
 }
 //********************
@@ -351,8 +352,7 @@ void factorial_dowhile()
     do
     {
         printf("\nOBTENER UN FACTORIAL POR DO WHILE\n");
-        printf("Por favor, ingresa un numero al que desee conocer su factorial: ");
-        scanf("%d", &num);
+        num = valid("Por favor, ingresa un numero al que desee conocer su factorial: ", 0, INT_MAX);
         if (num < 0)
         {
             printf("Introduce un valor positivo\n");
@@ -369,11 +369,7 @@ void factorial_dowhile()
             } while (i != 0);
             printf("\nEl factorial de %d es: %d", num, result);
         }
-        printf("\n\nDesea salir?\n");
-        printf("0.- No\n");
-        printf("1.- Si\n");
-        printf("Selecciona una opcion: ");
-        scanf("%d", &op);
+        op = leave();
     } while (op != 1);
 }
 
@@ -385,8 +381,7 @@ void dgts_for()
     do
     {
         printf("\nOBTENER CANTIDAD DE DIGITOS POR FOR\n");
-        printf("Por favor, ingresa un numero al que desee conocer la cantidad de digitos: ");
-        scanf("%d", &num);
+        num = valid("Por favor, ingresa un numero al que desee conocer la cantidad de digitos: ", 0, INT_MAX);
 
         for (i = 1, tempnum = 1, result = 1; tempnum <= num; i++)
         {
@@ -397,11 +392,7 @@ void dgts_for()
             }
         }
         printf("El numero %d tiene %d digitos", num, result);
-        printf("\n\nDesea salir?\n");
-        printf("0.- No\n");
-        printf("1.- Si\n");
-        printf("Selecciona una opcion: ");
-        scanf("%d", &op);
+        op = leave();
     } while (op != 1);
 }
 //********************
@@ -411,8 +402,7 @@ void dgts_while()
     do
     {
         printf("\nOBTENER CANTIDAD DE DIGITOS POR FOR\n");
-        printf("Por favor, ingresa un numero al que desee conocer la cantidad de digitos: ");
-        scanf("%d", &num);
+        num = valid("Por favor, ingresa un numero al que desee conocer la cantidad de digitos: ", 0, INT_MAX);
         i = 1;
         tempnum = 1;
         result = 0;
@@ -427,11 +417,7 @@ void dgts_while()
         }
 
         printf("El numero %d tiene %d digitos", num, result);
-        printf("\n\nDesea salir?\n");
-        printf("0.- No\n");
-        printf("1.- Si\n");
-        printf("Selecciona una opcion: ");
-        scanf("%d", &op);
+        op = leave();
     } while (op != 1);
 }
 //********************
@@ -441,8 +427,7 @@ void dgts_dowhile()
     do
     {
         printf("\nOBTENER CANTIDAD DE DIGITOS POR FOR\n");
-        printf("Por favor, ingresa un numero al que desee conocer la cantidad de digitos: ");
-        scanf("%d", &num);
+        num = valid("Por favor, ingresa un numero al que desee conocer la cantidad de digitos: ", 0, INT_MAX);
         i = 1;
         tempnum = 1;
         result = 0;
@@ -457,11 +442,7 @@ void dgts_dowhile()
         } while (tempnum <= num);
 
         printf("El numero %d tiene %d digitos", num, result);
-        printf("\n\nDesea salir?\n");
-        printf("0.- No\n");
-        printf("1.- Si\n");
-        printf("Selecciona una opcion: ");
-        scanf("%d", &op);
+        op = leave();
     } while (op != 1);
 }
 //********************
