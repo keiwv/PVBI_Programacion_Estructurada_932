@@ -17,6 +17,7 @@ PVBI_Act6_2_932
 //**** LIBRARIES ******
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 
 //***** FUNCTION PROTOTYPE *********
 void menu();
@@ -27,6 +28,10 @@ void table_multi();
 void range_mdia();
 void weight_user();
 void asig_grade();
+
+int valid(char msge[], int ri, int rf);
+int leave();
+
 //***** MAIN FUNCTION *************
 int main()
 {
@@ -76,7 +81,7 @@ int msge_menu()
     printf("0.- Salir\n");
     printf("Selecciona una opcion: ");
 
-    scanf("%d", &op);
+    op = valid("Selecciona una opcion: ", 0, 5);
 
     return op;
 }
@@ -84,41 +89,37 @@ int msge_menu()
 //********************
 void exam_niv()
 {
-    int i, cal1, cal2, cal3, cal4, cal5, promedio, derecho, noderecho;
+    int i, cal1, cal2, cal3, cal4, cal5, promedio, derecho, noderecho, op;
     derecho = 0;
     noderecho = 0;
-    printf("EXAMEN DE NIVELACION\n");
-
-    for (i = 1; i <= 41; i++)
+    do
     {
-        printf("Ingresa la calificacion de la primera unidad: ");
-        scanf("%d", &cal1);
-        printf("Ingresa la calificacion de la segunda unidad: ");
-        scanf("%d", &cal2);
-        printf("Ingresa la calificacion de la tercera unidad: ");
-        scanf("%d", &cal3);
-        printf("Ingresa la calificacion de la cuarta unidad: ");
-        scanf("%d", &cal4);
-        printf("Ingresa la calificacion de la quinta unidad: ");
-        scanf("%d", &cal5);
-
-        promedio = (cal1 + cal2 + cal3 + cal4 + cal5) / 5;
-
-        if (promedio >= 50)
+        printf("EXAMEN DE NIVELACION\n");
+        for (i = 0; i <= 40; i++)
         {
-            printf("El alumno %d tiene derecho a examen\n", i);
-            derecho++;
-        }
-        else
-        {
-            printf("El alumno %d no tiene derecho a examen\n", i);
-            noderecho++;
-        }
-    }
-    printf("Los alumnos con derecho a examen son: %d\n", derecho);
-    printf("Los alumnos sin derecho son: %d", noderecho);
+            cal1 = valid("Ingresa la calificacion de la primera unidad: ", 0, 100);
+            cal2 = valid("Ingresa la calificacion de la primera unidad: ", 0, 100);
+            cal3 = valid("Ingresa la calificacion de la primera unidad: ", 0, 100);
+            cal4 = valid("Ingresa la calificacion de la primera unidad: ", 0, 100);
+            cal5 = valid("Ingresa la calificacion de la primera unidad: ", 0, 100);
 
-    system("PAUSE");
+            promedio = (cal1 + cal2 + cal3 + cal4 + cal5) / 5;
+
+            if (promedio >= 50)
+            {
+                printf("El alumno %d tiene derecho a examen\n", i);
+                derecho++;
+            }
+            else
+            {
+                printf("El alumno %d no tiene derecho a examen\n", i);
+                noderecho++;
+            }
+        }
+        printf("Los alumnos con derecho a examen son: %d\n", derecho);
+        printf("Los alumnos sin derecho son: %d", noderecho);
+        op = leave();
+    } while (op != 1);
 }
 //********************
 void table_multi()
@@ -136,16 +137,10 @@ void table_multi()
                 result = i * j;
                 printf("\n%d * %d = %d", i, j, result);
             }
-            printf("\n");
-            system("PAUSE");
         }
-        printf("\nDesea salir?\n");
-        printf("0.- No\n");
-        printf("1.- Si\n");
-        printf("Selecciona una opcion: ");
-        scanf("%d", &op);
+        op = leave();
 
-    } while (op != 0);
+    } while (op != 1);
 }
 //**********************
 void range_mdia()
@@ -157,14 +152,9 @@ void range_mdia()
     {
         system("CLS");
         printf("CANTIDAD DE NUMEROS (MEDIA Y SUMA DE LOS NUMEROS)\n");
-        printf("Ingrese la cantidad de numeros a leer: ");
-        scanf("%d", &n);
-
-        printf("Ingrese el valor mínimo del rango: ");
-        scanf("%d", &min);
-
-        printf("Ingrese el valor máximo del rango: ");
-        scanf("%d", &max);
+        n = valid("Ingrese la cantidad de numeros a leer: ", 0, INT_MAX);
+        min = valid("Ingrese el valor mínimo del rango: ", 0, INT_MAX);
+        max = valid("Ingrese el valor máximo del rango: ", 0, INT_MAX);
 
         for (i = 0, sum = 0, count = 0; i < n; i++)
         {
@@ -190,11 +180,7 @@ void range_mdia()
         {
             printf("No se encontraron numeros validos en el rango");
         }
-        printf("\nDesea salir?\n");
-        printf("0.- No\n");
-        printf("1.- Si\n");
-        printf("Selecciona una opcion: ");
-        scanf("%d", &op);
+        op = leave();
 
     } while (op != 1);
 }
@@ -208,13 +194,12 @@ void weight_user()
 
         totalWeight = 0;
         weightWithExcess = 0;
-        printf("Ingrese el numero de turistas a bordo: ");
-        scanf("%d", &numTourists);
 
+        numTourists = valid("Ingrese el numero de turistas a bordo: ", 0, INT_MAX);
         for (int i = 0; i < numTourists; i++)
         {
             printf("Ingrese el peso del turista %d: ", i + 1);
-            scanf("%f", &touristWeight);
+            touristWeight = valid("", 0, INT_MAX);
             totalWeight += touristWeight;
         }
 
@@ -222,11 +207,11 @@ void weight_user()
 
         if (numTourists <= 10)
         {
-            printf("Se cumple la condicion 1: Maximo de 10 turistas.\n");
+            printf("Maximo de 10 turistas.");
         }
         else
         {
-            printf("No se cumple la condicion 1: Exceso de turistas a bordo.\n");
+            printf("Exceso de turistas a bordo.");
         }
 
         excessWeight = totalWeight * 0.15;
@@ -234,19 +219,15 @@ void weight_user()
 
         if (weightWithExcess <= 700)
         {
-            printf("Se cumple la condicion 2: Maximo de 700 kilos de pasajeros con un máximo de 15%% de sobrepeso.\n");
+            printf("Maximo de 700 kilos de pasajeros con un máximo de 15%% de sobrepeso.");
         }
         else
         {
-            printf("No se cumple la condicion 2: Exceso de peso total con sobrepeso.\n");
+            printf("Exceso de peso total con sobrepeso.");
         }
 
         printf("El peso promedio de los turistas es: %.2f kilos.\n", averageWeight);
-        printf("\nDesea salir?\n");
-        printf("0.- No\n");
-        printf("1.- Si\n");
-        printf("Selecciona una opcion: ");
-        scanf("%d", &op);
+        op = leave();
     } while (op != 1);
 }
 
@@ -258,26 +239,21 @@ void asig_grade()
     {
         for (i = 0; i <= 3; i++)
         {
-            printf("Ingrese la calificacion del primer parcial: ");
-            scanf("%d", &calp1);
+            calp1 = valid("Ingrese la calificacion del primer parcial: ", 0, 100);
+            calp2 = valid("Ingrese la calificacion del segundo parcial: ", 0, 100);
+            calp3 = valid("Ingrese la calificacion del tercer parcial: ", 0, 100);
 
-            printf("Ingrese la calificacion del segundo parcial: ");
-            scanf("%d", &calp2);
-
-            printf("Ingrese la calificacion del tercer parcial: ");
-            scanf("%d", &calp3);
-
-            promedio = (calp1 + calp2 + calp3) / 3F;
+            promedio = (calp1 + calp2 + calp3) / 3;
             if (promedio >= 60)
             {
                 if (intentos < 3)
                 {
-                    printf("Aprobado con un promedio de %d\n", promedio);
+                    printf("Aprobado con un promedio de %d", promedio);
                     i = 4;
                 }
                 else
                 {
-                    printf("Has sido dado de baja por alcanzar el maximo de intentos.\n");
+                    printf("Has sido dado de baja por alcanzar el maximo de intentos.");
                     i = 4;
                 }
             }
@@ -285,23 +261,42 @@ void asig_grade()
             {
                 if (intentos < 3)
                 {
-                    printf("Debes repetir la materia, con un promedio de %d\n", promedio);
+                    printf("Debes repetir la materia, con un promedio de %d", promedio);
                     intentos++;
                 }
                 else
                 {
-                    printf("Has sido dado de baja por alcanzar el maximo de intentos. \n");
+                    printf("Has sido dado de baja por alcanzar el maximo de intentos.");
                     i = 4;
                 }
             }
         }
-        printf("El peso promedio de los turistas es: %.2f kilos.\n", averageWeight);
-        printf("\nDesea salir?\n");
-        printf("0.- No\n");
-        printf("1.- Si\n");
-        printf("Selecciona una opcion: ");
-        scanf("%d", &op);
+        op = leave();
     } while (op != 1);
 
-    system("PAUSE");
+}
+
+int valid(char msge[], int ri, int rf)
+{
+    int num;
+    char cadena[100];
+    do
+    {
+        printf("%s", msge);
+        fflush(stdin);
+        gets(cadena);
+        num = atoi(cadena);
+    } while (num < ri || num > rf);
+
+    return num;
+}
+//********************
+int leave()
+{
+    int op;
+    printf("\n\nDesea salir?\n");
+    printf("0.- No\n");
+    printf("1.- Si\n");
+    op = valid("Selecciona una opcion: ", 0, 1);
+    return op;
 }
