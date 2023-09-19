@@ -160,7 +160,7 @@ void range_mdia()
         for (i = 0, sum = 0, count = 0; i < n; i++)
         {
             printf("Numero %d: ", i + 1);
-            num = valid("",min,max);
+            num = valid("", min, max);
 
             if (num >= min)
             {
@@ -274,7 +274,6 @@ void asig_grade()
         }
         op = leave();
     } while (op != 1);
-
 }
 
 int valid(char msge[], int ri, int rf)
