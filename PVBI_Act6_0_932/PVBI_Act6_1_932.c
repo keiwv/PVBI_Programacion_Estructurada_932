@@ -267,14 +267,14 @@ void fibonacci_dowhile()
     int op, num, i, tempnum, tempnum2, result;
     do
     {
-        printf("\nMETODO DE FIBONACCI POR WHILE\n");
+        printf("\nMETODO DE FIBONACCI POR DO WHILE\n");
         num = valid("Introduce la cantidad de numeros Fibonacci que desees imprimir: ", 0, INT_MAX);
         i = 0;
         tempnum = 0;
         tempnum2 = 1;
         do
         {
-            printf("%d", tempnum);
+            printf("%d ", tempnum);
             result = tempnum2 + tempnum;
             tempnum = tempnum2;
             tempnum2 = result;
