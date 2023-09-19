@@ -137,6 +137,8 @@ void table_multi()
                 result = i * j;
                 printf("\n%d * %d = %d", i, j, result);
             }
+            printf("\n");
+            system("PAUSE");
         }
         op = leave();
 
@@ -150,16 +152,15 @@ void range_mdia()
 
     do
     {
-        system("CLS");
         printf("CANTIDAD DE NUMEROS (MEDIA Y SUMA DE LOS NUMEROS)\n");
         n = valid("Ingrese la cantidad de numeros a leer: ", 0, INT_MAX);
-        min = valid("Ingrese el valor mínimo del rango: ", 0, INT_MAX);
-        max = valid("Ingrese el valor máximo del rango: ", 0, INT_MAX);
+        min = valid("Ingrese el valor minimo del rango: ", 0, INT_MAX);
+        max = valid("Ingrese el valor maximo del rango: ", 0, INT_MAX);
 
         for (i = 0, sum = 0, count = 0; i < n; i++)
         {
             printf("Numero %d: ", i + 1);
-            scanf("%d", &num);
+            num = valid("",min,max);
 
             if (num >= min)
             {
@@ -173,7 +174,7 @@ void range_mdia()
         if (count > 0)
         {
             average = sum / count;
-            printf("Suma de valores válidos: %d\n", sum);
+            printf("Suma de valores validos: %d\n", sum);
             printf("Media de los numeros validos: %.2f\n", average);
         }
         else
@@ -207,11 +208,11 @@ void weight_user()
 
         if (numTourists <= 10)
         {
-            printf("Maximo de 10 turistas.");
+            printf("Maximo de 10 turistas.\n");
         }
         else
         {
-            printf("Exceso de turistas a bordo.");
+            printf("Exceso de turistas a bordo.\n");
         }
 
         excessWeight = totalWeight * 0.15;
@@ -219,14 +220,14 @@ void weight_user()
 
         if (weightWithExcess <= 700)
         {
-            printf("Maximo de 700 kilos de pasajeros con un máximo de 15%% de sobrepeso.");
+            printf("Maximo de 700 kilos de pasajeros con un máximo de 15%% de sobrepeso.\n");
         }
         else
         {
-            printf("Exceso de peso total con sobrepeso.");
+            printf("Exceso de peso total con sobrepeso.\n");
         }
 
-        printf("El peso promedio de los turistas es: %.2f kilos.\n", averageWeight);
+        printf("El peso promedio de los turistas es: %.2f kilos.", averageWeight);
         op = leave();
     } while (op != 1);
 }
@@ -261,12 +262,12 @@ void asig_grade()
             {
                 if (intentos < 3)
                 {
-                    printf("Debes repetir la materia, con un promedio de %d", promedio);
+                    printf("Debes repetir la materia, con un promedio de %d\n", promedio);
                     intentos++;
                 }
                 else
                 {
-                    printf("Has sido dado de baja por alcanzar el maximo de intentos.");
+                    printf("Has sido dado de baja por alcanzar el maximo de intentos.\n");
                     i = 4;
                 }
             }
