@@ -18,6 +18,14 @@ int msge_menu();
 void menu();
 
 int valid(char msge[], int ri, int rf);
+void ask(char array[]);
+
+void mayus(char array[]);
+void minus(char array[]);
+void capital(char array[]);
+int counter(char array[]);
+void reverse(char array[]);
+void noSpace(char array[]);
 
 //**** MAIN FUNCTION ****
 int main()
@@ -49,14 +57,47 @@ int msge_menu()
 
 void menu()
 {
-    int op;
+    int op, countnum;
+    char array[100];
     do
     {
         op = msge_menu();
+        if (op != 0)
+        {
+            ask(array);
+        }
+
         switch (op)
         {
-            case 1:
-            //sson
+        case 1:
+            mayus(array);
+            printf("Texto introducido en mayusculas: %s\n", array);
+            system("PAUSE");
+            break;
+        case 2:
+            minus(array);
+            printf("Texto introducido en minusculas: %s\n", array);
+            system("PAUSE");
+            break;
+        case 3:
+            capital(array);
+            printf("Texto introducido en Capital: %s\n", array);
+            system("PAUSE");
+            break;
+        case 4:
+            countnum = counter(array);
+            printf("La cantidad de caracteres del texto introducido: %d\n", countnum);
+            system("PAUSE");
+            break;
+        case 5:
+            reverse(array);
+            printf("Texto introduciddo pero invertido: %s\n", array);
+            system("PAUSE");
+            break;
+        case 6:
+            noSpace(array);
+            system("PAUSE");
+            break;
         }
     } while (op != 0);
 }
@@ -74,4 +115,123 @@ int valid(char msge[], int ri, int rf)
     } while (num < ri || num > rf);
 
     return num;
+}
+
+void ask(char array[])
+{
+    printf("\nIntroduce una sentencia de no mayor 50 caracteres: ");
+    fflush(stdin);
+    gets(array);
+}
+
+//**** OUTPUT 1 ****
+void mayus(char array[])
+{
+    int i;
+    char word;
+    for (i = 0; array[i] != '\0'; i++)
+    {
+        word = array[i];
+        if (word >= 'a')
+        {
+            if (word <= 'z')
+            {
+                array[i] = array[i] - 32;
+            }
+        }
+    }
+}
+
+//**** OUTPUT 2 ****
+void minus(char array[])
+{
+    int i;
+    char word;
+    for (i = 0; array[i] != '\0'; i++)
+    {
+        word = array[i];
+        if (word >= 'A')
+        {
+            if (word <= 'Z')
+            {
+                array[i] = array[i] + 32;
+            }
+        }
+    }
+}
+//**** OUTPUT 3 ****
+void capital(char array[])
+{
+    int i;
+    char word;
+    word = array[0];
+    if (word >= 'a')
+    {
+        if (word <= 'z')
+        {
+            array[0] = array[0] - 32;
+        }
+    }
+    for (i = 1; array[i] != '\0'; i++)
+    {
+        word = array[i];
+        if (word >= 'A')
+        {
+            if (word <= 'Z')
+            {
+                array[i] = array[i] + 32;
+            }
+        }
+    }
+}
+
+//**** OUTPUT 4 ****
+int counter(char array[])
+{
+    int length;
+    length = 0;
+    while (array[length] != '\0')
+    {
+        length++;
+    }
+    return length;
+}
+//**** OUTPUT 5 ****
+void reverse(char array[])
+{
+    int length, start, end;
+    char temp;
+
+    length = counter(array);
+
+    start = 0;
+    end = length - 1;
+
+    while (start < end)
+    {
+        temp = array[start];
+        array[start] = array[end];
+        array[end] = temp;
+        start++;
+        end--;
+    }
+}
+
+// **** OUTPUT 6 ****
+void noSpace(char array[])
+{
+    int i, j;
+    char newArray[50];
+    for (i = 0, j = 0; array[i] != '\0'; i++)
+    {
+        if (array[i] != 32) // Replace ' ' with 32 if you want to preserve spaces in the result
+        {
+            newArray[j] = array[i];
+            j++;
+        }
+    }
+
+    newArray[j] = '\0';
+
+    printf("El texto \"%s\" sin espacios: %s\n", array, newArray);
 }

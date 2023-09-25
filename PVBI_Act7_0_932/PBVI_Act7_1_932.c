@@ -179,7 +179,6 @@ int counter(char array[])
 //*********** FUNCTIONS TO CONVERT AN ARRAY ***********
 //****MAYUS CONVERT ******
 void mayus(char array[])
-
 {
     int i;
     char word;
