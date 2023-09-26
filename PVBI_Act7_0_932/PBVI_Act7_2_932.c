@@ -1,7 +1,7 @@
 /*
 Brayan Ivan Perez Ventura - 372781
 
-Created code: September 24th 2023 / Modified code: September 24th 2023
+Created code: September 24th 2023 / Modified code: September 25th 2023
 
 DESCRIPTION:
 In this program, it will display a menu where it's gonna display the next outputs (with no description).
@@ -15,7 +15,7 @@ OUTPUT 7: This function checks various conditions in the input text and returns 
 OUTPUT 8: This function calls five of the previous text manipulation functions in sequence on a copy of the input text. It prints the results of each operation, including converting to uppercase, converting to lowercase, capitalizing, removing spaces, and reversing the text. It also prints the original text.
 OUTPUT 9: This function checks if the input text stored in the array is a palindrome and prints the result, indicating whether it is or it is not.
 
-PVBI_Act7_1_932
+PVBI_Act7_2_932
 */
 
 //**** LIBRARIES ****
@@ -38,7 +38,7 @@ void noSpace(char array[]);
 int alfaSpace(char array[]);
 void alfaSpaceValid(char array[]);
 void previusFunctions(char array[]);
-void palindrome(char array[]);
+int palindrome(char array[]);
 
 //**** MAIN FUNCTION ****
 int main()
@@ -70,7 +70,7 @@ int msge_menu()
 
 void menu()
 {
-    int op, countnum;
+    int op, countnum, polindrome;
     char array[100];
     do
     {
@@ -121,7 +121,15 @@ void menu()
             break;
         case 9:
             alfaSpaceValid(array);
-            palindrome(array);
+            polindrome = palindrome(array);
+            if (polindrome)
+            {
+                printf("Es palindromo\n");
+            }
+            else
+            {
+                printf("No es palindromo\n");
+            }
             system("PAUSE");
             break;
         }
@@ -192,9 +200,9 @@ void capital(char array[])
     int i, flag;
     char word;
     flag = 1;
-    minus(array); //We convert the array in lower case, so it's easily to deal with.
+    minus(array); // We convert the array in lower case, so it's easily to deal with.
     word = array[0];
-    if (word >= 97) //First letter becomes upper case
+    if (word >= 97) // First letter becomes upper case
     {
         if (word <= 122)
         {
@@ -243,7 +251,7 @@ void reverse(char array[])
     int length, start, end;
     char temp;
 
-    length = counter(array); //We ask for the length of the array
+    length = counter(array); // We ask for the length of the array
 
     start = 0;
     end = length - 1;
@@ -254,8 +262,8 @@ void reverse(char array[])
     */
     while (start < end)
     {
-        temp = array[start]; 
-        array[start] = array[end]; 
+        temp = array[start];
+        array[start] = array[end];
         array[end] = temp;
         start++;
         end--;
@@ -269,9 +277,9 @@ void noSpace(char array[])
     char newArray[50];
     for (i = 0, j = 0; array[i] != '\0'; i++)
     {
-        if (array[i] != 32) //It will join if it's different from the space number (ASCII number)
+        if (array[i] != 32) // It will join if it's different from the space number (ASCII number)
         {
-            newArray[j] = array[i]; //Saves the array in a new array.
+            newArray[j] = array[i]; // Saves the array in a new array.
             j++;
         }
     }
@@ -306,47 +314,47 @@ int alfaSpace(char array[])
     {
         letter = array[i];
 
-        if (letter == 32) //Looking for double space
+        if (letter == 32) // Looking for double space
         {
             if (array[i + 1] == 32)
             {
                 return 1;
             }
         }
-        if (letter >= 33) //Looking for symbols
+        if (letter >= 33) // Looking for symbols
         {
             if (letter <= 47)
             {
                 return 2;
             }
         }
-        if (letter >= 48) //Looking for numbers
+        if (letter >= 48) // Looking for numbers
         {
             if (letter <= 57)
             {
                 return 3;
             }
         }
-        if (letter >= 58) //Looking for symbols
+        if (letter >= 58) // Looking for symbols
         {
             if (letter <= 64)
             {
                 return 2;
             }
         }
-        if (letter >= 91) //Looking for symbols
+        if (letter >= 91) // Looking for symbols
         {
             if (letter <= 96)
             {
                 return 2;
             }
         }
-        if (letter >= 123) //Looking for symbols
+        if (letter >= 123) // Looking for symbols
         {
             return 2;
         }
     }
-    return 0; 
+    return 0;
 }
 
 void alfaSpaceValid(char array[])
@@ -354,8 +362,8 @@ void alfaSpaceValid(char array[])
     int resVerified;
     do
     {
-        ask(array); //Ask for an array (text)
-        resVerified = alfaSpace(array); //We get the number
+        ask(array);                     // Ask for an array (text)
+        resVerified = alfaSpace(array); // We get the number
 
         if (resVerified == 1)
         {
@@ -387,7 +395,7 @@ void previusFunctions(char array[])
     {
         for (j = 0; j < count; j++)
         {
-            tempArray[j] = array[j]; //We save the array in a temp array so we can modify as many times we need.
+            tempArray[j] = array[j]; // We save the array in a temp array so we can modify as many times we need.
         }
         if (i == 0)
         {
@@ -422,17 +430,17 @@ void previusFunctions(char array[])
 }
 
 //**** OUTPUT 9 ****
-void palindrome(char array[])
+int palindrome(char array[])
 {
     int count;
-    count = counter(array); //We get how many columns it has.
-    minus(array); //We make the array lower case, we don't have to deal with different upper case.
-    if (array[0] == array[count - 1]) //Comparison between first letter and last letter.
+    count = counter(array); // We get how many columns it has.
+    minus(array);           // We make the array lower case, we don't have to deal with different upper case.
+    for (int i = 0; i < count / 2; i++)
     {
-        printf("Es un palindromo\n");
+        if (array[i] != array[count - 1 - i])
+        {
+            return 0; // it is not a palindrome
+        }
     }
-    else
-    {
-        printf("No es un palindromo\n");
-    }
+    return 1; // it is a palindrome
 }
