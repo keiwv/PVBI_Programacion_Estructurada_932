@@ -64,7 +64,7 @@ int msge_menu()
     printf("8.- Salida 8\n");
     printf("9.- Salida 9\n");
     printf("0.- Salir\n");
-    op = valid("Selecciona una opcion: ", 0, 10);
+    op = valid("Selecciona una opcion: ", 0, 9);
     return op;
 }
 
@@ -109,6 +109,7 @@ void menu()
             break;
         case 6:
             noSpace(array);
+            printf("Texto sin espacios: %s\n", array);
             system("PAUSE");
             break;
         case 7:
@@ -274,19 +275,13 @@ void reverse(char array[])
 void noSpace(char array[])
 {
     int i, j;
-    char newArray[50];
     for (i = 0, j = 0; array[i] != '\0'; i++)
     {
         if (array[i] != 32) // It will join if it's different from the space number (ASCII number)
         {
-            newArray[j] = array[i]; // Saves the array in a new array.
-            j++;
+            array[j++] = array[i]; // Saves the array in a new array.
         }
     }
-
-    newArray[j] = '\0';
-
-    printf("El texto \"%s\" sin espacios: %s\n", array, newArray);
 }
 
 //**** OUTPUT 7 ****
@@ -434,6 +429,7 @@ int palindrome(char array[])
 {
     int count;
     count = counter(array); // We get how many columns it has.
+    noSpace(array);
     minus(array);           // We make the array lower case, we don't have to deal with different upper case.
     for (int i = 0; i < count / 2; i++)
     {

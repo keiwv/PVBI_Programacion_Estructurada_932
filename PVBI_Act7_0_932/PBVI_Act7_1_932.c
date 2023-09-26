@@ -88,7 +88,6 @@ void menu()
             system("PAUSE");
             break;
         case 5:
-            reverse(array);
             printf("Texto introducido en descendente: \n");
             descending(array);
             system("PAUSE");
