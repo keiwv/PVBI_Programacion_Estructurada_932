@@ -1,7 +1,7 @@
 /*
 Brayan Ivan Perez Ventura - 372781
 
-Created code: September 26th 2023 / Modified code: September 26th 2023
+Created code: September 26th 2023 / Modified code: October 1st 2023
 
 DESCRIPTION
 In this program, it will display a menu where:
@@ -37,6 +37,7 @@ int existElem(int vector[], int longi, int num);
 void vector1(int vector[], int n);
 void vector2(int vector2[], int m);
 void vector3(int vector3[], int vector2[], int m, int vector[], int n);
+void printVectors(int vector[], int n, int vector_2[], int m, int vector_3[], int p);
 void matrix(int matrix_1[][4], int vector_2[], int vector[], int n);
 void printMatrix(int matrix_1[][4]);
 
@@ -70,7 +71,13 @@ void menu()
             vector3(vector_3, vector_2, m, vector, n);
             break;
         case 4:
+            printVectors(vector, n, vector_2, m, vector_3, p);
+            break;
+        case 5:
             matrix(matrix_1, vector_2, vector, n);
+            break;
+        case 6:
+            printMatrix(matrix_1);
             break;
         }
     } while (op != 0);
@@ -105,7 +112,7 @@ int valid(char msge[], int ri, int rf)
     } while (op < ri || op > rf);
     return op;
 }
-//************* EXIST *******
+//********** EXIST ELEMENT FUNCTION *******
 int existElem(int vector[], int longi, int num)
 {
     int i;
@@ -141,8 +148,7 @@ void vector2(int vector_2[], int m)
     srand(time(NULL));
     for (i = 0; i < m; i++)
     {
-        while (existElem(vector_2, m, num = ((rand() % 20) + 1)))
-            ;
+        while (existElem(vector_2, m, num = ((rand() % 20) + 1)));
         vector_2[i] = num;
     }
     printf("\nValores aleatorios generados correctamente en el vector.\n");
@@ -158,14 +164,37 @@ void vector3(int vector3[], int vector_2[], int m, int vector[], int n)
         vector3[i] = vector[i];
         vector3[i + m] = vector_2[i];
     }
+    printf("Datos guardados en el vector 3 correctamente\n");
+    system("PAUSE");
+}
+
+//************ DISPLAY VECTORS ****************
+void printVectors(int vector[], int n, int vector_2[], int m, int vector_3[], int p)
+{
+    int i;
+    printf("VECTOR 1\n");
+    for (i = 0; i < n; i++)
+    {
+        printf("Vector [%d]: [%2d]\n", i, vector[i]);
+    }
+    printf("VECTOR 2\n");
+    for (i = 0; i < m; i++)
+    {
+        printf("Vector [%d]: [%2d]\n", i, vector_2[i]);
+    }
+    printf("VECTOR 3\n");
+    for (i = 0; i < p; i++)
+    {
+        printf("Vector [%d]: [%2d]\n", i, vector_3[i]);
+    }
     system("PAUSE");
 }
 
 //*********** MATRIX ************
 void matrix(int matrix_1[][4], int vector_2[], int vector[], int n)
 {
-    int i, j, k;
-    for (i = 0, k = 0; i < 4; i++)
+    int i, j, k = 0;
+    for (i = 0; i < 4; i++)
     {
         for (j = 0; j < 4; j++)
         {
@@ -177,21 +206,15 @@ void matrix(int matrix_1[][4], int vector_2[], int vector[], int n)
             {
                 matrix_1[i][j] = vector_2[k - n];
             }
-        }
-        k++;
-    }
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 4; j++)
-        {
-            printf("%d\t", matrix_1[i][j]);
+            k++;
         }
     }
-    printf("Datos del vector 1 y vector 2 guardados correctamente en una matriz 4x4");
+    printf("Matriz llenada correctamente\n");
     system("PAUSE");
 }
 
-void printMatrix(int matrix_1[4][4])
+//************** DISPLAY MATRIX ************
+void printMatrix(int matrix_1[][4])
 {
     printf("Matrix 4x4:\n");
     for (int i = 0; i < 4; i++)
@@ -204,3 +227,5 @@ void printMatrix(int matrix_1[4][4])
     }
     system("PAUSE");
 }
+
+//********* END OF THE CODE *******
