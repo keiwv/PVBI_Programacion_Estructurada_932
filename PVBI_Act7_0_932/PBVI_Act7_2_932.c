@@ -154,7 +154,6 @@ int valid(char msge[], int ri, int rf)
 
 void ask(char array[])
 {
-    printf("\nIntroduce una sentencia de no mayor 50 caracteres: ");
     fflush(stdin);
     gets(array);
 }
