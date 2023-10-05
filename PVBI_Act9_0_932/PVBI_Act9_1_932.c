@@ -31,6 +31,8 @@ PVBI_Act _ _932
 void menu();
 int msge_menu();
 
+void findNumber(int Vector_1[], int n);
+
 //**** MAIN FUNCTION ****
 int main()
 {
@@ -42,7 +44,7 @@ int main()
 
 void menu()
 {
-    int op, n, m, valueSearch, elementExist;
+    int op, n, m;
     n = 15;
     m = 4;
     int Vector_1[15];
@@ -58,7 +60,7 @@ void menu()
             printArr("Vector llenado satisfactoriamente");
             break;
         case 2:
-            fillMatrixNoRepeat(m,m, matrix, 1, 16);
+            fillMatrixNoRepeat(m, m, matrix, 1, 16);
             printArr("Matriz llenado correctamente");
             break;
         case 3:
@@ -72,21 +74,16 @@ void menu()
             printArr("Vector ordenado correctamente");
             break;
         case 6:
-            valueSearch = valid("Ingresa el valor que desees buscar en el vector (numeros entre 100 y el 200):  ", 100, 200);
-            elementExist = existElem(Vector_1, n, valueSearch);
-            if (elementExist != -1)
-            {
-                printArNum("El numero ha sido encontrado exitosamente, esta en la posicion: %d ", elementExist);
-
-            }
-            else
-            {
-                printArr("El numero introducido no esta en el vector");
-            }
+            findNumber(Vector_1, n);
+            break;
         }
-        printArr("\nPresiona ENTER para continuar...");
-        getchar();
+        if (op != 0)
+        {
+            printArr("\nPresiona ENTER para continuar... ");
+            getchar();
+        }
     } while (op != 0);
+    printArr("Saliendo del programa\n");
 }
 
 int msge_menu()
@@ -102,4 +99,19 @@ int msge_menu()
     printArr("0.- SALIR\n");
     op = valid("Selecciona una opcion: ", 0, 6);
     return op;
+}
+
+void findNumber(int Vector_1[], int n)
+{
+    int valueSearch, elementExist;
+    valueSearch = valid("Ingresa el valor que desees buscar en el vector (numeros entre 100 y el 200):  ", 100, 200);
+    elementExist = existElem(Vector_1, n, valueSearch);
+    if (elementExist != -1)
+    {
+        printArNum("El numero ha sido encontrado exitosamente, esta en la posicion: %d ", elementExist);
+    }
+    else
+    {
+        printArr("El numero introducido no esta en el vector");
+    }
 }
