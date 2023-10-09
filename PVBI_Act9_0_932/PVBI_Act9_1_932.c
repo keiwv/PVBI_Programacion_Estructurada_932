@@ -105,7 +105,7 @@ void findNumber(int Vector_1[], int n)
 {
     int valueSearch, elementExist;
     valueSearch = valid("Ingresa el valor que desees buscar en el vector (numeros entre 100 y el 200):  ", 100, 200);
-    elementExist = existElem(Vector_1, n, valueSearch);
+    elementExist = existElem(Vector_1, n, valueSearch); //It returns i value or -1 
     if (elementExist != -1)
     {
         printArNum("El numero ha sido encontrado exitosamente, esta en la posicion: %d ", elementExist);
