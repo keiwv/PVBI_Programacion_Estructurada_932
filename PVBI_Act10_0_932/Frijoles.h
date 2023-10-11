@@ -1,6 +1,7 @@
 //*******LIBRARIES*************
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 //*******PROTOTYPE FUNCTIONS *********
 int valid(char msge[], int ri, int rf);
 int existElem(int vector[], int longi, int num);
@@ -23,6 +24,7 @@ void ask(char array[]);
 void fillVectorNoRepeat(int vect[], int n, int ri, int rf);
 void printArNum(char array[], int num);
 void copyArray(char tempArray[], char tempListName[]);
+int numRandom(int ri, int rf);
 
 //******* FUNCTIONS DEVELOPMENT *******
 int valid(char msge[], int ri, int rf)
@@ -469,4 +471,11 @@ void copyArray(char tempArray[], char tempListName[])
         i++;
     }
     tempArray[i] = '\0';
+}
+
+int numRandom(int ri, int rf)
+{
+    int range = (rf - ri + 1);
+
+    return rand() % range + ri;
 }
