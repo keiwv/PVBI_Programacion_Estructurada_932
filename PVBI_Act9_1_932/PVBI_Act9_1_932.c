@@ -6,16 +6,6 @@
 #include "Frijoles.h"
 
 //*******************
-typedef struct _Person
-{
-    char name[50];
-    char lastName1[30];
-    char lastName2[30];
-    char birthDay[6];
-    int sex;
-    int state;
-    char curp[18];
-} Tperson;
 
 //**** PROTOTYPE FUNCTIONS ***
 void menu();
@@ -37,7 +27,7 @@ int main()
 }
 //**** DEVELOPMENT PROTOTYPE FUNCTIONS ****
 //**********
-void menu(Tperson *person)
+void menu()
 {
     int op;
     do
@@ -46,10 +36,10 @@ void menu(Tperson *person)
         switch (op)
         {
         case 1:
-            askNames(&person);
+            askNames();
             break;
         case 2:
-            askLastName1(&person);
+            askLastName1();
             break;
         case 3:
             askLastName2();
@@ -87,14 +77,14 @@ int msge_menu()
 }
 
 //**********
-void askNames(Tperson *person)
+void askNames()
 {
     printArr("Por favor, ingresa tu(s) nombre(s): ");
     fflush(stdin);
-    gets(person->name);
+    gets();
 }
 
-void askLastName1(Tperson *person)
+void askLastName1()
 {
 }
 void askLastName2()

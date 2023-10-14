@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <stdbool.h>
 //*******PROTOTYPE FUNCTIONS *********
 int valid(char msge[], int ri, int rf);
-int existElem(int vector[], int longi, int num);
 int counter(char array[]);
 void mayus(char array[]);
 void reverse(char array[]);
@@ -39,20 +39,6 @@ int valid(char msge[], int ri, int rf)
         op = atoi(array);
     } while (op < ri || op > rf);
     return op;
-}
-
-int existElem(int vector[], int longi, int num)
-{
-    int i;
-
-    for (i = 0; i < longi; i++)
-    {
-        if (vector[i] == num)
-        {
-            return i;
-        }
-    }
-    return -1;
 }
 
 int counter(char array[])
@@ -247,72 +233,55 @@ void noSpace(char array[])
     }
 }
 
-int alfaSpace(char array[])
+int alfaSpace(char cadena[])
 {
-    /*
-        return 0: All conditions were met
-        return 1: Two spaces
-        return 2: There's symbols in the text.
-        return 3: There's numbers in the text.
-        return 4: It starts or ends with a space in the text.
-    */
-    int i, count;
-    char letter;
-    count = counter(array);
-    if (array[0] == 32)
+    int i = 0;
+    if (cadena[0] == ' ')
     {
-        return 4;
+        return -1; //Space at the start has been found
     }
-    if (array[count - 1] == 32)
+    if (cadena[0] == '\0')
     {
-        return 4;
+        return -1; //No characters has been found
     }
-    for (i = 0; array[i] != '\0'; i++)
-    {
-        letter = array[i];
 
-        if (letter == 32) // Looking for double space
+    while (cadena[i] != '\0')
+    {
+        if ((cadena[i] >= 'A' && cadena[i] <= 'Z'))
         {
-            if (array[i + 1] == 32)
+            // Mayus allowed
+        }
+        else
+        {
+            if ((cadena[i] >= 'a' && cadena[i] <= 'z'))
             {
-                return 1;
+                return -1; //Minus not allowed
+            }
+            else
+            {
+                if (cadena[i] == ' ')
+                {
+                    if (cadena[i + 1] == ' ')
+                    {
+                        return -1; // Double Spaces not allowed
+                    }
+                }
+                else
+                {
+                    return -1; // Character not allowed
+                }
             }
         }
-        if (letter >= 33) // Looking for symbols
-        {
-            if (letter <= 47)
-            {
-                return 2;
-            }
-        }
-        if (letter >= 48) // Looking for numbers
-        {
-            if (letter <= 57)
-            {
-                return 3;
-            }
-        }
-        if (letter >= 58) // Looking for symbols
-        {
-            if (letter <= 64)
-            {
-                return 2;
-            }
-        }
-        if (letter >= 91) // Looking for symbols
-        {
-            if (letter <= 96)
-            {
-                return 2;
-            }
-        }
-        if (letter >= 123) // Looking for symbols
-        {
-            return 2;
-        }
+        i++;
     }
-    return 0;
-}
+
+    if (cadena[i - 1] == ' ')
+    {
+        return -1; // It ends with a spaces (not allowed)
+    }
+
+    return 1; //Return 1 if it 
+} 
 
 void alfaSpaceValid(char array[])
 {
@@ -393,7 +362,7 @@ void fillVectorNoRepeat(int vect[], int n, int ri, int rf)
         do
         {
             num = (rand() % range) + ri;
-        } while (existElem(vect, i, num) != -1);
+        } while (-1);
         vect[i] = num;
     }
 }
@@ -425,34 +394,16 @@ void printMatrix(int n, int m, int matrix[][m])
     }
 }
 
-void bubbleSort(int vector[], int n)
-{
-    int i, j;
-    int temp;
-    for (i = 0; i < n - 1; i++)
-    {
-        for (j = i + 1; j < n; j++)
-        {
-            if (vector[j] < vector[i])
-            {
-                temp = vector[i];
-                vector[i] = vector[j];
-                vector[j] = temp;
-            }
-        }
-    }
-}
-
 void printArNum(char array[], int num)
 {
     int i;
     i = 0;
     while (array[i] != '\0')
     {
-        if ((array[i] == '%') && (array[i+1] == 'd'))
+        if ((array[i] == '%') && (array[i + 1] == 'd'))
         {
             printf("%d", num);
-            i+=2;
+            i += 2;
         }
         else
         {
