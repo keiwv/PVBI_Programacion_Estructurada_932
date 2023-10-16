@@ -1,27 +1,29 @@
 //*******LIBRARIES*************
 #include <stdlib.h>
 #include <stdio.h>
+#include <wchar.h>
+
 //*******PROTOTYPE FUNCTIONS *********
 int valid(char msge[], int ri, int rf);
 int existElem(int vector[], int longi, int num);
-int counter(char array[]);
+int counter(wchar_t array[]);
 void mayus(char array[]);
 void reverse(char array[]);
 void line(char array[]);
 void descending(char array[]);
 void reverseDescending(char array[]);
 void noVowels(char array[]);
-void vowels(char array[]);
+int vowels(wchar_t array[]);
 void minus(char array[]);
 void capital(char array[]);
 void noSpace(char array[]);
-int alfaSpace(char array[]);
+int alfaSpace(wchar_t array[]);
 void alfaSpaceValid(char array[]);
 int palindrome(char array[]);
 void printArr(char array[]);
-void ask(char array[]);
 void fillVectorNoRepeat(int vect[], int n, int ri, int rf);
 void printArNum(char array[], int num);
+void ask(wchar_t array[], int size);
 
 //******* FUNCTIONS DEVELOPMENT *******
 int valid(char msge[], int ri, int rf)
@@ -52,11 +54,11 @@ int existElem(int vector[], int longi, int num)
     return -1;
 }
 
-int counter(char array[])
+int counter(wchar_t array[])
 {
     int length;
     length = 0;
-    while (array[length] != '\0')
+    while (array[length] != L'\0')
     {
         length++;
     }
@@ -80,69 +82,6 @@ void mayus(char array[])
     }
 }
 
-void reverse(char array[])
-{
-    int length, start, end;
-    char temp;
-
-    length = counter(array);
-
-    start = 0;
-    end = length - 1;
-
-    while (start < end)
-    {
-        temp = array[start];
-        array[start] = array[end];
-        array[end] = temp;
-        start++;
-        end--;
-    }
-}
-
-void line(char array[])
-{
-    int length, i;
-    char letter;
-    length = counter(array);
-
-    for (i = 0; i <= length; i++)
-    {
-        letter = array[i];
-        printf("%c\n", letter);
-    }
-}
-
-void descending(char array[])
-{
-    int length, i, j;
-    length = counter(array);
-
-    for (i = 0; i < length; i++)
-    {
-        for (j = 0; j < length - i; j++)
-        {
-            printf("%c", array[j]);
-        }
-        printf("\n");
-    }
-}
-
-void reverseDescending(char array[])
-{
-    int length, i, j;
-    length = counter(array);
-
-    for (i = 0; i < length; i++)
-    {
-        for (j = i; j < length; j++)
-        {
-            printf("%c", array[j]);
-        }
-        printf("\n");
-    }
-}
-
 void noVowels(char array[])
 {
     int i;
@@ -161,19 +100,33 @@ void noVowels(char array[])
     printf("\n");
 }
 
-void vowels(char array[])
+int vowels(wchar_t array[])
 {
     int i;
-    char tempword;
     for (i = 0; array[i] != '\0'; i++)
     {
-        tempword = array[i];
-        if ((tempword == 'A') || (tempword == 'E') || (tempword == 'I') || (tempword == 'O') || (tempword == 'U'))
+        if (array[i] == L'A')
         {
-            printf("%c", tempword);
+            return i;
+        }
+        if (array[i] == L'E')
+        {
+            return i;
+        }
+        if (array[i] == L'I')
+        {
+            return i;
+        }
+        if (array[i] == L'O')
+        {
+            return i;
+        }
+        if (array[i] == L'U')
+        {
+            return i;
         }
     }
-    printf("\n");
+    return -1;
 }
 
 void minus(char array[])
@@ -244,113 +197,26 @@ void noSpace(char array[])
     }
 }
 
-int alfaSpace(char array[])
+int alfaSpace(wchar_t cadena[])
 {
-    /*
-        return 0: All conditions were met
-        return 1: Two spaces
-        return 2: There's symbols in the text.
-        return 3: There's numbers in the text.
-        return 4: It starts or ends with a space in the text.
-    */
-    int i, count;
-    char letter;
-    count = counter(array);
-    if (array[0] == 32)
+    int i;
+    int exist = 0;
+    for (i = 0; cadena[i] != L'\0'; i++)
     {
-        return 4;
-    }
-    if (array[count - 1] == 32)
-    {
-        return 4;
-    }
-    for (i = 0; array[i] != '\0'; i++)
-    {
-        letter = array[i];
-
-        if (letter == 32) // Looking for double space
+        if (i > 0)
         {
-            if (array[i + 1] == 32)
-            {
-                return 1;
-            }
-        }
-        if (letter >= 33) // Looking for symbols
-        {
-            if (letter <= 47)
-            {
-                return 2;
-            }
-        }
-        if (letter >= 48) // Looking for numbers
-        {
-            if (letter <= 57)
-            {
-                return 3;
-            }
-        }
-        if (letter >= 58) // Looking for symbols
-        {
-            if (letter <= 64)
-            {
-                return 2;
-            }
-        }
-        if (letter >= 91) // Looking for symbols
-        {
-            if (letter <= 96)
-            {
-                return 2;
-            }
-        }
-        if (letter >= 123) // Looking for symbols
-        {
-            return 2;
+            exist = 1;
         }
     }
-    return 0;
-}
-
-void alfaSpaceValid(char array[])
-{
-    int resVerified;
-    do
+    if (exist == 0)
     {
-        resVerified = alfaSpace(array);
-
-        if (resVerified == 1)
-        {
-            printf("Existe dos espacios en el texto introducido\n");
-        }
-        if (resVerified == 2)
-        {
-            printf("Existen símbolos en el texto introducido\n");
-        }
-        if (resVerified == 3)
-        {
-            printf("Existen numeros en el texto introducido\n");
-        }
-        if (resVerified == 4)
-        {
-            printf("Existe un espacio al inicio o final del texto introducido\n");
-        }
-    } while (resVerified != 0);
-}
-
-int palindrome(char array[])
-{
-    int count;
-    count = counter(array); // We get how many columns it has.
-    noSpace(array);
-    minus(array); // We make the array lower case, we don't have to deal with different upper case.
-    for (int i = 0; i < count / 2; i++)
-    {
-        if (array[i] != array[count - 1 - i])
-        {
-            return 0; // it is not a palindrome
-        }
+        return -1;
     }
-    return 1; // it is a palindrome
+    if (cadena[0] == L' ')
+    {
+        return -1;
+    }
+    return 1; // La cadena está vacía o solo contiene espacios en blanco
 }
 
 void printArr(char array[])
@@ -362,12 +228,6 @@ void printArr(char array[])
         printf("%c", array[i]);
         i++;
     }
-}
-
-void ask(char array[])
-{
-    fflush(stdin);
-    gets(array);
 }
 
 void printVector(int vector[], int n)
@@ -446,10 +306,10 @@ void printArNum(char array[], int num)
     i = 0;
     while (array[i] != '\0')
     {
-        if ((array[i] == '%') && (array[i+1] == 'd'))
+        if ((array[i] == '%') && (array[i + 1] == 'd'))
         {
             printf("%d", num);
-            i+=2;
+            i += 2;
         }
         else
         {
@@ -457,4 +317,10 @@ void printArNum(char array[], int num)
             i++;
         }
     }
+}
+
+void ask(wchar_t array[], int size)
+{
+    fflush(stdin);
+    fgetws(array, size, stdin);
 }
