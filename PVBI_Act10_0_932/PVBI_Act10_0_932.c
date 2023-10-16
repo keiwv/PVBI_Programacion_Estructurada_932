@@ -22,13 +22,13 @@ User will be able:
 PVBI_Act10_1_932
 */
 
-//**** LIBRARIES ****
+
 #include "Frijoles.h"
 #include <time.h>
 #include <string.h>
 #include <stdio.h>
 
-//*******************
+
 typedef struct _stdnt
 {
     int status;
@@ -40,14 +40,13 @@ typedef struct _stdnt
     int sex;
 } Tstdnt;
 
-#define STDNTSIZE 500 // Max size of the registers.
+#define STDNTSIZE 500 
 
-//**** PROTOTYPE FUNCTIONS ***
-//**** MENU FUNCTIONS ***
+
 void menu();
 int msge_menu();
 
-//**** MAIN SWITCH FUNCTIONS *******
+
 void fillReg(Tstdnt studentArray[], int position);
 Tstdnt newStdnt(Tstdnt studentArray[], int position);
 void deleteStdnt(Tstdnt studentArray[], int position);
@@ -55,19 +54,19 @@ void searchStdnt(Tstdnt studentArray[], int position, int flag);
 void bubbleSort(Tstdnt studentArray[], int n);
 void displayRegActive(Tstdnt studentArray[], int position);
 
-//**** AUXILIAR PROTOTYPE FUNCTIONS ***********
+
 Tstdnt genDataReg(Tstdnt studentArray[], int position);
 void displayReg(Tstdnt studentArray[], int position);
 int existElem(Tstdnt studentArray[], int longi, int num);
 void displayOneStdnt(Tstdnt studentArray, int position);
 int binarySearch(Tstdnt studentArray[], int left, int right, int number);
 
-//********* NAMES AND LAST NAMES ***********
+
 void nameMen(char tempName[]);
 void nameWomen(char tempName[]);
 void LastName(char tempLastName[]);
 
-//**** MAIN FUNCTION ****
+
 int main()
 {
     srand(time(NULL));
@@ -75,13 +74,12 @@ int main()
     return 0;
 }
 
-//**** DEVELOPMENT PROTOTYPE FUNCTIONS ****
-//***** MENU DEVELOPMENT *****
+
 void menu()
 {
-    int op, position; // op will save user's input (menu);          position will be controlling the max size of the array. It will increase everytime someone adds new register. It will be the position of the max size.
+    int op, position; 
     int flag;
-    flag = 1; // We will use this flag to know if it's ordered (use a different search method) or if it's not.
+    flag = 1; 
     position = 0;
     Tstdnt studentArray[STDNTSIZE];
     do
@@ -164,7 +162,7 @@ int msge_menu()
     return op;
 }
 
-//****** MAIN SWITCH FUNCTIONS DEVELOPMENT *****
+
 void fillReg(Tstdnt studentArray[], int position)
 {
     int i;
@@ -185,35 +183,35 @@ Tstdnt newStdnt(Tstdnt studentArray[], int position)
 
     do
     {
-        tempStudentArray.matricula = valid("Por favor, introduce la matricula del estudiante: ", 300000, 399999); // We validate user's input in a range between the lowest student registration and the highest number.
-    } while (existElem(studentArray, position, tempStudentArray.matricula) != -1);                                // If it already exists, it will be looping until their input is not in the array.
+        tempStudentArray.matricula = valid("Por favor, introduce la matricula del estudiante: ", 300000, 399999); 
+    } while (existElem(studentArray, position, tempStudentArray.matricula) != -1);                                
 
-    do //*** GET LAST NAME 1 ***
+    do 
     {
         printf("Por favor, introduce el apellido paterno del estudiante en mayusculas: ");
         ask(tempSentence);
     } while (alfaSpace(tempSentence) == -1);
 
-    strcpy(tempStudentArray.LastName1, tempSentence); // Copy input to studentArray
+    strcpy(tempStudentArray.LastName1, tempSentence); 
 
-    do // **** GET LAST NAME 2 ****
+    do 
     {
         printf("Por favor, introduce el apellido materno del estudiante en mayusculas: ");
         ask(tempSentence);
     } while (alfaSpace(tempSentence) == -1);
 
-    strcpy(tempStudentArray.Lastname2, tempSentence); // Copy input to studentArray
+    strcpy(tempStudentArray.Lastname2, tempSentence); 
 
-    do //*** GET NAME *****
+    do 
     {
         printf("Por favor, introduce el nombre del estudiante en mayusculas: ");
         ask(tempSentence);
     } while (alfaSpace(tempSentence) == -1);
 
-    strcpy(tempStudentArray.name, tempSentence); // Copy input to studentArray
-    //*** GET STUDENT AGE ***
+    strcpy(tempStudentArray.name, tempSentence);
+   
     tempStudentArray.age = valid("Introduce la edad del estudiante: ", 18, 40);
-    //**** GET STUDENT SEX*****
+   
     printf("0.- Mujer\t 1.- Hombre\n");
     tempStudentArray.sex = valid("Introduce el sexo del estudiante: ", 0, 1);
 
@@ -231,17 +229,17 @@ void deleteStdnt(Tstdnt studentArray[], int position)
     index = existElem(studentArray, position, num);
     if (index != -1)
     {
-        if (studentArray[index].status != 0) // Student has been found and also it's actived (1)
+        if (studentArray[index].status != 0) 
         {
             studentArray[index].status = 0;
             printf("El estudiante ha sido dado de baja correctamente.\n");
         }
-        else // Student has been found, but it's already inactived (0)
+        else 
         {
             printf("El estudiante ya estaba dado de baja con anterioridad.\n");
         }
     }
-    else // Student wasn't found
+    else 
     {
         printf("La matricula ingresada no pertecene a ningun estudiante\n");
     }
@@ -251,7 +249,7 @@ void searchStdnt(Tstdnt studentArray[], int position, int flag)
 {
     int num, index;
     num = valid("Ingrese la matricula del estudiante que desea buscar: ", 300000, 399999);
-    if (flag == 0) // If it's not ordered from smallest to largest
+    if (flag == 0) 
     {
         index = existElem(studentArray, position, num);
     }
@@ -259,7 +257,7 @@ void searchStdnt(Tstdnt studentArray[], int position, int flag)
     {
         index = binarySearch(studentArray, 0, position - 1, num);
     }
-    if (index != -1) // Check what function returned
+    if (index != -1) 
     {
         printf("El estudiante ha sido encontrado con exito\n");
         printf("| %-3s | %-10s | %-6s | %-12s | %-12s | %-12s | %-4s | %-3s |\n", "No.", "Matricula", "Status", "Ap. Paterno", "Ap. Materno", "Nombre", "Edad", "Sexo");
@@ -303,46 +301,45 @@ void displayRegActive(Tstdnt studentArray[], int position)
     }
 }
 
-//****** AUXILIAR PROTOTYPE FUNCTIONS DEVELOPMENT *****
+
 Tstdnt genDataReg(Tstdnt studentArray[], int position)
 {
     Tstdnt tempStudentArray;
-    // *** GET LAST NAME ***
+
     char tempName[50];
 
-    //*** COPY LAST NAME 1 AND 2 ****
-    // LAST NAME 1
+
     LastName(tempName);
     strcpy(tempStudentArray.LastName1, tempName);
 
-    // LAST NAME 2
+
     LastName(tempName);
     strcpy(tempStudentArray.Lastname2, tempName);
 
-    //*** STATUS ***
+
     tempStudentArray.status = 1;
 
-    //**** STUDENT REGISTRATION *********
+
     do
     {
         tempStudentArray.matricula = numRandom(300000, 399999);
     } while (existElem(studentArray, position, tempStudentArray.matricula) != -1);
 
-    //**** GENERATE SEX AND NAME ****
+
     if (numRandom(0, 1) == 1)
     {
         nameMen(tempName);
         strcpy(tempStudentArray.name, tempName);
-        tempStudentArray.sex = 1; // MEN = 1
+        tempStudentArray.sex = 1; 
     }
     else
     {
         nameWomen(tempName);
         strcpy(tempStudentArray.name, tempName);
-        tempStudentArray.sex = 0; // WOMEN = 0
+        tempStudentArray.sex = 0; 
     }
 
-    //**** GENERATE AGE *********
+
     tempStudentArray.age = numRandom(18, 40);
 
     return tempStudentArray;
@@ -403,27 +400,26 @@ int binarySearch(Tstdnt studentArray[], int left, int right, int number)
     {
         medium = left + (right - left) / 2;
 
-        // Check if number is present at mid
+
         if (studentArray[medium].matricula == number)
         {
             return medium;
         }
 
-        if (studentArray[medium].matricula < number) // If number greater, ignore left half
+        if (studentArray[medium].matricula < number) 
         {
             left = medium + 1;
         }
-        else // If number is smaller, ignore right half
+        else 
         {
             right = medium - 1;
         }
     }
 
-    // If we reach here, then element was not present
     return -1;
 }
 
-//********* NAMES AND LAST NAMES ***********
+
 void nameMen(char tempName[])
 {
     char nameMen1[30][30] = {"JUAN", "PEDRO", "LUIS", "MIGUEL", "CARLOS", "JAVIER", "MANUEL", "JOSE", "FERNANDO", "ALBERTO", "RICARDO", "ENRIQUE", "ANTONIO", "ALEJANDRO", "EMILIO", "ARTURO", "JORGE", "EDUARDO", "HECTOR", "FRANCISCO", "RAUL", "ROBERTO", "ERNESTO", "GUILLERMO", "ARMANDO", "MARIO", "DANIEL", "OSCAR", "ISRAEL", "SALVADOR"};
