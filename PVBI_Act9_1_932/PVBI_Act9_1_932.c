@@ -285,7 +285,8 @@ int nameCompound(char array[])
     int k = 0;
     int n = 0;
     int l = 0;
-    while (array[i] != '\0')
+    int flag = 0;
+    while (array[i] != '\0' && (flag == 0))
     {
         int j = 0;
         while (array[k] != ' ' && array[k] != '\0')
@@ -295,11 +296,15 @@ int nameCompound(char array[])
             k++;
         }
         temp[j] = '\0';
-        for (l = 0; l < 8; l++)
+        for (l = 0; (l < 8) && (flag == 0); l++)
         {
             if (strcmp(temp, contra[l]) == 0)
             {
-                n += strlen(temp)+1;
+                n += strlen(temp) + 1;
+            }
+            else
+            {
+                flag = 1;
             }
         }
         k++;
@@ -333,7 +338,7 @@ int Apcompound(char array[])
             k++;
         }
         temp[j] = '\0';
-        for (l = 0; l < 19; l++)
+        for (l = 0; l < 18; l++)
         {
             if (strcmp(temp, contra[l]) == 0)
             {
@@ -356,12 +361,18 @@ int Apcompound(char array[])
 
 char fourLetters(char name[], char LastName1[], char LastName2[], char firstFourLetters[5])
 {
-    int startPosition;
+    int startPosition, startPosition2;
     startPosition = Apcompound(LastName1);
+    startPosition2 = Apcompound(LastName2);
     firstFourLetters[0] = LastName1[startPosition];
     firstFourLetters[1] = noVowelsApComp(LastName1, startPosition);
+    firstFourLetters[2] = LastName2[startPosition2];
+    firstFourLetters[3] = name[nameCompound(name)];
+    firstFourLetters[4] = '\0';
     printf("%c\n", firstFourLetters[0]);
     printf("%c\n", firstFourLetters[1]);
+    printf("%c\n", firstFourLetters[2]);
+    printf("%c\n", firstFourLetters[3]);
     system("PAUSE");
 }
 
