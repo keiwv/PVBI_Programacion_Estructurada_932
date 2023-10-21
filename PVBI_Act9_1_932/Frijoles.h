@@ -1,29 +1,29 @@
 //*******LIBRARIES*************
 #include <stdlib.h>
 #include <stdio.h>
-#include <wchar.h>
-
+#include <conio.h>
+#include <string.h>
 //*******PROTOTYPE FUNCTIONS *********
 int valid(char msge[], int ri, int rf);
 int existElem(int vector[], int longi, int num);
-int counter(wchar_t array[]);
+int counter(char array[]);
 void mayus(char array[]);
 void reverse(char array[]);
 void line(char array[]);
 void descending(char array[]);
 void reverseDescending(char array[]);
 void noVowels(char array[]);
-int vowels(wchar_t array[]);
+int vowels(char array[]);
 void minus(char array[]);
 void capital(char array[]);
 void noSpace(char array[]);
-int alfaSpace(wchar_t array[]);
+int alfaSpace(char array[]);
 void alfaSpaceValid(char array[]);
 int palindrome(char array[]);
 void printArr(char array[]);
 void fillVectorNoRepeat(int vect[], int n, int ri, int rf);
 void printArNum(char array[], int num);
-void ask(wchar_t array[], int size);
+void ask(char array[]);
 
 //******* FUNCTIONS DEVELOPMENT *******
 int valid(char msge[], int ri, int rf)
@@ -54,7 +54,7 @@ int existElem(int vector[], int longi, int num)
     return -1;
 }
 
-int counter(wchar_t array[])
+int counter(char array[])
 {
     int length;
     length = 0;
@@ -100,28 +100,32 @@ void noVowels(char array[])
     printf("\n");
 }
 
-int vowels(wchar_t array[])
+int vowels(char array[])
 {
     int i;
     for (i = 0; array[i] != '\0'; i++)
     {
-        if (array[i] == L'A')
+        if (array[i] == 'X')
         {
             return i;
         }
-        if (array[i] == L'E')
+        if (array[i] == 'A')
         {
             return i;
         }
-        if (array[i] == L'I')
+        if (array[i] == 'E')
         {
             return i;
         }
-        if (array[i] == L'O')
+        if (array[i] == 'I')
         {
             return i;
         }
-        if (array[i] == L'U')
+        if (array[i] == 'O')
+        {
+            return i;
+        }
+        if (array[i] == 'U')
         {
             return i;
         }
@@ -197,26 +201,65 @@ void noSpace(char array[])
     }
 }
 
-int alfaSpace(wchar_t cadena[])
+int alfaSpace(char cadena[])
 {
-    int i;
-    int exist = 0;
-    for (i = 0; cadena[i] != L'\0'; i++)
+    fflush(stdin);
+    gets(cadena);
+    int i = 0;
+    if (cadena[0] == ' ')
     {
-        if (i > 0)
+        return -1; // Space at the start has been found
+    }
+    if (cadena[0] == '\0')
+    {
+        return -1; // No characters has been found
+    }
+
+    for (i = 0; cadena[i] != '\0'; i++)
+    {
+        if (cadena[i] == -92 || cadena[i] == -91 || cadena[i] == '/' || cadena[i] == '-')
         {
-            exist = 1;
+            cadena[i] = 'X';
         }
     }
-    if (exist == 0)
+    mayus(cadena);
+    i = 0;
+    while (cadena[i] != '\0')
     {
-        return -1;
+        if ((cadena[i] >= 'A' && cadena[i] <= 'Z'))
+        {
+            // Mayus allowed
+        }
+        else
+        {
+            if ((cadena[i] >= 'a' && cadena[i] <= 'z'))
+            {
+                return -1; // Minus not allowed
+            }
+            else
+            {
+                if (cadena[i] == ' ')
+                {
+                    if (cadena[i + 1] == ' ')
+                    {
+                        return -1; // Double Spaces not allowed
+                    }
+                }
+                else
+                {
+                    cadena[i] = 'X';
+                }
+            }
+        }
+        i++;
     }
-    if (cadena[0] == L' ')
+
+    if (cadena[i - 1] == ' ')
     {
-        return -1;
+        return -1; // It ends with a spaces (not allowed)
     }
-    return 1; // La cadena está vacía o solo contiene espacios en blanco
+    printf("%s", cadena);
+    return 1; // Return 1 if it
 }
 
 void printArr(char array[])
@@ -319,8 +362,8 @@ void printArNum(char array[], int num)
     }
 }
 
-void ask(wchar_t array[], int size)
+void ask(char array[])
 {
     fflush(stdin);
-    fgetws(array, size, stdin);
+    gets(array);
 }
