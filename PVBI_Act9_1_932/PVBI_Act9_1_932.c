@@ -15,15 +15,17 @@ void askLastName1(char LastName1[]);
 void askLastName2(char LastName2[]);
 int askSex();
 void askState(char state[]);
-void printCURP(char name[], char LastName1[], char LastName2[], int day, int month, int year, int sex, char state[]);
+void printCURP(char firstFourLetters[], int day, int month, int year, int sex, char state[]);
 // AUXILIAR FUNCTIONS
 void displayStates(char state[]);
 char getConsonant(char array[]);
-char compound(char array[]);
+int nameCompound(char array[]);
+int Apcompound(char array[]);
+char fourLetters(char name[], char LastName1[], char LastName2[], char firstFourLetters[5]);
+char noVowelsApComp(char array[], int startPosition);
 //**** MAIN FUNCTIONS ****
 int main()
 {
-    setlocale(LC_ALL, "");
     menu();
     return 0;
 }
@@ -36,6 +38,7 @@ void menu()
     int day, month, year;
     int sex;
     char state[4];
+    char firstFourLetters[5];
     do
     {
         op = msge_menu();
@@ -65,30 +68,9 @@ void menu()
             askState(state);
             break;
         case 7:
-            printCURP(name, LastName1, LastName2, day, month, year, sex, state);
+            fourLetters(name, LastName1, LastName2, firstFourLetters);
+            printCURP(firstFourLetters, day, month, year, sex, state);
             break;
-            case 2:
-                askLastName1(LastName1);
-                break;
-            case 3:
-                askLastName2(LastName2);
-                break;
-            case 4:
-                day = valid("Ingresa el dia de tu nacimiento: ", 1, 31);
-                month = valid("Ingresa el mes de tu nacimiento: ", 1, 12);
-                year = valid("Ingresa el anio de tu nacimiento: ", 1894, 2023);
-                year = year % 100;
-                printf("Se han guardado correctamente la fecha de nacimiento.\n");
-                break;
-            case 5:
-                sex = askSex();
-                break;
-            case 6:
-                state = askState();
-                break;
-            case 7:
-                printCURP(name, LastName1, LastName2, day, month, year, sex, state);
-                break;
         }
         system("PAUSE");
     } while (op != 0);
@@ -162,18 +144,18 @@ void askState(char state[])
     }
 }
 
-void printCURP(char name[], char LastName1[], char LastName2[], int day, int month, int year, int sex, char state[])
+void printCURP(char firstFourLetters[], int day, int month, int year, int sex, char state[])
 {
     int temp;
-    char tempArray[4];
+    /*char tempArray[4];
     temp = vowels(LastName1);
 
     tempArray[0] = compound(LastName1);
     tempArray[1] = LastName1[temp];
     tempArray[2] = compound(LastName2);
     tempArray[3] = compound(name);
-    tempArray[4] = '\0';
-    printf("%s", tempArray);
+    tempArray[4] = '\0'*/
+
     printf("%02d", year);
     printf("%02d", month);
     printf("%02d", day);
@@ -185,11 +167,6 @@ void printCURP(char name[], char LastName1[], char LastName2[], int day, int mon
     {
         printf("H");
     }
-    printf("%s", state);
-    printf("%c", getConsonant(LastName1));
-    printf("%c", getConsonant(LastName2));
-    printf("%c", getConsonant(name));
-    printf("\n");
 }
 
 //***************************
@@ -300,16 +277,15 @@ char getConsonant(char array[])
     return -1;
 }
 
-char compound(char array[])
+int nameCompound(char array[])
 {
-    char contra[30][10] = {"MA", "MA.", "M.", "M", "JOSE", "J.", "J", "MARIA", "DA", "DAS", "DE", "DEL", "DER", "DI", "DIE", "DD", "EL", "LA", "LOS", "LAS", "LE", "LES", "MAC", "MC", "VAN", "VON", "Y"};
+    char contra[9][6] = {"MA", "MA.", "M.", "M", "JOSE", "J.", "J", "MARIA"};
     char temp[20];
     int i = 0;
     int k = 0;
     int n = 0;
-    int flag = 0;
     int l = 0;
-    while (array[i] != '\0' && (flag == 0))
+    while (array[i] != '\0')
     {
         int j = 0;
         while (array[k] != ' ' && array[k] != '\0')
@@ -319,30 +295,79 @@ char compound(char array[])
             k++;
         }
         temp[j] = '\0';
-
-        while(flag != 1)
+        for (l = 0; l < 8; l++)
         {
-            if (strcmp(temp, contra[l]) == 1)
+            if (strcmp(temp, contra[l]) == 0)
             {
-                flag = 1;
+                n += strlen(temp)+1;
             }
-            else
-            {
-                n += strlen(temp);
-            }
-            l++;
         }
         k++;
         i++;
     }
-    if (flag == 1)
+    if (n > 0)
     {
-        printf("ASDASD");
-        return array[n];
+        return n;
     }
     else
     {
-        printf("aaaa");
-        return array[0];
+        return 0;
     }
+}
+
+int Apcompound(char array[])
+{
+    char contra[19][5] = {"DA", "DAS", "DE", "DEL", "DER", "DI", "DIE", "DD", "EL", "LA", "LOS", "LAS", "LE", "LES", "MAC", "MC", "VAN", "VON", "Y"};
+    char temp[20];
+    int i = 0;
+    int k = 0;
+    int n = 0;
+    int l = 0;
+    while (array[i] != '\0')
+    {
+        int j = 0;
+        while (array[k] != ' ' && array[k] != '\0')
+        {
+            temp[j] = array[k];
+            j++;
+            k++;
+        }
+        temp[j] = '\0';
+        for (l = 0; l < 19; l++)
+        {
+            if (strcmp(temp, contra[l]) == 0)
+            {
+                n += strlen(temp) + 1;
+            }
+        }
+        k++;
+        i++;
+    }
+
+    if (n > 0)
+    {
+        return n;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+char fourLetters(char name[], char LastName1[], char LastName2[], char firstFourLetters[5])
+{
+    int startPosition;
+    startPosition = Apcompound(LastName1);
+    firstFourLetters[0] = LastName1[startPosition];
+    firstFourLetters[1] = noVowelsApComp(LastName1, startPosition);
+    printf("%c\n", firstFourLetters[0]);
+    printf("%c\n", firstFourLetters[1]);
+    system("PAUSE");
+}
+
+char noVowelsApComp(char array[], int startPosition)
+{
+    int positionVowel;
+    positionVowel = vowels(array, startPosition);
+    return array[positionVowel];
 }

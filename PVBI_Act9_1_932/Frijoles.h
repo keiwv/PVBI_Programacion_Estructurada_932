@@ -6,18 +6,18 @@
 //*******PROTOTYPE FUNCTIONS *********
 int valid(char msge[], int ri, int rf);
 int existElem(int vector[], int longi, int num);
-int counter(wchar_t array[]);
+int counter(char array[]);
 void mayus(char array[]);
 void reverse(char array[]);
 void line(char array[]);
 void descending(char array[]);
 void reverseDescending(char array[]);
 void noVowels(char array[]);
-int vowels(char array[]);
+int vowels(char array[], int position);
 void minus(char array[]);
 void capital(char array[]);
 void noSpace(char array[]);
-int alfaSpace(wchar_t array[]);
+int alfaSpace(char array[]);
 void alfaSpaceValid(char array[]);
 int palindrome(char array[]);
 void printArr(char array[]);
@@ -54,7 +54,7 @@ int existElem(int vector[], int longi, int num)
     return -1;
 }
 
-int counter(wchar_t array[])
+int counter(char array[])
 {
     int length;
     length = 0;
@@ -100,15 +100,11 @@ void noVowels(char array[])
     printf("\n");
 }
 
-int vowels(char array[])
+int vowels(char array[], int position)
 {
     int i;
-    for (i = 0; array[i] != '\0'; i++)
+    for (i = position + 1; array[i] != '\0'; i++)
     {
-        if (array[i] == 'X')
-        {
-            return i;
-        }
         if (array[i] == 'A')
         {
             return i;
@@ -126,6 +122,10 @@ int vowels(char array[])
             return i;
         }
         if (array[i] == 'U')
+        {
+            return i;
+        }
+        if (array[i] == 'X')
         {
             return i;
         }
@@ -220,6 +220,10 @@ int alfaSpace(char cadena[])
         if (cadena[i] == -92 || cadena[i] == -91 || cadena[i] == '/' || cadena[i] == '-')
         {
             cadena[i] = 'X';
+        }
+        if(cadena[i] == -102)
+        {
+            cadena[i] = 'U';
         }
     }
     mayus(cadena);
