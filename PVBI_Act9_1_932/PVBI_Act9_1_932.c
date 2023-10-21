@@ -23,6 +23,7 @@ char compound(char array[]);
 //**** MAIN FUNCTIONS ****
 int main()
 {
+    setlocale(LC_ALL, "");
     menu();
     return 0;
 }
@@ -66,6 +67,28 @@ void menu()
         case 7:
             printCURP(name, LastName1, LastName2, day, month, year, sex, state);
             break;
+            case 2:
+                askLastName1(LastName1);
+                break;
+            case 3:
+                askLastName2(LastName2);
+                break;
+            case 4:
+                day = valid("Ingresa el dia de tu nacimiento: ", 1, 31);
+                month = valid("Ingresa el mes de tu nacimiento: ", 1, 12);
+                year = valid("Ingresa el anio de tu nacimiento: ", 1894, 2023);
+                year = year % 100;
+                printf("Se han guardado correctamente la fecha de nacimiento.\n");
+                break;
+            case 5:
+                sex = askSex();
+                break;
+            case 6:
+                state = askState();
+                break;
+            case 7:
+                printCURP(name, LastName1, LastName2, day, month, year, sex, state);
+                break;
         }
         system("PAUSE");
     } while (op != 0);

@@ -6,7 +6,7 @@
 //*******PROTOTYPE FUNCTIONS *********
 int valid(char msge[], int ri, int rf);
 int existElem(int vector[], int longi, int num);
-int counter(char array[]);
+int counter(wchar_t array[]);
 void mayus(char array[]);
 void reverse(char array[]);
 void line(char array[]);
@@ -17,7 +17,7 @@ int vowels(char array[]);
 void minus(char array[]);
 void capital(char array[]);
 void noSpace(char array[]);
-int alfaSpace(char array[]);
+int alfaSpace(wchar_t array[]);
 void alfaSpaceValid(char array[]);
 int palindrome(char array[]);
 void printArr(char array[]);
@@ -54,7 +54,7 @@ int existElem(int vector[], int longi, int num)
     return -1;
 }
 
-int counter(char array[])
+int counter(wchar_t array[])
 {
     int length;
     length = 0;
