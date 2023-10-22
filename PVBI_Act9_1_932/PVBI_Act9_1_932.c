@@ -1,5 +1,18 @@
 /*
+Brayan Ivan Perez Ventura - 372781
 
+Created code: October 11th 2023 / Modified code: Octuber 22th 2023
+
+DESCRIPTION
+In this program, we will implemented a program where it will be working with pointers.
+It will display a menu where:
+    1.- Sum the elements in an array: We will fill an array and using pointers, we will sum them.
+    2.- Copy array: Using pointers, copy an array from a different array.
+    3.- Concatenate arrays: Using pointers, we will concatenate arrays.
+    4.- Comparation: We will comparate arrays using pointers
+    5.- Find the max element. Using pointers, we need to find the max element in an array using pointers.
+
+#NOTE: For this code, it's necessary the personal library called "Frijoles.h".
 */
 
 //**** LIBRARIES ****
@@ -295,25 +308,19 @@ void printCURP(char firstFourLetters[], int day, int month, int year, int sex, c
     }
     else
     {
-        if (year >= 2000)
+        if (year <= 2009)
         {
-            if (year <= 2009)
+            printf("A");
+        }
+        else
+        {
+            if (year <= 2019)
             {
-                printf("A");
+                printf("B");
             }
             else
             {
-                if (year >= 2010)
-                {
-                    if (year <= 2019)
-                    {
-                        printf("B");
-                    }
-                    else
-                    {
-                        printf("C");
-                    }
-                }
+                printf("C");
             }
         }
     }
@@ -414,10 +421,21 @@ char getConsonant(char array[], int startPosition)
     for (i = startPosition + 1; array[i] != '\0'; i++)
     {
         tempword = array[i];
-
-        if ((tempword != 'A') && (tempword != 'E') && (tempword != 'I') && (tempword != 'O') && (tempword != 'U'))
+        if (tempword != 'A')
         {
-            return tempword;
+            if (tempword != 'E')
+            {
+                if (tempword != 'I')
+                {
+                    if (tempword != 'O')
+                    {
+                        if (tempword != 'U')
+                        {
+                            return tempword;
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -432,7 +450,7 @@ int Compound2(char array[], int n)
     int k = n;
     int flag = 1;
     int j;
-    int found = 0;
+
     while (array[i] != '\0' && flag == 1)
     {
         j = 0;
@@ -443,27 +461,19 @@ int Compound2(char array[], int n)
             k++;
         }
         temp[j] = '\0';
-
         flag = 0;
-        found = 0;
-
         for (int l = 0; l < 8; l++)
         {
             if (strcmp(temp, contra[l]) == 0)
             {
-                n = k + 1;
-                flag = 1;
-                found = 1;
+                flag++;
+            }
+            if (flag == 2)
+            {
+                return n;
             }
         }
-
-        if (!found)
-        {
-            k++;
-            i++;
-        }
     }
-
     return n;
 }
 
@@ -471,7 +481,7 @@ int nameCompound(char array[])
 {
     char contra2[27][6] = {"DA", "DAS", "DE", "DEL", "DER", "DI", "DIE", "DD", "EL", "LA", "LOS", "LAS", "LE", "LES", "MAC", "MC", "VAN", "VON", "Y", "MA", "MA.", "M.", "M", "JOSE", "J.", "J", "MARIA"};
     char temp[20];
-    int num;
+    int num = 0;
     int i = 0;
     int k = 0;
     int n = 0;
@@ -490,7 +500,6 @@ int nameCompound(char array[])
             k++;
         }
         temp[j] = '\0';
-
         flag = 0;
         found = 0;
 
@@ -512,7 +521,11 @@ int nameCompound(char array[])
         i++;
     }
 
-    num = Compound2(array, n);
+    if (flag == 0)
+    {
+        return Compound2(array, n);
+    }
+
     return num;
 }
 
