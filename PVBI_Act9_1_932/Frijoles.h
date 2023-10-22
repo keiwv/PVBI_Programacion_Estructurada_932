@@ -18,12 +18,13 @@ void minus(char array[]);
 void capital(char array[]);
 void noSpace(char array[]);
 int alfaSpace(char array[]);
-void alfaSpaceValid(char array[]);
 int palindrome(char array[]);
 void printArr(char array[]);
 void fillVectorNoRepeat(int vect[], int n, int ri, int rf);
 void printArNum(char array[], int num);
 void ask(char array[]);
+int numRandom(int ri, int rf);
+
 
 //******* FUNCTIONS DEVELOPMENT *******
 int valid(char msge[], int ri, int rf)
@@ -217,7 +218,7 @@ int alfaSpace(char cadena[])
 
     for (i = 0; cadena[i] != '\0'; i++)
     {
-        printf("%c = %d\n", cadena[i], (int)cadena[i]);
+        //printf("%c = %d\n", cadena[i], (int)cadena[i]);
         if (cadena[i] == -92 || cadena[i] == -91 || cadena[i] == '/' || cadena[i] == '-')
         {
             cadena[i] = 'X';
@@ -236,7 +237,7 @@ int alfaSpace(char cadena[])
         }
         if (cadena[i] == -42 || cadena[i] == -95)
         {
-            cadena[i] = 'i';
+            cadena[i] = 'I';
         }
         if (cadena[i] == -32 || cadena[i] == -94)
         {
@@ -268,7 +269,13 @@ int alfaSpace(char cadena[])
                 }
                 else
                 {
-                    cadena[i] = 'X';
+                    if (cadena[i] == '.')
+                    {
+                    }
+                    else
+                    {
+                        cadena[i] = 'X';
+                    }
                 }
             }
         }
@@ -279,7 +286,6 @@ int alfaSpace(char cadena[])
     {
         return -1; // It ends with a spaces (not allowed)
     }
-    printf("%s", cadena);
     return 1; // Return 1 if it
 }
 
@@ -387,4 +393,11 @@ void ask(char array[])
 {
     fflush(stdin);
     gets(array);
+}
+
+int numRandom(int ri, int rf)
+{
+    int range = (rf - ri + 1);
+
+    return rand() % range + ri;
 }

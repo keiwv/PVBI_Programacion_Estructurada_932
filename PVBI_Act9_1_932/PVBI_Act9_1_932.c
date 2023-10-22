@@ -15,14 +15,14 @@ void askLastName1(char LastName1[]);
 void askLastName2(char LastName2[]);
 int askSex();
 void askState(char state[]);
-void printCURP(char firstFourLetters[], int day, int month, int year, int sex, char state[]);
+void printCURP(char firstFourLetters[], int day, int month, int year, int sex, char state[], char consonants[]);
 // AUXILIAR FUNCTIONS
 void displayStates(char state[]);
-char getConsonant(char array[]);
+char getConsonant(char array[], int startPosition);
 int nameCompound(char array[]);
-int Apcompound(char array[]);
-char fourLetters(char name[], char LastName1[], char LastName2[], char firstFourLetters[5]);
+void fourLetters(char name[], char LastName1[], char LastName2[], char firstFourLetters[5], int flagLastName1, int flagLastName2, char consonants[]);
 char noVowelsApComp(char array[], int startPosition);
+int Compound2(char array[], int n);
 //**** MAIN FUNCTIONS ****
 int main()
 {
@@ -39,6 +39,13 @@ void menu()
     int sex;
     char state[4];
     char firstFourLetters[5];
+    char consonants[4];
+    int flagName = 0;
+    int flagLastName1 = 0;
+    int flagLastName2 = 0;
+    int flagBirthday = 0;
+    int flagSex = 0;
+    int flagState = 0;
     do
     {
         op = msge_menu();
@@ -47,12 +54,15 @@ void menu()
         {
         case 1:
             askNames(name);
+            flagName = 1;
             break;
         case 2:
             askLastName1(LastName1);
+            flagLastName1 = 1;
             break;
         case 3:
             askLastName2(LastName2);
+            flagLastName2 = 1;
             break;
         case 4:
             day = valid("Ingresa el dia de tu nacimiento: ", 1, 31);
@@ -60,16 +70,61 @@ void menu()
             year = valid("Ingresa el anio de tu nacimiento: ", 1894, 2023);
             year = year % 100;
             printf("Se han guardado correctamente la fecha de nacimiento.\n");
+            flagBirthday = 1;
             break;
         case 5:
             sex = askSex();
+            flagSex = 1;
             break;
         case 6:
             askState(state);
+            flagState = 1;
             break;
         case 7:
-            fourLetters(name, LastName1, LastName2, firstFourLetters);
-            printCURP(firstFourLetters, day, month, year, sex, state);
+            fourLetters(name, LastName1, LastName2, firstFourLetters, flagLastName1, flagLastName2, consonants);
+            if (flagName)
+            {
+                if (flagBirthday)
+                {
+                    if (flagSex)
+                    {
+                        if (flagState)
+                        {
+                            printCURP(firstFourLetters, day, month, year, sex, state, consonants);
+                            if (valid("\nImprimir una nueva CURP? (1.- Si, 0.- No): ", 0, 1))
+                            {
+                                flagName = 0;
+                                flagLastName1 = 0;
+                                flagLastName2 = 0;
+                                flagBirthday = 0;
+                                flagSex = 0;
+                                flagState = 0;
+                            }
+                            else
+                            {
+                                op = 0;
+                            }
+                        }
+                        else
+                        {
+                            printf("Hace falta lugar de nacimiento\n");
+                        }
+                    }
+                    else
+                    {
+                        printf("Hace falta el sexo\n");
+                    }
+                }
+                else
+                {
+                    printf("Hace falta el dia de tu nacimiento\n");
+                }
+            }
+            else
+            {
+                printf("Hace falta tu nombre\n");
+            }
+
             break;
         }
         system("PAUSE");
@@ -100,7 +155,7 @@ void askNames(char name[])
     do
     {
         printf("Introduce el nombre: ");
-    } while (alfaSpace(name) != 1);
+    } while (alfaSpace(name) != 1 || strlen(name) > 30);
 }
 
 void askLastName1(char LastName1[])
@@ -108,7 +163,7 @@ void askLastName1(char LastName1[])
     do
     {
         printArr("Por favor, ingresa el apellido paterno: ");
-    } while (alfaSpace(LastName1) != 1);
+    } while (alfaSpace(LastName1) != 1 || strlen(LastName1) > 15);
 }
 
 void askLastName2(char LastName2[])
@@ -116,7 +171,7 @@ void askLastName2(char LastName2[])
     do
     {
         printArr("Por favor, ingresa el apellido materno: ");
-    } while (alfaSpace(LastName2) != 1);
+    } while (alfaSpace(LastName2) != 1 || strlen(LastName2) > 15);
 }
 
 int askSex()
@@ -135,7 +190,7 @@ void askState(char state[])
 
     if (isForeign)
     {
-        strcpy(state, "NE"); // Asigna "NE" para extranjeros
+        strcpy(state, "NE");
     }
     else
     {
@@ -144,29 +199,54 @@ void askState(char state[])
     }
 }
 
-void printCURP(char firstFourLetters[], int day, int month, int year, int sex, char state[])
+void printCURP(char firstFourLetters[], int day, int month, int year, int sex, char state[], char consonants[])
 {
-    int temp;
-    /*char tempArray[4];
-    temp = vowels(LastName1);
-
-    tempArray[0] = compound(LastName1);
-    tempArray[1] = LastName1[temp];
-    tempArray[2] = compound(LastName2);
-    tempArray[3] = compound(name);
-    tempArray[4] = '\0'*/
-
+    printf("%c", firstFourLetters[0]);
+    printf("%c", firstFourLetters[1]);
+    printf("%c", firstFourLetters[2]);
+    printf("%c", firstFourLetters[3]);
     printf("%02d", year);
     printf("%02d", month);
     printf("%02d", day);
-    if (sex == 0)
-    {
-        printf("M");
-    }
-    else
+    if (sex == 1)
     {
         printf("H");
     }
+    else
+    {
+        printf("M");
+    }
+    printf("%s", state);
+    printf("%s", consonants);
+    if  (year < 2000)
+    {
+        printf("0");
+    }
+    else
+    {
+        if(year >= 2000)
+        {
+            if(year <= 2009)
+            {
+                printf("A");
+            }
+            else
+            {
+                if(year >= 2010)
+                {
+                    if(year <= 2019)
+                    {
+                        printf("B");
+                    }
+                    else
+                    {
+                        printf("C");
+                    }
+                }
+            }
+        }
+    }
+    printf("%d", numRandom(0, 9));
 }
 
 //***************************
@@ -184,66 +264,66 @@ void displayStates(char state[])
             "Campeche",
             "Chiapas",
             "Chihuahua",
-            "Ciudad de Mexico",
-            "Coahuila",
+            "Coahuila de Zaragoza",
             "Colima",
+            "Ciudad de México",
             "Durango",
-            "Estado de Mexico",
             "Guanajuato",
             "Guerrero",
             "Hidalgo",
             "Jalisco",
-            "Michoacan",
+            "México",
+            "Michoacán de Ocampo",
             "Morelos",
             "Nayarit",
-            "Nuevo Leon",
+            "Nuevo León",
             "Oaxaca",
             "Puebla",
-            "Queretaro",
+            "Querétaro",
             "Quintana Roo",
-            "San Luis Potosi",
+            "San Luis Potosí",
             "Sinaloa",
             "Sonora",
             "Tabasco",
             "Tamaulipas",
             "Tlaxcala",
-            "Veracruz",
-            "Yucatan",
+            "Veracruz de Ignacio de la Llave",
+            "Yucatán",
             "Zacatecas"};
     char twoLetterState[32][3] =
         {
-            "AG", // AGUASCALIENTES
-            "BC", // BAJA CALIFORNIA
-            "BS", // BAJA CALIFORNIA SUR
-            "CC", // CAMPECHE
-            "CL", // COAHUILA
-            "CM", // COLIMA
-            "CS", // CHIAPAS
-            "CH", // CHIHUAHUA
-            "DF", // DISTRITO FEDERAL
-            "DG", // DURANGO
-            "GT", // GUANAJUATO
-            "GR", // GUERRERO
-            "HG", // HIDALGO
-            "JC", // JALISCO
-            "MC", // MÉXICO
-            "MN", // MICHOACÝN
-            "MS", // MORELOS
-            "NT", // NAYARIT
-            "NL", // NUEVO LEÓN
-            "OC", // OAXACA
-            "PL", // PUEBLA
-            "QT", // QUERÉTARO
-            "QR", // QUINTANA ROO
-            "SP", // SAN LUIS POTOSÝ
-            "SL", // SINALOA
-            "SR", // SONORA
-            "TC", // TABASCO
-            "TS", // TAMAULIPAS
-            "TL", // TLAXCALA
-            "VZ", // VERACRUZ
-            "YN", // YUCATÝN
-            "ZS", // ZACATECAS
+            "AG", // Aguascalientes
+            "BC", // Baja California
+            "BS", // Baja California Sur
+            "CC", // Campeche
+            "CL", // Coahuila de Zaragoza
+            "CM", // Colima
+            "CS", // Chiapas
+            "CH", // Chihuahua
+            "DF", // Ciudad de México
+            "DG", // Durango
+            "GT", // Guanajuato
+            "GR", // Guerrero
+            "HG", // Hidalgo
+            "JC", // Jalisco
+            "MC", // México
+            "MN", // Michoacán de Ocampo
+            "MS", // Morelos
+            "NT", // Nayarit
+            "NL", // Nuevo León
+            "OC", // Oaxaca
+            "PL", // Puebla
+            "QT", // Querétaro
+            "QR", // Quintana Roo
+            "SP", // San Luis Potosí
+            "SL", // Sinaloa
+            "SR", // Sonora
+            "TC", // Tabasco
+            "TS", // Tamaulipas
+            "TL", // Tlaxcala
+            "VZ", // Veracruz de Ignacio de la Llave
+            "YN", // Yucatán
+            "ZS"  // Zacatecas
         };
 
     printf("LISTA DE ESTADOS DE LOS ESTADOS UNIDOS MEXICANOS\n");
@@ -255,40 +335,82 @@ void displayStates(char state[])
     strcpy(state, twoLetterState[tempNum - 1]);
 }
 
-char getConsonant(char array[])
+char getConsonant(char array[], int startPosition)
 {
     int i;
     char tempword;
-    int flag = 0;
-    for (i = 0; array[i] != '\0'; i++)
+    for (i = startPosition + 1; array[i] != '\0'; i++)
     {
         tempword = array[i];
 
         if ((tempword != 'A') && (tempword != 'E') && (tempword != 'I') && (tempword != 'O') && (tempword != 'U'))
         {
-            if (flag == 1)
-            {
-                return tempword;
-            }
-            flag = 1;
+            return tempword;
         }
     }
 
-    return -1;
+    return 'X';
+}
+
+int Compound2(char array[], int n)
+{
+    char contra[8][6] = {"MA", "MA.", "M.", "M", "JOSE", "J.", "J", "MARIA"};
+    char temp[20];
+    int i = n;
+    int k = n;
+    int flag = 1;
+    int j;
+    int found = 0;
+    while (array[i] != '\0' && flag == 1)
+    {
+        j = 0;
+        while (array[k] != ' ' && array[k] != '\0')
+        {
+            temp[j] = array[k];
+            j++;
+            k++;
+        }
+        temp[j] = '\0';
+
+        flag = 0;
+        found = 0;
+
+        for (int l = 0; l < 8; l++)
+        {
+            if (strcmp(temp, contra[l]) == 0)
+            {
+                n = k + 1;
+                flag = 1;
+                found = 1;
+            }
+        }
+
+        if (!found)
+        {
+            k++;
+            i++;
+        }
+    }
+
+    return n;
 }
 
 int nameCompound(char array[])
 {
-    char contra[9][6] = {"MA", "MA.", "M.", "M", "JOSE", "J.", "J", "MARIA"};
+    char contra2[27][6] = {"DA", "DAS", "DE", "DEL", "DER", "DI", "DIE", "DD", "EL", "LA", "LOS", "LAS", "LE", "LES", "MAC", "MC", "VAN", "VON", "Y", "MA", "MA.", "M.", "M", "JOSE", "J.", "J", "MARIA"};
     char temp[20];
+    int num;
     int i = 0;
     int k = 0;
     int n = 0;
     int l = 0;
-    int flag = 0;
-    while (array[i] != '\0' && (flag == 0))
+    int flag = 1;
+    int found = 0;
+    int j;
+
+    while (array[i] != '\0' && (flag == 1))
     {
-        int j = 0;
+        j = 0;
         while (array[k] != ' ' && array[k] != '\0')
         {
             temp[j] = array[k];
@@ -296,89 +418,74 @@ int nameCompound(char array[])
             k++;
         }
         temp[j] = '\0';
-        for (l = 0; (l < 8) && (flag == 0); l++)
+
+        flag = 0;
+        found = 0;
+
+        for (l = 0; l < 27; l++)
         {
-            if (strcmp(temp, contra[l]) == 0)
+            if (strcmp(temp, contra2[l]) == 0)
             {
                 n += strlen(temp) + 1;
-            }
-            else
-            {
                 flag = 1;
+                found = 1;
             }
         }
-        k++;
-        i++;
-    }
-    if (n > 0)
-    {
-        return n;
-    }
-    else
-    {
-        return 0;
-    }
-}
 
-int Apcompound(char array[])
-{
-    char contra[19][5] = {"DA", "DAS", "DE", "DEL", "DER", "DI", "DIE", "DD", "EL", "LA", "LOS", "LAS", "LE", "LES", "MAC", "MC", "VAN", "VON", "Y"};
-    char temp[20];
-    int i = 0;
-    int k = 0;
-    int n = 0;
-    int l = 0;
-    while (array[i] != '\0')
-    {
-        int j = 0;
-        while (array[k] != ' ' && array[k] != '\0')
+        if (found == 0)
         {
-            temp[j] = array[k];
-            j++;
             k++;
         }
-        temp[j] = '\0';
-        for (l = 0; l < 18; l++)
-        {
-            if (strcmp(temp, contra[l]) == 0)
-            {
-                n += strlen(temp) + 1;
-            }
-        }
         k++;
         i++;
     }
 
-    if (n > 0)
+    num = Compound2(array, n);
+    return num;
+}
+
+void fourLetters(char name[], char LastName1[], char LastName2[], char firstFourLetters[5], int flagLastName1, int flagLastName2, char consonants[])
+{
+    int startPosition, startPosition2, startPosition3;
+    startPosition = nameCompound(LastName1);
+    startPosition2 = nameCompound(LastName2);
+    startPosition3 = nameCompound(name);
+    if (flagLastName1)
     {
-        return n;
+        firstFourLetters[0] = LastName1[startPosition];
+        firstFourLetters[1] = noVowelsApComp(LastName1, startPosition);
+        consonants[0] = getConsonant(LastName1, startPosition);
     }
     else
     {
-        return 0;
+        firstFourLetters[0] = 'X';
+        firstFourLetters[1] = 'X';
+        consonants[0] = 'X';
     }
-}
-
-char fourLetters(char name[], char LastName1[], char LastName2[], char firstFourLetters[5])
-{
-    int startPosition, startPosition2;
-    startPosition = Apcompound(LastName1);
-    startPosition2 = Apcompound(LastName2);
-    firstFourLetters[0] = LastName1[startPosition];
-    firstFourLetters[1] = noVowelsApComp(LastName1, startPosition);
-    firstFourLetters[2] = LastName2[startPosition2];
+    if (flagLastName2)
+    {
+        firstFourLetters[2] = LastName2[startPosition2];
+        consonants[1] = getConsonant(LastName2, startPosition2);
+    }
+    else
+    {
+        firstFourLetters[2] = 'X';
+        consonants[1] = 'X';
+    }
     firstFourLetters[3] = name[nameCompound(name)];
     firstFourLetters[4] = '\0';
-    printf("%c\n", firstFourLetters[0]);
-    printf("%c\n", firstFourLetters[1]);
-    printf("%c\n", firstFourLetters[2]);
-    printf("%c\n", firstFourLetters[3]);
-    system("PAUSE");
+
+    consonants[2] = getConsonant(name, startPosition3);
+    consonants[3] = '\0';
 }
 
 char noVowelsApComp(char array[], int startPosition)
 {
     int positionVowel;
     positionVowel = vowels(array, startPosition);
+    if (positionVowel == -1)
+    {
+        return 'X';
+    }
     return array[positionVowel];
 }
