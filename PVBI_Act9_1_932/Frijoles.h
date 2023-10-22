@@ -25,7 +25,6 @@ void printArNum(char array[], int num);
 void ask(char array[]);
 int numRandom(int ri, int rf);
 
-
 //******* FUNCTIONS DEVELOPMENT *******
 int valid(char msge[], int ri, int rf)
 {
@@ -218,28 +217,27 @@ int alfaSpace(char cadena[])
 
     for (i = 0; cadena[i] != '\0'; i++)
     {
-        //printf("%c = %d\n", cadena[i], (int)cadena[i]);
         if (cadena[i] == -92 || cadena[i] == -91 || cadena[i] == '/' || cadena[i] == '-')
         {
             cadena[i] = 'X';
         }
-        if (cadena[i] == -102 || cadena[i] == -127)
+        if (cadena[i] == -102 || cadena[i] == -127 || cadena[i] == -23)
         {
             cadena[i] = 'U';
         }
-        if (cadena[i] == -75 || cadena[i] == -96)
+        if (cadena[i] == -75 || cadena[i] == -96 || cadena[i] == -114)
         {
             cadena[i] = 'A';
         }
-        if (cadena[i] == -126 || cadena[i] == -112)
+        if (cadena[i] == -126 || cadena[i] == -112 || cadena[i] == -45)
         {
             cadena[i] = 'E';
         }
-        if (cadena[i] == -42 || cadena[i] == -95)
+        if (cadena[i] == -42 || cadena[i] == -95 || cadena[i] == -40)
         {
             cadena[i] = 'I';
         }
-        if (cadena[i] == -32 || cadena[i] == -94)
+        if (cadena[i] == -32 || cadena[i] == -94 || cadena[i] == 103)
         {
             cadena[i] = 'O';
         }

@@ -16,6 +16,7 @@ void askLastName2(char LastName2[]);
 int askSex();
 void askState(char state[]);
 void printCURP(char firstFourLetters[], int day, int month, int year, int sex, char state[], char consonants[]);
+
 // AUXILIAR FUNCTIONS
 void displayStates(char state[]);
 char getConsonant(char array[], int startPosition);
@@ -23,6 +24,8 @@ int nameCompound(char array[]);
 void fourLetters(char name[], char LastName1[], char LastName2[], char firstFourLetters[5], int flagLastName1, int flagLastName2, char consonants[]);
 char noVowelsApComp(char array[], int startPosition);
 int Compound2(char array[], int n);
+int antiSonant(char array[]);
+int isLapYear(int year);
 //**** MAIN FUNCTIONS ****
 int main()
 {
@@ -54,21 +57,88 @@ void menu()
         {
         case 1:
             askNames(name);
+            printf("El nombre ha sido guardado correctamente\n");
             flagName = 1;
             break;
         case 2:
-            askLastName1(LastName1);
-            flagLastName1 = 1;
+            if (valid("Tienes apellido paterno? (1.- Si, 0.- No): ", 0, 1))
+            {
+                askLastName1(LastName1);
+                printf("El apellido ha sido guardado correctamente\n");
+                flagLastName1 = 1;
+            }
             break;
         case 3:
-            askLastName2(LastName2);
-            flagLastName2 = 1;
+            if (valid("Tienes apellido materno? (1.- Si, 0.- No): ", 0, 1))
+            {
+                askLastName2(LastName2);
+                printf("El apellido ha sido guardado correctamente\n");
+                flagLastName2 = 1;
+            }
             break;
         case 4:
-            day = valid("Ingresa el dia de tu nacimiento: ", 1, 31);
-            month = valid("Ingresa el mes de tu nacimiento: ", 1, 12);
             year = valid("Ingresa el anio de tu nacimiento: ", 1894, 2023);
-            year = year % 100;
+            if (year == 2023)
+            {
+                month = valid("Ingresa el mes de tu nacimiento: ", 1, 10);
+                if (month == 2)
+                {
+                    day = valid("Ingresa el dia de tu nacimiento: ", 1, 28);
+                }
+                else
+                {
+                    if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)
+                    {
+                        day = valid("Ingresa el dia de tu nacimiento: ", 1, 31);
+                    }
+                    else
+                    {
+                        day = valid("Ingresa el dia de tu nacimiento: ", 1, 30);
+                    }
+                }
+            }
+            else
+            {
+                if (isLapYear(year))
+                {
+                    month = valid("Ingresa el mes de tu nacimiento: ", 1, 12);
+                    if (month == 2)
+                    {
+                        day = valid("Ingresa el dia de tu nacimiento: ", 1, 29);
+                    }
+                    else
+                    {
+                        if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)
+                        {
+                            day = valid("Ingresa el dia de tu nacimiento: ", 1, 31);
+                        }
+                        else
+                        {
+                            day = valid("Ingresa el dia de tu nacimiento: ", 1, 30);
+                        }
+                    }
+                }
+                else
+                {
+                    month = valid("Ingresa el mes de tu nacimiento: ", 1, 12);
+                    if (month == 2)
+                    {
+                        day = valid("Ingresa el dia de tu nacimiento: ", 1, 28);
+                    }
+                    else
+                    {
+                        if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)
+                        {
+                            day = valid("Ingresa el dia de tu nacimiento: ", 1, 31);
+                        }
+                        else
+                        {
+                            day = valid("Ingresa el dia de tu nacimiento: ", 1, 30);
+                        }
+                    }
+                }
+            }
+
             printf("Se han guardado correctamente la fecha de nacimiento.\n");
             flagBirthday = 1;
             break;
@@ -81,7 +151,6 @@ void menu()
             flagState = 1;
             break;
         case 7:
-            fourLetters(name, LastName1, LastName2, firstFourLetters, flagLastName1, flagLastName2, consonants);
             if (flagName)
             {
                 if (flagBirthday)
@@ -90,6 +159,7 @@ void menu()
                     {
                         if (flagState)
                         {
+                            fourLetters(name, LastName1, LastName2, firstFourLetters, flagLastName1, flagLastName2, consonants);
                             printCURP(firstFourLetters, day, month, year, sex, state, consonants);
                             if (valid("\nImprimir una nueva CURP? (1.- Si, 0.- No): ", 0, 1))
                             {
@@ -131,7 +201,6 @@ void menu()
     } while (op != 0);
 }
 
-//***********
 int msge_menu()
 {
     int op;
@@ -186,7 +255,7 @@ void askState(char state[])
 {
     int isForeign;
     system("CLS");
-    isForeign = valid("¿Eres extranjero? (1.- Si, 0.- No): ", 0, 1);
+    isForeign = valid("Eres extranjero? (1.- Si, 0.- No): ", 0, 1);
 
     if (isForeign)
     {
@@ -201,13 +270,15 @@ void askState(char state[])
 
 void printCURP(char firstFourLetters[], int day, int month, int year, int sex, char state[], char consonants[])
 {
+    printf("La CURP es: ");
     printf("%c", firstFourLetters[0]);
     printf("%c", firstFourLetters[1]);
     printf("%c", firstFourLetters[2]);
     printf("%c", firstFourLetters[3]);
-    printf("%02d", year);
+    printf("%02d", year % 100);
     printf("%02d", month);
     printf("%02d", day);
+
     if (sex == 1)
     {
         printf("H");
@@ -218,23 +289,23 @@ void printCURP(char firstFourLetters[], int day, int month, int year, int sex, c
     }
     printf("%s", state);
     printf("%s", consonants);
-    if  (year < 2000)
+    if (year < 2000)
     {
         printf("0");
     }
     else
     {
-        if(year >= 2000)
+        if (year >= 2000)
         {
-            if(year <= 2009)
+            if (year <= 2009)
             {
                 printf("A");
             }
             else
             {
-                if(year >= 2010)
+                if (year >= 2010)
                 {
-                    if(year <= 2019)
+                    if (year <= 2019)
                     {
                         printf("B");
                     }
@@ -246,6 +317,7 @@ void printCURP(char firstFourLetters[], int day, int month, int year, int sex, c
             }
         }
     }
+
     printf("%d", numRandom(0, 9));
 }
 
@@ -266,29 +338,29 @@ void displayStates(char state[])
             "Chihuahua",
             "Coahuila de Zaragoza",
             "Colima",
-            "Ciudad de México",
+            "Ciudad de Mexico",
             "Durango",
             "Guanajuato",
             "Guerrero",
             "Hidalgo",
             "Jalisco",
-            "México",
-            "Michoacán de Ocampo",
+            "Mexico",
+            "Michoacan de Ocampo",
             "Morelos",
             "Nayarit",
-            "Nuevo León",
+            "Nuevo Leon",
             "Oaxaca",
             "Puebla",
-            "Querétaro",
+            "Queretaro",
             "Quintana Roo",
-            "San Luis Potosí",
+            "San Luis Potosi",
             "Sinaloa",
             "Sonora",
             "Tabasco",
             "Tamaulipas",
             "Tlaxcala",
             "Veracruz de Ignacio de la Llave",
-            "Yucatán",
+            "Yucatan",
             "Zacatecas"};
     char twoLetterState[32][3] =
         {
@@ -458,6 +530,7 @@ void fourLetters(char name[], char LastName1[], char LastName2[], char firstFour
     }
     else
     {
+        printf("No ingresaste apellido paterno\n");
         firstFourLetters[0] = 'X';
         firstFourLetters[1] = 'X';
         consonants[0] = 'X';
@@ -469,6 +542,7 @@ void fourLetters(char name[], char LastName1[], char LastName2[], char firstFour
     }
     else
     {
+        printf("No ingresaste apellido materno\n");
         firstFourLetters[2] = 'X';
         consonants[1] = 'X';
     }
@@ -477,6 +551,10 @@ void fourLetters(char name[], char LastName1[], char LastName2[], char firstFour
 
     consonants[2] = getConsonant(name, startPosition3);
     consonants[3] = '\0';
+    if (antiSonant(firstFourLetters))
+    {
+        firstFourLetters[1] = 'X';
+    }
 }
 
 char noVowelsApComp(char array[], int startPosition)
@@ -488,4 +566,44 @@ char noVowelsApComp(char array[], int startPosition)
         return 'X';
     }
     return array[positionVowel];
+}
+
+int antiSonant(char array[])
+{
+    int i;
+    char antisonant[81][5] = {"BACA", "BAKA", "BUEI", "BUEY", "CACA", "CACO", "CAGA", "CAGO", "CAKA", "CAKO", "COGE", "COGI", "COJA", "COJE", "COJI", "COJO", "COLA", "CULO", "FALO", "FETO", "GETA", "GUEI", "GUEY", "JETA", "JOTO", "KACA", "KACO", "KAGA", "KAGO", "KAKA", "KAKO", "KOGE", "KOGI", "KOJA", "KOJE", "KOJI", "KOJO", "KOLA", "KULO", "LILO", "LOCA", "LOCO", "LOKA", "LOKO", "MAME", "MAMO", "MEAR", "MEAS", "MEON", "MIAR", "MION", "MOCO", "MOKO", "MULA", "MULO", "NACA", "NACO", "PEDA", "PEDO", "PENE", "PIPI", "PITO", "POPO", "PUTA", "PUTO", "QULO", "RATA", "ROBA", "ROBE", "ROBO", "RUIN", "SENO", "TETA", "VACA", "VAGA", "VAGO", "VAKA", "VUEI", "VUEY", "WUEI", "WUEY"};
+    for (i = 0; i < 81; i++)
+    {
+        if (strcmp(array, antisonant[i]) == 0)
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int isLapYear(int year)
+{
+    if (year % 4 == 0)
+    {
+        if (year % 100 == 0)
+        {
+            if (year % 400 == 0)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        else
+        {
+            return 1;
+        }
+    }
+    else
+    {
+        return 0;
+    }
 }
