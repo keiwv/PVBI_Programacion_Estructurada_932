@@ -36,7 +36,6 @@ char getConsonant(char array[], int startPosition);
 int nameCompound(char array[]);
 void fourLetters(char name[], char LastName1[], char LastName2[], char firstFourLetters[5], int flagLastName1, int flagLastName2, char consonants[]);
 char noVowelsApComp(char array[], int startPosition);
-int Compound2(char array[], int n);
 int antiSonant(char array[]);
 int isLapYear(int year);
 //**** MAIN FUNCTIONS ****
@@ -70,7 +69,7 @@ void menu()
         {
         case 1:
             askNames(name);
-            printf("El nombre ha sido guardado correctamente\n");
+            printf("El nombre ha sido guardado correctamente\n\n");
             flagName = 1;
             break;
         case 2:
@@ -442,46 +441,10 @@ char getConsonant(char array[], int startPosition)
     return 'X';
 }
 
-int Compound2(char array[], int n)
-{
-    char contra[8][6] = {"MA", "MA.", "M.", "M", "JOSE", "J.", "J", "MARIA"};
-    char temp[20];
-    int i = n;
-    int k = n;
-    int flag = 1;
-    int j;
-
-    while (array[i] != '\0' && flag == 1)
-    {
-        j = 0;
-        while (array[k] != ' ' && array[k] != '\0')
-        {
-            temp[j] = array[k];
-            j++;
-            k++;
-        }
-        temp[j] = '\0';
-        flag = 0;
-        for (int l = 0; l < 8; l++)
-        {
-            if (strcmp(temp, contra[l]) == 0)
-            {
-                flag++;
-            }
-            if (flag == 2)
-            {
-                return n;
-            }
-        }
-    }
-    return n;
-}
-
 int nameCompound(char array[])
 {
     char contra2[27][6] = {"DA", "DAS", "DE", "DEL", "DER", "DI", "DIE", "DD", "EL", "LA", "LOS", "LAS", "LE", "LES", "MAC", "MC", "VAN", "VON", "Y", "MA", "MA.", "M.", "M", "JOSE", "J.", "J", "MARIA"};
     char temp[20];
-    int num = 0;
     int i = 0;
     int k = 0;
     int n = 0;
@@ -489,8 +452,8 @@ int nameCompound(char array[])
     int flag = 1;
     int found = 0;
     int j;
-
-    while (array[i] != '\0' && (flag == 1))
+    int spaces = spaceCounter(array);
+    while (i < spaces && (flag == 1))
     {
         j = 0;
         while (array[k] != ' ' && array[k] != '\0')
@@ -515,18 +478,21 @@ int nameCompound(char array[])
 
         if (found == 0)
         {
+            if (i != spaces)
+            {
+            }
+            else
+            {
+                return n;
+            }
             k++;
         }
+
         k++;
         i++;
     }
 
-    if (flag == 0)
-    {
-        return Compound2(array, n);
-    }
-
-    return num;
+    return n;
 }
 
 void fourLetters(char name[], char LastName1[], char LastName2[], char firstFourLetters[5], int flagLastName1, int flagLastName2, char consonants[])
@@ -535,6 +501,7 @@ void fourLetters(char name[], char LastName1[], char LastName2[], char firstFour
     startPosition = nameCompound(LastName1);
     startPosition2 = nameCompound(LastName2);
     startPosition3 = nameCompound(name);
+    printf("%d", startPosition3);
     if (flagLastName1)
     {
         firstFourLetters[0] = LastName1[startPosition];

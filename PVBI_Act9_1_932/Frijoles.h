@@ -16,7 +16,7 @@ void noVowels(char array[]);
 int vowels(char array[], int position);
 void minus(char array[]);
 void capital(char array[]);
-void noSpace(char array[]);
+int spaceCounter(char array[]);
 int alfaSpace(char array[]);
 int palindrome(char array[]);
 void printArr(char array[]);
@@ -189,16 +189,17 @@ void capital(char array[])
     }
 }
 
-void noSpace(char array[])
+int spaceCounter(char array[])
 {
     int i, j;
     for (i = 0, j = 0; array[i] != '\0'; i++)
     {
-        if (array[i] != 32) // It will join if it's different from the space number (ASCII number)
+        if (array[i] == ' ')
         {
-            array[j++] = array[i]; // Saves the array in a new array.
+            j++;
         }
     }
+    return j;
 }
 
 int alfaSpace(char cadena[])
