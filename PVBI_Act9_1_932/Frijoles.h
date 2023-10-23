@@ -16,7 +16,7 @@ void noVowels(char array[]);
 int vowels(char array[], int position);
 void minus(char array[]);
 void capital(char array[]);
-void noSpace(char array[]);
+int spaceCounter(char array[]);
 int alfaSpace(char array[]);
 int palindrome(char array[]);
 void printArr(char array[]);
@@ -189,16 +189,17 @@ void capital(char array[])
     }
 }
 
-void noSpace(char array[])
+int spaceCounter(char array[])
 {
     int i, j;
     for (i = 0, j = 0; array[i] != '\0'; i++)
     {
-        if (array[i] != 32) // It will join if it's different from the space number (ASCII number)
+        if (array[i] == ' ')
         {
-            array[j++] = array[i]; // Saves the array in a new array.
+            j++;
         }
     }
+    return j;
 }
 
 int alfaSpace(char cadena[])
@@ -217,31 +218,220 @@ int alfaSpace(char cadena[])
 
     for (i = 0; cadena[i] != '\0'; i++)
     {
-        if (cadena[i] == -92 || cadena[i] == -91 || cadena[i] == '/' || cadena[i] == '-')
+        if(cadena[i] == -20)
         {
-            cadena[i] = 'X';
+            cadena[i] = 'Y';
         }
-        if (cadena[i] == -102 || cadena[i] == -127 || cadena[i] == -23)
+        if(cadena[i] == -104)
+        {
+            cadena[i] = 'Y';
+        }
+        if(cadena[i] == -105)
         {
             cadena[i] = 'U';
         }
-        if (cadena[i] == -75 || cadena[i] == -96 || cadena[i] == -114)
+        if(cadena[i] == -93)
         {
-            cadena[i] = 'A';
+            cadena[i] = 'U';
         }
-        if (cadena[i] == -126 || cadena[i] == -112 || cadena[i] == -45)
+        if(cadena[i] == -106)
         {
-            cadena[i] = 'E';
+            cadena[i] = 'U';
         }
-        if (cadena[i] == -42 || cadena[i] == -95 || cadena[i] == -40)
+        if(cadena[i] == -107)
+        {
+            cadena[i] = 'O';
+        }
+        if(cadena[i] == -109)
+        {
+            cadena[i] = 'O';
+        }
+        if(cadena[i] == -28)
+        {
+            cadena[i] = 'O';
+        }
+        if(cadena[i] == -108)
+        {
+            cadena[i] = 'O';
+        }
+        if(cadena[i] == -115)
         {
             cadena[i] = 'I';
         }
-        if (cadena[i] == -32 || cadena[i] == -94 || cadena[i] == 103)
+        if(cadena[i] == -116)
+        {
+            cadena[i] = 'I';
+        }
+        if(cadena[i] == -117)
+        {
+            cadena[i] = 'I';
+        }
+        if(cadena[i] == -118)
+        {
+            cadena[i] = 'E';
+        }
+        if(cadena[i] == -120)
+        {
+            cadena[i] = 'E';
+        }
+        if(cadena[i] == -119)
+        {
+            cadena[i] = 'E';
+        }
+        if(cadena[i] == -123)
+        {
+            cadena[i] = 'A';
+        }
+        if(cadena[i] == -125)
+        {
+            cadena[i] = 'A';
+        }
+        if(cadena[i] == -58)
+        {
+            cadena[i] = 'A';
+        }
+        if(cadena[i] == -124)
+        {
+            cadena[i] = 'A';
+        }
+        if(cadena[i] == -122)
+        {
+            cadena[i] = 'A';
+        }
+        if(cadena[i] == -21)
+        {
+            cadena[i] = 'U';
+        }
+        if(cadena[i] == -22)
+        {
+            cadena[i] = 'U';
+        }
+        if (cadena[i] == -29)
+        {
+            cadena[i] = 'O';
+        }
+        if (cadena[i] == -30)
+        {
+            cadena[i] = 'O';
+        }
+        if (cadena[i] == -27)
+        {
+            cadena[i] = 'O';
+        }
+        if (cadena[i] == -103)
+        {
+            cadena[i] = 'O';
+        }
+        if (cadena[i] == -34)
+        {
+            cadena[i] = 'I';
+        }
+        if (cadena[i] == -41)
+        {
+            cadena[i] = 'I';
+        }
+        if (cadena[i] == -44)
+        {
+            cadena[i] = 'E';
+        }
+        if (cadena[i] == -46)
+        {
+            cadena[i] = 'E';
+        }
+        if (cadena[i] == -73)
+        {
+            cadena[i] = 'A';
+        }
+        if (cadena[i] == -74)
+        {
+            cadena[i] = 'A';
+        }
+        if (cadena[i] == -113)
+        {
+            cadena[i] = 'A';
+        }
+        if (cadena[i] == -57)
+        {
+            cadena[i] = 'A';
+        }
+        if (cadena[i] == -91)
+        {
+            cadena[i] = 'X';
+        }
+        if (cadena[i] == -92)
+        {
+            cadena[i] = 'X';
+        }
+        if (cadena[i] == '/')
+        {
+            cadena[i] = 'X';
+        }
+        if (cadena[i] == '-')
+        {
+            cadena[i] = 'X';
+        }
+        if (cadena[i] == -102)
+        {
+            cadena[i] = 'U';
+        }
+        if (cadena[i] == -127)
+        {
+            cadena[i] = 'U';
+        }
+        if (cadena[i] == -23)
+        {
+            cadena[i] = 'U';
+        }
+        if (cadena[i] == -75)
+        {
+            cadena[i] = 'A';
+        }
+        if (cadena[i] == -96)
+        {
+            cadena[i] = 'A';
+        }
+        if (cadena[i] == -114)
+        {
+            cadena[i] = 'A';
+        }
+        if (cadena[i] == -126)
+        {
+            cadena[i] = 'E';
+        }
+        if (cadena[i] == -112)
+        {
+            cadena[i] = 'E';
+        }
+        if (cadena[i] == -45)
+        {
+            cadena[i] = 'E';
+        }
+        if (cadena[i] == -42)
+        {
+            cadena[i] = 'I';
+        }
+        if (cadena[i] == -95)
+        {
+            cadena[i] = 'I';
+        }
+        if (cadena[i] == -40)
+        {
+            cadena[i] = 'I';
+        }
+        if (cadena[i] == -32)
+        {
+            cadena[i] = 'O';
+        }
+        if (cadena[i] == -94)
+        {
+            cadena[i] = 'O';
+        }
+        if (cadena[i] == 103)
         {
             cadena[i] = 'O';
         }
     }
+
     mayus(cadena);
     i = 0;
     while (cadena[i] != '\0')
@@ -272,7 +462,24 @@ int alfaSpace(char cadena[])
                     }
                     else
                     {
-                        cadena[i] = 'X';
+                        if (cadena[i] >= 48)
+                        {
+                            if (cadena[i] <= 57)
+                            {
+                                return -1;
+                            }
+                        }
+                        else
+                        {
+                            if (cadena[i] == 22)
+                            {
+                                cadena[i] = 'X';
+                            }
+                            else
+                            {
+                                cadena[i] = 'X';
+                            }
+                        }
                     }
                 }
             }
