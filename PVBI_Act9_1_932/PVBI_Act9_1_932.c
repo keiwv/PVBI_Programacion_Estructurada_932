@@ -501,7 +501,6 @@ void fourLetters(char name[], char LastName1[], char LastName2[], char firstFour
     startPosition = nameCompound(LastName1);
     startPosition2 = nameCompound(LastName2);
     startPosition3 = nameCompound(name);
-    printf("%d", startPosition3);
     if (flagLastName1)
     {
         firstFourLetters[0] = LastName1[startPosition];
