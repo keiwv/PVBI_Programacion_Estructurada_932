@@ -6,31 +6,37 @@
 #include "Frijoles.h"
 
 //***** STRUCTURES ******
-typedef struct _Data
+typedef struct _Name
 {
     char name[50];
     char lastName1[30];
     char LastName2[30];
+} Tname;
+
+typedef struct _Birthday
+{
     int year;
     int month;
     int day;
-} Tdate;
-
+} Tbirthday;
 typedef struct _stdnt
 {
     int status;
     int matricula;
-    Tdate personalData;
+    Tname personalData;
+    Tbirthday date;
     int age;
     int sex;
 } Tstdnt;
-
+//***** GLOBAL CONSTANT *****
+const int N = 2000;
 //***** PROTOTYPE FUNCTIONS *****
 void menu();
 int msge_menu();
 
-void menuAdd();
+void menuAdd(int position, Tstdnt students[]);
 int msge_menuAdd();
+Tstdnt addManual(Tstdnt students[], int position);
 
 //***** MAIN FUNCTION *****
 int main()
@@ -42,6 +48,8 @@ int main()
 void menu()
 {
     int op;
+    int position = 0;
+    Tstdnt students[N];
     do
     {
         system("CLS");
@@ -50,7 +58,7 @@ void menu()
         switch (op)
         {
         case 1:
-            menuAdd();
+            menuAdd(position, students);
             break;
         }
     } while (op != 0);
@@ -70,7 +78,7 @@ int msge_menu()
     return valid("Por favor, selecciona una opcion: ", 0, 6);
 }
 
-void menuAdd()
+void menuAdd(int position, Tstdnt students[])
 {
     int op;
     do
@@ -79,7 +87,8 @@ void menuAdd()
         switch (op)
         {
         case 1:
-            printf("Aniadir manual");
+            position += 1;
+            students[position] = addManual(students, position);
             break;
         case 2:
             printf("Automatico");
@@ -96,4 +105,10 @@ int msge_menuAdd()
     printf("3.- Regresar al inicio\n");
 
     return valid("Selecciona una opcion: ", 1, 3);
+}
+
+Tstdnt addManual(Tstdnt students[], int position)
+{
+    
+    return
 }
