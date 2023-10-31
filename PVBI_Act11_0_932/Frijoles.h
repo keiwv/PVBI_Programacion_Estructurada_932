@@ -3,31 +3,23 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdbool.h>
+#include <string.h>
 
 //*******PROTOTYPE FUNCTIONS *********
 int valid(char msge[], int ri, int rf);
 int counter(char array[]);
 void mayus(char array[]);
-void reverse(char array[]);
-void line(char array[]);
-void descending(char array[]);
-void reverseDescending(char array[]);
-void noVowels(char array[]);
 int vowels(char array[], int position);
-void minus(char array[]);
-void capital(char array[]);
-void noSpace(char array[]);
 int alfaSpace(char array[]);
-void alfaSpaceValid(char array[]);
-int palindrome(char array[]);
-void printArr(char array[]);
 void ask(char displayMsge[], char array[]);
-void fillVectorNoRepeat(int vect[], int n, int ri, int rf);
-void printArNum(char array[], int num);
-void copyArray(char tempArray[], char tempListName[]);
 int numRandom(int ri, int rf);
 int isLapYear(int year);
 int spaceCounter(char array[]);
+void displayStates(char state[]);
+char noVowelsApComp(char array[], int startPosition);
+char getConsonant(char array[], int startPosition);
+int nameCompound(char array[]);
+int antiSonant(char array[]);
 
 //******* FUNCTIONS DEVELOPMENT *******
 int valid(char msge[], int ri, int rf)
@@ -72,87 +64,6 @@ void mayus(char array[])
     }
 }
 
-void reverse(char array[])
-{
-    int length, start, end;
-    char temp;
-
-    length = counter(array);
-
-    start = 0;
-    end = length - 1;
-
-    while (start < end)
-    {
-        temp = array[start];
-        array[start] = array[end];
-        array[end] = temp;
-        start++;
-        end--;
-    }
-}
-
-void line(char array[])
-{
-    int length, i;
-    char letter;
-    length = counter(array);
-
-    for (i = 0; i <= length; i++)
-    {
-        letter = array[i];
-        printf("%c\n", letter);
-    }
-}
-
-void descending(char array[])
-{
-    int length, i, j;
-    length = counter(array);
-
-    for (i = 0; i < length; i++)
-    {
-        for (j = 0; j < length - i; j++)
-        {
-            printf("%c", array[j]);
-        }
-        printf("\n");
-    }
-}
-
-void reverseDescending(char array[])
-{
-    int length, i, j;
-    length = counter(array);
-
-    for (i = 0; i < length; i++)
-    {
-        for (j = i; j < length; j++)
-        {
-            printf("%c", array[j]);
-        }
-        printf("\n");
-    }
-}
-
-void noVowels(char array[])
-{
-    int i;
-    char tempword;
-    for (i = 0; array[i] != '\0'; i++)
-    {
-        tempword = array[i];
-        if ((tempword == 'A') || (tempword == 'E') || (tempword == 'I') || (tempword == 'O') || (tempword == 'U'))
-        {
-        }
-        else
-        {
-            printf("%c", tempword);
-        }
-    }
-    printf("\n");
-}
-
 int vowels(char array[], int position)
 {
     int i;
@@ -184,74 +95,6 @@ int vowels(char array[], int position)
         }
     }
     return -1;
-}
-
-void minus(char array[])
-{
-    int i;
-    char word;
-    for (i = 0; array[i] != '\0'; i++)
-    {
-        word = array[i];
-        if (word >= 'A')
-        {
-            if (word <= 'Z')
-            {
-                array[i] = array[i] + 32;
-            }
-        }
-    }
-}
-
-void capital(char array[])
-{
-    int i, flag;
-    char word;
-    flag = 1;
-    minus(array); // We convert the array in lower case, so it's easily to deal with.
-    word = array[0];
-    if (word >= 97) // First letter becomes upper case
-    {
-        if (word <= 122)
-        {
-            array[0] = array[0] - 32;
-        }
-    }
-    for (i = 1; array[i] != '\0'; i++)
-    {
-        word = array[i];
-        if ((word >= 65) && (flag))
-        {
-            if (word <= 90)
-            {
-                array[i] = array[i] + 32;
-            }
-        }
-        flag = 1;
-        if (word == 32)
-        {
-            if (array[i + 1] >= 97)
-            {
-                if (array[i + 1] <= 122)
-                {
-                    array[i + 1] = array[i + 1] - 32;
-                    flag = 0;
-                }
-            }
-        }
-    }
-}
-
-void noSpace(char array[])
-{
-    int i, j;
-    for (i = 0, j = 0; array[i] != '\0'; i++)
-    {
-        if (array[i] != 32) // It will join if it's different from the space number (ASCII number)
-        {
-            array[j++] = array[i]; // Saves the array in a new array.
-        }
-    }
 }
 
 int alfaSpace(char cadena[])
@@ -482,7 +325,6 @@ int alfaSpace(char cadena[])
         }
     }
 
-    mayus(cadena);
     i = 0;
     while (cadena[i] != '\0')
     {
@@ -544,59 +386,6 @@ int alfaSpace(char cadena[])
     return 1; // Return 1 if it
 }
 
-void alfaSpaceValid(char array[])
-{
-    int resVerified;
-    do
-    {
-        resVerified = alfaSpace(array);
-
-        if (resVerified == 1)
-        {
-            printf("Existe dos espacios en el texto introducido\n");
-        }
-        if (resVerified == 2)
-        {
-            printf("Existen símbolos en el texto introducido\n");
-        }
-        if (resVerified == 3)
-        {
-            printf("Existen numeros en el texto introducido\n");
-        }
-        if (resVerified == 4)
-        {
-            printf("Existe un espacio al inicio o final del texto introducido\n");
-        }
-    } while (resVerified != 0);
-}
-
-int palindrome(char array[])
-{
-    int count;
-    count = counter(array); // We get how many columns it has.
-    noSpace(array);
-    minus(array); // We make the array lower case, we don't have to deal with different upper case.
-    for (int i = 0; i < count / 2; i++)
-    {
-        if (array[i] != array[count - 1 - i])
-        {
-            return 0; // it is not a palindrome
-        }
-    }
-    return 1; // it is a palindrome
-}
-
-void printArr(char array[])
-{
-    int i;
-    i = 0;
-    while (array[i] != '\0')
-    {
-        printf("%c", array[i]);
-        i++;
-    }
-}
-
 void ask(char displayMsge[], char array[])
 {
     printf("%s", displayMsge);
@@ -604,95 +393,12 @@ void ask(char displayMsge[], char array[])
     gets(array);
 }
 
-void printVector(int vector[], int n)
-{
-    int i;
-    for (i = 0; i < n; i++)
-    {
-        printf("Vector [%d]: [%2d]\n", i, vector[i]);
-    }
-}
-
-void fillVectorNoRepeat(int vect[], int n, int ri, int rf)
-{
-    int num, range;
-    int i;
-    num = 0;
-    range = (rf - ri) + 1;
-    for (i = 0; i < n; i++)
-    {
-        do
-        {
-            num = (rand() % range) + ri;
-        } while (-1);
-        vect[i] = num;
-    }
-}
-
-void fillMatrixNoRepeat(int m, int n, int matrix_1[][n], int ri, int rf)
-{
-    int vector[m * n];
-    fillVectorNoRepeat(vector, m * n, ri, rf);
-
-    int k = 0;
-    for (int i = 0; i < m; i++)
-    {
-        for (int j = 0; j < n; j++)
-        {
-            matrix_1[i][j] = vector[k++];
-        }
-    }
-}
-
-void printMatrix(int n, int m, int matrix[][m])
-{
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-            printf("[%2d]\t", matrix[i][j]);
-        }
-        printf("\n");
-    }
-}
-
-void printArNum(char array[], int num)
-{
-    int i;
-    i = 0;
-    while (array[i] != '\0')
-    {
-        if ((array[i] == '%') && (array[i + 1] == 'd'))
-        {
-            printf("%d", num);
-            i += 2;
-        }
-        else
-        {
-            printf("%c", array[i]);
-            i++;
-        }
-    }
-}
-
-void copyArray(char tempArray[], char tempListName[])
-{
-    int i = 0;
-    while (tempListName[i] != '\0')
-    {
-        tempArray[i] = tempListName[i];
-        i++;
-    }
-    tempArray[i] = '\0';
-}
-
 int numRandom(int ri, int rf)
 {
     int range = (rf - ri + 1);
-
+    srand(time(NULL));
     return rand() % range + ri;
 }
-
 
 int isLapYear(int year)
 {
@@ -732,4 +438,195 @@ int spaceCounter(char array[])
     }
     return j;
 }
+
+void displayStates(char state[])
+{
+    int i;
+    int tempNum;
+    char states[32][50] =
+        {
+            "Aguascalientes",
+            "Baja California",
+            "Baja California Sur",
+            "Campeche",
+            "Chiapas",
+            "Chihuahua",
+            "Coahuila de Zaragoza",
+            "Colima",
+            "Ciudad de Mexico",
+            "Durango",
+            "Guanajuato",
+            "Guerrero",
+            "Hidalgo",
+            "Jalisco",
+            "Mexico",
+            "Michoacan de Ocampo",
+            "Morelos",
+            "Nayarit",
+            "Nuevo Leon",
+            "Oaxaca",
+            "Puebla",
+            "Queretaro",
+            "Quintana Roo",
+            "San Luis Potosi",
+            "Sinaloa",
+            "Sonora",
+            "Tabasco",
+            "Tamaulipas",
+            "Tlaxcala",
+            "Veracruz de Ignacio de la Llave",
+            "Yucatan",
+            "Zacatecas"};
+    char twoLetterState[32][3] =
+        {
+            "AG", // Aguascalientes
+            "BC", // Baja California
+            "BS", // Baja California Sur
+            "CC", // Campeche
+            "CL", // Coahuila de Zaragoza
+            "CM", // Colima
+            "CS", // Chiapas
+            "CH", // Chihuahua
+            "DF", // Ciudad de México
+            "DG", // Durango
+            "GT", // Guanajuato
+            "GR", // Guerrero
+            "HG", // Hidalgo
+            "JC", // Jalisco
+            "MC", // México
+            "MN", // Michoacán de Ocampo
+            "MS", // Morelos
+            "NT", // Nayarit
+            "NL", // Nuevo León
+            "OC", // Oaxaca
+            "PL", // Puebla
+            "QT", // Querétaro
+            "QR", // Quintana Roo
+            "SP", // San Luis Potosí
+            "SL", // Sinaloa
+            "SR", // Sonora
+            "TC", // Tabasco
+            "TS", // Tamaulipas
+            "TL", // Tlaxcala
+            "VZ", // Veracruz de Ignacio de la Llave
+            "YN", // Yucatán
+            "ZS"  // Zacatecas
+        };
+
+    printf("LISTA DE ESTADOS DE LOS ESTADOS UNIDOS MEXICANOS\n");
+    for (i = 0; i < 32; i++)
+    {
+        printf("%d.- %s\n", i + 1, states[i]);
+    }
+    tempNum = valid("Introduce el estado en el que naciste: ", 1, 32);
+    strcpy(state, twoLetterState[tempNum - 1]);
+}
+
+char noVowelsApComp(char array[], int startPosition)
+{
+    int positionVowel;
+    positionVowel = vowels(array, startPosition);
+    if (positionVowel == -1)
+    {
+        return 'X';
+    }
+    return array[positionVowel];
+}
+
+char getConsonant(char array[], int startPosition)
+{
+    int i;
+    char tempword;
+    for (i = startPosition + 1; array[i] != '\0'; i++)
+    {
+        tempword = array[i];
+        if (tempword != 'A')
+        {
+            if (tempword != 'E')
+            {
+                if (tempword != 'I')
+                {
+                    if (tempword != 'O')
+                    {
+                        if (tempword != 'U')
+                        {
+                            return tempword;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return 'X';
+}
+
+int nameCompound(char array[])
+{
+    char contra2[27][6] = {"DA", "DAS", "DE", "DEL", "DER", "DI", "DIE", "DD", "EL", "LA", "LOS", "LAS", "LE", "LES", "MAC", "MC", "VAN", "VON", "Y", "MA", "MA.", "M.", "M", "JOSE", "J.", "J", "MARIA"};
+    char temp[20];
+    int i = 0;
+    int k = 0;
+    int n = 0;
+    int l = 0;
+    int flag = 1;
+    int found = 0;
+    int j;
+    int spaces = spaceCounter(array);
+    while (i < spaces && (flag == 1))
+    {
+        j = 0;
+        while (array[k] != ' ' && array[k] != '\0')
+        {
+            temp[j] = array[k];
+            j++;
+            k++;
+        }
+        temp[j] = '\0';
+        flag = 0;
+        found = 0;
+
+        for (l = 0; l < 27; l++)
+        {
+            if (strcmp(temp, contra2[l]) == 0)
+            {
+                n += strlen(temp) + 1;
+                flag = 1;
+                found = 1;
+            }
+        }
+
+        if (found == 0)
+        {
+            if (i != spaces)
+            {
+            }
+            else
+            {
+                return n;
+            }
+            k++;
+        }
+
+        k++;
+        i++;
+    }
+
+    return n;
+}
+
+int antiSonant(char array[])
+{
+    int i;
+    char antisonant[81][5] = {"BACA", "BAKA", "BUEI", "BUEY", "CACA", "CACO", "CAGA", "CAGO", "CAKA", "CAKO", "COGE", "COGI", "COJA", "COJE", "COJI", "COJO", "COLA", "CULO", "FALO", "FETO", "GETA", "GUEI", "GUEY", "JETA", "JOTO", "KACA", "KACO", "KAGA", "KAGO", "KAKA", "KAKO", "KOGE", "KOGI", "KOJA", "KOJE", "KOJI", "KOJO", "KOLA", "KULO", "LILO", "LOCA", "LOCO", "LOKA", "LOKO", "MAME", "MAMO", "MEAR", "MEAS", "MEON", "MIAR", "MION", "MOCO", "MOKO", "MULA", "MULO", "NACA", "NACO", "PEDA", "PEDO", "PENE", "PIPI", "PITO", "POPO", "PUTA", "PUTO", "QULO", "RATA", "ROBA", "ROBE", "ROBO", "RUIN", "SENO", "TETA", "VACA", "VAGA", "VAGO", "VAKA", "VUEI", "VUEY", "WUEI", "WUEY"};
+    for (i = 0; i < 81; i++)
+    {
+        if (strcmp(array, antisonant[i]) == 0)
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 

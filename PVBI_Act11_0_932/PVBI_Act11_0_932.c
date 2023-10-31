@@ -4,7 +4,6 @@
 
 //***** LIBRARIES *****
 #include "Frijoles.h"
-#include <string.h>
 
 //***** STRUCTURES ******
 typedef struct _Name
@@ -41,23 +40,22 @@ void menuAdd(int position, Tstdnt students[]);
 int msge_menuAdd();
 Tstdnt addManual(Tstdnt students[], int position);
 
+
 //****** USEFUL FUNCTIONS **********
-int existElem(Tstdnt students[], int longi, int num);
 Tbirthday getBirthday();
-int getAge(Tbirthday Birth);
-void displayStates(char state[]);
+int existElem(Tstdnt students[], int longi, int num);
+int getAge(Tbirthday birth);
 void getCURP(Tstdnt stdntData, char CURP[]);
-int nameCompound(char array[]);
-char getConsonant(char array[], int startPosition);
-char noVowelsApComp(char array[], int startPosition);
-int antiSonant(char array[]);
-void convertNumber(Tstdnt studnt, char CURP[19]);
+void convertNumber(Tstdnt studnt, char CURP[18]);
+Tstdnt addOneStdnt();
+
 //***** MAIN FUNCTION *****
 int main()
 {
     menu();
     return 0;
 }
+
 //***** PROTOTYPE FUNCTIONS DEVELOPMENT *****
 void menu()
 {
@@ -95,17 +93,21 @@ int msge_menu()
 void menuAdd(int position, Tstdnt students[])
 {
     int op;
+    int i;
     do
     {
         op = msge_menuAdd();
         switch (op)
         {
         case 1:
-            position += 1;
             students[position] = addManual(students, position);
+            position += 1;
             break;
         case 2:
-            printf("Automatico");
+            for(i = 0; i < 100; i++)
+            {
+                students[position + i] = addOneStdnt();
+            }
             break;
         }
     } while (op != 3);
@@ -133,7 +135,7 @@ Tstdnt addManual(Tstdnt students[], int position)
     do
     {
         tempStdnt.matricula = valid("Por favor, introduce la matricula del estudiante: ", 300000, 399999);
-    } while (existElem(students, position - 1, tempStdnt.matricula) != -1);
+    } while (existElem(students, position, tempStdnt.matricula) != -1);
 
     do
     {
@@ -187,22 +189,7 @@ Tstdnt addManual(Tstdnt students[], int position)
     return tempStdnt;
 }
 
-//************* USEFUL FUNCTIONS ******
-
-int existElem(Tstdnt students[], int longi, int num)
-{
-    int i;
-
-    for (i = 0; i < longi; i++)
-    {
-        if (students[i].matricula == num)
-        {
-            return i;
-        }
-    }
-    return -1;
-}
-
+//************* USEFUL FUNCTIONS DEVELOPMENT ******
 Tbirthday getBirthday()
 {
     Tbirthday tempStdnt;
@@ -270,6 +257,20 @@ Tbirthday getBirthday()
     return tempStdnt;
 }
 
+int existElem(Tstdnt students[], int longi, int num)
+{
+    int i;
+
+    for (i = 0; i < longi; i++)
+    {
+        if (students[i].matricula == num)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+
 int getAge(Tbirthday birth)
 {
     int age;
@@ -280,89 +281,6 @@ int getAge(Tbirthday birth)
     }
 
     return age;
-}
-
-void displayStates(char state[])
-{
-    int i;
-    int tempNum;
-    char states[32][50] =
-        {
-            "Aguascalientes",
-            "Baja California",
-            "Baja California Sur",
-            "Campeche",
-            "Chiapas",
-            "Chihuahua",
-            "Coahuila de Zaragoza",
-            "Colima",
-            "Ciudad de Mexico",
-            "Durango",
-            "Guanajuato",
-            "Guerrero",
-            "Hidalgo",
-            "Jalisco",
-            "Mexico",
-            "Michoacan de Ocampo",
-            "Morelos",
-            "Nayarit",
-            "Nuevo Leon",
-            "Oaxaca",
-            "Puebla",
-            "Queretaro",
-            "Quintana Roo",
-            "San Luis Potosi",
-            "Sinaloa",
-            "Sonora",
-            "Tabasco",
-            "Tamaulipas",
-            "Tlaxcala",
-            "Veracruz de Ignacio de la Llave",
-            "Yucatan",
-            "Zacatecas"};
-    char twoLetterState[32][3] =
-        {
-            "AG", // Aguascalientes
-            "BC", // Baja California
-            "BS", // Baja California Sur
-            "CC", // Campeche
-            "CL", // Coahuila de Zaragoza
-            "CM", // Colima
-            "CS", // Chiapas
-            "CH", // Chihuahua
-            "DF", // Ciudad de México
-            "DG", // Durango
-            "GT", // Guanajuato
-            "GR", // Guerrero
-            "HG", // Hidalgo
-            "JC", // Jalisco
-            "MC", // México
-            "MN", // Michoacán de Ocampo
-            "MS", // Morelos
-            "NT", // Nayarit
-            "NL", // Nuevo León
-            "OC", // Oaxaca
-            "PL", // Puebla
-            "QT", // Querétaro
-            "QR", // Quintana Roo
-            "SP", // San Luis Potosí
-            "SL", // Sinaloa
-            "SR", // Sonora
-            "TC", // Tabasco
-            "TS", // Tamaulipas
-            "TL", // Tlaxcala
-            "VZ", // Veracruz de Ignacio de la Llave
-            "YN", // Yucatán
-            "ZS"  // Zacatecas
-        };
-
-    printf("LISTA DE ESTADOS DE LOS ESTADOS UNIDOS MEXICANOS\n");
-    for (i = 0; i < 32; i++)
-    {
-        printf("%d.- %s\n", i + 1, states[i]);
-    }
-    tempNum = valid("Introduce el estado en el que naciste: ", 1, 32);
-    strcpy(state, twoLetterState[tempNum - 1]);
 }
 
 void getCURP(Tstdnt stdntData, char CURP[])
@@ -453,113 +371,6 @@ void getCURP(Tstdnt stdntData, char CURP[])
 
 }
 
-char noVowelsApComp(char array[], int startPosition)
-{
-    int positionVowel;
-    positionVowel = vowels(array, startPosition);
-    if (positionVowel == -1)
-    {
-        return 'X';
-    }
-    return array[positionVowel];
-}
-
-char getConsonant(char array[], int startPosition)
-{
-    int i;
-    char tempword;
-    for (i = startPosition + 1; array[i] != '\0'; i++)
-    {
-        tempword = array[i];
-        if (tempword != 'A')
-        {
-            if (tempword != 'E')
-            {
-                if (tempword != 'I')
-                {
-                    if (tempword != 'O')
-                    {
-                        if (tempword != 'U')
-                        {
-                            return tempword;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    return 'X';
-}
-
-int nameCompound(char array[])
-{
-    char contra2[27][6] = {"DA", "DAS", "DE", "DEL", "DER", "DI", "DIE", "DD", "EL", "LA", "LOS", "LAS", "LE", "LES", "MAC", "MC", "VAN", "VON", "Y", "MA", "MA.", "M.", "M", "JOSE", "J.", "J", "MARIA"};
-    char temp[20];
-    int i = 0;
-    int k = 0;
-    int n = 0;
-    int l = 0;
-    int flag = 1;
-    int found = 0;
-    int j;
-    int spaces = spaceCounter(array);
-    while (i < spaces && (flag == 1))
-    {
-        j = 0;
-        while (array[k] != ' ' && array[k] != '\0')
-        {
-            temp[j] = array[k];
-            j++;
-            k++;
-        }
-        temp[j] = '\0';
-        flag = 0;
-        found = 0;
-
-        for (l = 0; l < 27; l++)
-        {
-            if (strcmp(temp, contra2[l]) == 0)
-            {
-                n += strlen(temp) + 1;
-                flag = 1;
-                found = 1;
-            }
-        }
-
-        if (found == 0)
-        {
-            if (i != spaces)
-            {
-            }
-            else
-            {
-                return n;
-            }
-            k++;
-        }
-
-        k++;
-        i++;
-    }
-
-    return n;
-}
-
-int antiSonant(char array[])
-{
-    int i;
-    char antisonant[81][5] = {"BACA", "BAKA", "BUEI", "BUEY", "CACA", "CACO", "CAGA", "CAGO", "CAKA", "CAKO", "COGE", "COGI", "COJA", "COJE", "COJI", "COJO", "COLA", "CULO", "FALO", "FETO", "GETA", "GUEI", "GUEY", "JETA", "JOTO", "KACA", "KACO", "KAGA", "KAGO", "KAKA", "KAKO", "KOGE", "KOGI", "KOJA", "KOJE", "KOJI", "KOJO", "KOLA", "KULO", "LILO", "LOCA", "LOCO", "LOKA", "LOKO", "MAME", "MAMO", "MEAR", "MEAS", "MEON", "MIAR", "MION", "MOCO", "MOKO", "MULA", "MULO", "NACA", "NACO", "PEDA", "PEDO", "PENE", "PIPI", "PITO", "POPO", "PUTA", "PUTO", "QULO", "RATA", "ROBA", "ROBE", "ROBO", "RUIN", "SENO", "TETA", "VACA", "VAGA", "VAGO", "VAKA", "VUEI", "VUEY", "WUEI", "WUEY"};
-    for (i = 0; i < 81; i++)
-    {
-        if (strcmp(array, antisonant[i]) == 0)
-        {
-            return 1;
-        }
-    }
-    return 0;
-}
-
 void convertNumber(Tstdnt studnt, char CURP[18])
 {
     char date[6];
@@ -572,3 +383,10 @@ void convertNumber(Tstdnt studnt, char CURP[18])
         CURP[4 + i] = date[i];
     }
 }
+
+Tstdnt addOneStdnt()
+{
+
+}
+
+
