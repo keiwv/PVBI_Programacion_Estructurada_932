@@ -3,7 +3,7 @@
 */
 
 //***** LIBRARIES *****
-#include "Frijoles.h"
+#include "DataFunctions.h"
 
 //***** STRUCTURES ******
 typedef struct _Name
@@ -26,8 +26,9 @@ typedef struct _stdnt
     Tname personalName;
     Tbirthday date;
     int age;
-    char sex;
+    char sex[10];
     char placeBirth[3];
+    char state[40];
     char curp[18];
 } Tstdnt;
 //***** GLOBAL CONSTANT *****
@@ -36,10 +37,9 @@ const int N = 2000;
 void menu();
 int msge_menu();
 
-void menuAdd(int position, Tstdnt students[]);
+int menuAdd(int position, Tstdnt students[]);
 int msge_menuAdd();
 Tstdnt addManual(Tstdnt students[], int position);
-
 
 //****** USEFUL FUNCTIONS **********
 Tbirthday getBirthday();
@@ -47,11 +47,18 @@ int existElem(Tstdnt students[], int longi, int num);
 int getAge(Tbirthday birth);
 void getCURP(Tstdnt stdntData, char CURP[]);
 void convertNumber(Tstdnt studnt, char CURP[18]);
-Tstdnt addOneStdnt();
+Tstdnt addOneStdnt(Tstdnt studentArray[], int position);
+Tbirthday randomBirthday();
+void displayReg(Tstdnt students[], int position);
+//******* DATA FUNCTIONS *********
+void nameMen(char tempName[]);
+void nameWomen(char tempName[]);
+void LastName(char tempLastName[]);
 
 //***** MAIN FUNCTION *****
 int main()
 {
+    srand(time(NULL)); // Set a seed for random numbers
     menu();
     return 0;
 }
@@ -70,7 +77,10 @@ void menu()
         switch (op)
         {
         case 1:
-            menuAdd(position, students);
+            position = menuAdd(position, students);
+            break;
+        case 2:
+            displayReg(students, position);
             break;
         }
     } while (op != 0);
@@ -90,7 +100,7 @@ int msge_menu()
     return valid("Por favor, selecciona una opcion: ", 0, 6);
 }
 
-void menuAdd(int position, Tstdnt students[])
+int menuAdd(int position, Tstdnt students[])
 {
     int op;
     int i;
@@ -104,14 +114,16 @@ void menuAdd(int position, Tstdnt students[])
             position += 1;
             break;
         case 2:
-            for(i = 0; i < 100; i++)
+            for (i = 0; i < 100; i++)
             {
-                students[position + i] = addOneStdnt();
+                students[position + i] = addOneStdnt(students, position);
             }
+            position += 100;
             break;
         }
     } while (op != 3);
     printf("Regresando al menu principal\n");
+    return position;
 }
 
 int msge_menuAdd()
@@ -171,90 +183,44 @@ Tstdnt addManual(Tstdnt students[], int position)
     printf("1.- Hombre\n2.- Mujer\n");
     if (valid("Por favor, introduce tu sexo: ", 1, 2) == 1)
     {
-        tempStdnt.sex = 'H';
-        tempStdntCURP.sex = 'H';
+        strcpy(tempStdnt.sex, "Hombre");
+        strcpy(tempStdntCURP.sex, "Hombre");
     }
     else
     {
-        tempStdnt.sex = 'M';
-        tempStdntCURP.sex = 'H';
+        strcpy(tempStdnt.sex, "Mujer");
+        strcpy(tempStdntCURP.sex, "Mujer");
     }
 
-    displayStates(tempStdnt.placeBirth);
+    displayStates(tempStdnt.state, tempStdnt.placeBirth);
     strcpy(tempStdntCURP.placeBirth, tempStdnt.placeBirth);
 
     getCURP(tempStdntCURP, curp);
-    strcpy(tempStdnt.curp,curp);
-    
+    strcpy(tempStdnt.curp, curp);
+
     return tempStdnt;
 }
 
 //************* USEFUL FUNCTIONS DEVELOPMENT ******
 Tbirthday getBirthday()
 {
-    Tbirthday tempStdnt;
-    tempStdnt.year = valid("Ingresa el anio de tu nacimiento: ", 1894, 2023);
-    if (tempStdnt.year == 2023)
+    Tbirthday tempBirthday;
+    int days[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    int daysBis[] = {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    tempBirthday.year = valid("Ingresa tu año de nacimiento: ", 1900, 2023);
+    tempBirthday.month = valid("Ingresa tu mes de nacimiento: ", 1, 12);
+
+    if (isLapYear(tempBirthday.year))
     {
-        tempStdnt.month = valid("Ingresa el mes de tu nacimiento: ", 1, 10);
-        if (tempStdnt.month == 2)
-        {
-            tempStdnt.day = valid("Ingresa el dia de tu nacimiento: ", 1, 28);
-        }
-        else
-        {
-            if (tempStdnt.month == 1 || tempStdnt.month == 3 || tempStdnt.month == 5 || tempStdnt.month == 7 || tempStdnt.month == 8 || tempStdnt.month == 10 || tempStdnt.month == 12)
-            {
-                tempStdnt.day = valid("Ingresa el dia de tu nacimiento: ", 1, 31);
-            }
-            else
-            {
-                tempStdnt.day = valid("Ingresa el dia de tu nacimiento: ", 1, 30);
-            }
-        }
+        tempBirthday.day = valid("Por favor, introduce tu dia de nacimiento: ", 1, daysBis[tempBirthday.month]);
     }
     else
     {
-        if (isLapYear(tempStdnt.year))
-        {
-            tempStdnt.month = valid("Ingresa el mes de tu nacimiento: ", 1, 12);
-            if (tempStdnt.month == 2)
-            {
-                tempStdnt.day = valid("Ingresa el dia de tu nacimiento: ", 1, 29);
-            }
-            else
-            {
-                if (tempStdnt.month == 1 || tempStdnt.month == 3 || tempStdnt.month == 5 || tempStdnt.month == 7 || tempStdnt.month == 8 || tempStdnt.month == 10 || tempStdnt.month == 12)
-                {
-                    tempStdnt.day = valid("Ingresa el dia de tu nacimiento: ", 1, 31);
-                }
-                else
-                {
-                    tempStdnt.day = valid("Ingresa el dia de tu nacimiento: ", 1, 30);
-                }
-            }
-        }
-        else
-        {
-            tempStdnt.month = valid("Ingresa el mes de tu nacimiento: ", 1, 12);
-            if (tempStdnt.month == 2)
-            {
-                tempStdnt.day = valid("Ingresa el dia de tu nacimiento: ", 1, 28);
-            }
-            else
-            {
-                if (tempStdnt.month == 1 || tempStdnt.month == 3 || tempStdnt.month == 5 || tempStdnt.month == 7 || tempStdnt.month == 8 || tempStdnt.month == 10 || tempStdnt.month == 12)
-                {
-                    tempStdnt.day = valid("Ingresa el dia de tu nacimiento: ", 1, 31);
-                }
-                else
-                {
-                    tempStdnt.day = valid("Ingresa el dia de tu nacimiento: ", 1, 30);
-                }
-            }
-        }
+        tempBirthday.day = valid("Por favor, introduce tu dia de nacimiento: ", 1, days[tempBirthday.month]);
     }
-    return tempStdnt;
+
+    return tempBirthday;
 }
 
 int existElem(Tstdnt students[], int longi, int num)
@@ -300,7 +266,6 @@ void getCURP(Tstdnt stdntData, char CURP[])
     }
     else
     {
-        printf("No ingresaste apellido paterno\n");
         CURP[0] = 'X';
         CURP[1] = 'X';
         CURP[13] = 'X';
@@ -313,7 +278,6 @@ void getCURP(Tstdnt stdntData, char CURP[])
     }
     else
     {
-        printf("No ingresaste apellido materno\n");
         CURP[2] = 'X';
         CURP[14] = 'X';
     }
@@ -334,7 +298,7 @@ void getCURP(Tstdnt stdntData, char CURP[])
 
     convertNumber(stdntData, CURP);
 
-    CURP[10] = stdntData.sex;
+    CURP[10] = stdntData.sex[0];
 
     for (int i = 0; i < 2; i++)
     {
@@ -367,8 +331,7 @@ void getCURP(Tstdnt stdntData, char CURP[])
     CURP[17] = temp[0];
     CURP[18] = '\0';
 
-    strcpy(stdntData.curp,CURP);
-
+    strcpy(stdntData.curp, CURP);
 }
 
 void convertNumber(Tstdnt studnt, char CURP[18])
@@ -384,9 +347,85 @@ void convertNumber(Tstdnt studnt, char CURP[18])
     }
 }
 
-Tstdnt addOneStdnt()
+Tstdnt addOneStdnt(Tstdnt studentArray[], int position)
 {
+    Tstdnt tempStudentArray;
+    char curp[18];
 
+    tempStudentArray.status = 1;
+    do
+    {
+        tempStudentArray.matricula = numRandom(300000, 399999);
+    } while (existElem(studentArray, position, tempStudentArray.matricula) != -1);
+
+    // Name
+    LastName(tempStudentArray.personalName.lastName1);
+    LastName(tempStudentArray.personalName.LastName2);
+
+    if (numRandom(0, 1) == 1)
+    {
+        nameMen(tempStudentArray.personalName.name);
+        strcpy(tempStudentArray.sex, "Hombre");
+    }
+    else
+    {
+        nameWomen(tempStudentArray.personalName.name);
+        strcpy(tempStudentArray.sex, "Mujer");
+    }
+
+    // Get random birthday and age
+    tempStudentArray.date = randomBirthday();
+    tempStudentArray.age = getAge(tempStudentArray.date);
+
+    getState(tempStudentArray.state, tempStudentArray.placeBirth);
+
+    getCURP(tempStudentArray, curp);
+    strcpy(tempStudentArray.curp, curp);
+    return tempStudentArray;
 }
 
+Tbirthday randomBirthday()
+{
+    Tbirthday tempBirthday;
+    int days[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    int daysBis[] = {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
+    tempBirthday.year = numRandom(1900, 2023);
+    tempBirthday.month = numRandom(1, 12);
+
+    if (isLapYear(tempBirthday.year))
+    {
+        tempBirthday.day = numRandom(1, daysBis[tempBirthday.month]);
+    }
+    else
+    {
+        tempBirthday.day = numRandom(1, days[tempBirthday.month]);
+    }
+    return tempBirthday;
+}
+
+void displayReg(Tstdnt students[], int position)
+{
+    int i, j;
+    printf("----------------------------------\n");
+    for (j = 0; j < position; j += 40)
+    {
+        for (i = j; i < j + 40; i++)
+        {
+            if (students[i].status == 1)
+            {
+                printf("Nombre: %s\n", students[i].personalName.name);
+                printf("Apellido paterno: %s\n", students[i].personalName.lastName1);
+                printf("Apellido materno: %s\n", students[i].personalName.LastName2);
+                printf("Edad: %d\n", students[i].age);
+                printf("Fecha de nacimiento: %d/%d/%d\n", students[i].date.day, students[i].date.month, students[i].date.year);
+                printf("Estado: %s\n", students[i].state);
+                printf("Sexo: %s\n", students[i].sex);
+                printf("Curp: %s\n", students[i].curp);
+                printf("posicion: %d\n", i);
+                printf("----------------------------------\n");
+            }
+        }
+        system("PAUSE");
+    }
+}

@@ -15,7 +15,6 @@ void ask(char displayMsge[], char array[]);
 int numRandom(int ri, int rf);
 int isLapYear(int year);
 int spaceCounter(char array[]);
-void displayStates(char state[]);
 char noVowelsApComp(char array[], int startPosition);
 char getConsonant(char array[], int startPosition);
 int nameCompound(char array[]);
@@ -396,7 +395,6 @@ void ask(char displayMsge[], char array[])
 int numRandom(int ri, int rf)
 {
     int range = (rf - ri + 1);
-    srand(time(NULL));
     return rand() % range + ri;
 }
 
@@ -437,89 +435,6 @@ int spaceCounter(char array[])
         }
     }
     return j;
-}
-
-void displayStates(char state[])
-{
-    int i;
-    int tempNum;
-    char states[32][50] =
-        {
-            "Aguascalientes",
-            "Baja California",
-            "Baja California Sur",
-            "Campeche",
-            "Chiapas",
-            "Chihuahua",
-            "Coahuila de Zaragoza",
-            "Colima",
-            "Ciudad de Mexico",
-            "Durango",
-            "Guanajuato",
-            "Guerrero",
-            "Hidalgo",
-            "Jalisco",
-            "Mexico",
-            "Michoacan de Ocampo",
-            "Morelos",
-            "Nayarit",
-            "Nuevo Leon",
-            "Oaxaca",
-            "Puebla",
-            "Queretaro",
-            "Quintana Roo",
-            "San Luis Potosi",
-            "Sinaloa",
-            "Sonora",
-            "Tabasco",
-            "Tamaulipas",
-            "Tlaxcala",
-            "Veracruz de Ignacio de la Llave",
-            "Yucatan",
-            "Zacatecas"};
-    char twoLetterState[32][3] =
-        {
-            "AG", // Aguascalientes
-            "BC", // Baja California
-            "BS", // Baja California Sur
-            "CC", // Campeche
-            "CL", // Coahuila de Zaragoza
-            "CM", // Colima
-            "CS", // Chiapas
-            "CH", // Chihuahua
-            "DF", // Ciudad de México
-            "DG", // Durango
-            "GT", // Guanajuato
-            "GR", // Guerrero
-            "HG", // Hidalgo
-            "JC", // Jalisco
-            "MC", // México
-            "MN", // Michoacán de Ocampo
-            "MS", // Morelos
-            "NT", // Nayarit
-            "NL", // Nuevo León
-            "OC", // Oaxaca
-            "PL", // Puebla
-            "QT", // Querétaro
-            "QR", // Quintana Roo
-            "SP", // San Luis Potosí
-            "SL", // Sinaloa
-            "SR", // Sonora
-            "TC", // Tabasco
-            "TS", // Tamaulipas
-            "TL", // Tlaxcala
-            "VZ", // Veracruz de Ignacio de la Llave
-            "YN", // Yucatán
-            "ZS"  // Zacatecas
-        };
-
-    printf("LISTA DE ESTADOS DE LOS ESTADOS UNIDOS MEXICANOS\n");
-    for (i = 0; i < 32; i++)
-    {
-        printf("%d.- %s\n", i + 1, states[i]);
-    }
-    tempNum = valid("Introduce el estado en el que naciste: ", 1, 32);
-    strcpy(state, twoLetterState[tempNum - 1]);
 }
 
 char noVowelsApComp(char array[], int startPosition)
