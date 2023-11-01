@@ -95,12 +95,12 @@ void displayStates(char state[], char twoLetter[])
         };
 
     printf("LISTA DE ESTADOS DE LOS ESTADOS UNIDOS MEXICANOS\n");
-    for (i = 0; i < 32; i++)
+    for (i = 0; i < 33; i++)
     {
         printf("%d.- %s\n", i + 1, states[i]);
     }
-    tempNum = valid("Introduce el estado en el que naciste: ", 1, 32);
-    strcpy(twoLetter, twoLetterState[tempNum - 1]);
+    tempNum = valid("Introduce el estado en el que naciste: ", 1, 33);
+    strcpy(twoLetter, twoLetterState[tempNum-1]);
     strcpy(state,states[tempNum - 1]);
 }
 
