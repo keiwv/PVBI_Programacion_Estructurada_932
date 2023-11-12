@@ -26,7 +26,7 @@ typedef struct _alumn
 void menu();
 int msge_menu();
 
-void loadFile(Talumn stdnts[], int position);
+int loadFile(Talumn stdnts[], int position);
 //-------- MAIN FUNCTION ------
 int main()
 {
@@ -49,7 +49,7 @@ void menu()
         switch (op)
         {
         case 1:
-            LoadFile(student, position);
+            position = loadFile(student, position);
             break;
         default:
             break;
@@ -79,15 +79,23 @@ int msge_menu()
 
 int loadFile(Talumn stdnts[], int position)
 {
-    FILE *pa;
+    FILE *fa;
     Talumn reg;
+    int tempNo = 0;
     fa = fopen("datos.txt","r");
     if(fa)
     {
         do
         {
-            fscanf()
+            fscanf(fa,"%d.- %d %s %s %s %d %s",&tempNo,&reg.enrollment,reg.name,reg.LastName1,reg.LastName2,&reg.age,reg.sex);
+            stdnts[position++] = reg;
+            printf("%d.- %d %s %s %s %d %s\n",position-1,reg.enrollment,reg.name,reg.LastName1,reg.LastName2,reg.age,reg.sex);
         } while (!feof(fa));
-        
+        fclose(fa);
     }
+    else
+    {
+        printf("El archivo no existe");
+    }
+    return position-1;
 }
