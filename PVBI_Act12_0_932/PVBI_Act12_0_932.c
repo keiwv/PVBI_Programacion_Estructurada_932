@@ -191,7 +191,7 @@ void displayReg(Tstdnt students[], int position)
     {
         if (students[i].status)
         {
-            displayOneStdnt(students[i]);
+            displayOneStdntList(students[i]);
         }
 
         if ((i + 1) % 40 == 0)
