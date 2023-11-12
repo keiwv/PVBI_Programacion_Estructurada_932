@@ -56,6 +56,7 @@ void bubbleSort(Tstdnt studentArray[], int n);
 int main()
 {
     srand(time(NULL));
+    system("mingw32-gcc-6.3.0.exe RegisterCounter.c -o RegisterCounter"); // This line compile RegisterCounter.c.
     menu();
 
     return 0;
@@ -191,7 +192,7 @@ void displayReg(Tstdnt students[], int position)
     {
         if (students[i].status)
         {
-            printf("%-7d", i+1);
+            printf("%-7d", i + 1);
             displayOneStdntList(students[i]);
         }
 
@@ -285,8 +286,9 @@ void getTXT(Tstdnt students[], int position)
 
     for (i = 0; i < position; i++)
     {
-        fprintf(fa, "%-6d %-10d %-10s %-15s %-15s %-5d %s\n",
+        fprintf(fa, "%2d%-5s%-10d %-10s %-15s %-15s %-5d %s\n",
                 i + 1,
+                ".-",
                 students[i].enrollment,
                 students[i].name,
                 students[i].LastName1,
@@ -308,16 +310,15 @@ void counterRegisters()
     {
         ask("Ingrese el nombre del archivo que usted quiere saber la cantidad de registros: ", fileName);
     } while (alfaSpace(fileName) == -1);
-    
-    system("mingw32-gcc-6.3.0.exe RegisterCounter.c -o RegisterCounter"); // This line compile RegisterCounter.c.
-    sprintf(cmd,"RegisterCounter.exe %s", fileName);
+
+    sprintf(cmd, "RegisterCounter.exe %s", fileName);
     count = system(cmd);
 
-    if(count != -1)
+    if (count != -1)
     {
         printf("El archivo %s contiene %d registros\n", fileName, count);
     }
-    else 
+    else
     {
         printf("El archivo no fue encontrado\n");
     }
