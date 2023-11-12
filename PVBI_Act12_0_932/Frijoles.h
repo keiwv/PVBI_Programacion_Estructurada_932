@@ -335,7 +335,7 @@ int alfaSpace(char cadena[])
         {
             if ((cadena[i] >= 'a' && cadena[i] <= 'z'))
             {
-                return -1; // Minus not allowed
+                
             }
             else
             {
