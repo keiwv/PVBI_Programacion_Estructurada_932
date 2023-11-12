@@ -186,11 +186,12 @@ int tenReg(Tstdnt studentArray[], int position)
 void displayReg(Tstdnt students[], int position)
 {
     int i;
-    printf("Mostrando todo el registo: \n");
+    printf("%-6s %-10s %-10s %-15s %-15s %-5s %s\n", "No.", "Matricula", "Nombre", "Ape Paterno", "Ape Materno", "Edad", "Sexo");
     for (i = 0; i < position; i++)
     {
         if (students[i].status)
         {
+            printf("%-7d", i+1);
             displayOneStdntList(students[i]);
         }
 
@@ -198,7 +199,7 @@ void displayReg(Tstdnt students[], int position)
         {
             system("PAUSE");
             system("CLS");
-            printf("Mostrando todo el registo: \n");
+            printf("%-6s %-10s %-10s %-15s %-15s %-5s %s\n", "No.", "Matricula", "Nombre", "Ape Paterno", "Ape Materno", "Edad", "Sexo");
         }
     }
     printf("----------------------------------");
@@ -212,9 +213,7 @@ void findStdnt(Tstdnt students[], int position, int flag)
     if (index != -1)
     {
         printf("Alumno encontrado: \n");
-        printf("%-6s %-10s %-10s %-15s %-15s %-5s %s\n", "No.", "Matricula", "Nombre", "Ape Paterno", "Ape Materno", "Edad", "Sexo");
-        printf("%-7d", index);
-        displayOneStdntList(students[index]);
+        displayOneStdnt(students[index]);
     }
     else
     {
