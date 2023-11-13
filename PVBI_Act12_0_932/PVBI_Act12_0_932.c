@@ -32,7 +32,6 @@ PVBI_Act12_1_932
 
     // ------- STRUCTURES -------
     typedef struct _alumn
-
 {
     int status;
     int enrollment;
@@ -109,12 +108,13 @@ void menu()
             }
             else
             {
-                if (position + counterRegisters("datos.txt") < N)
+                if (position + 313< N)
                 {
                     position = loadFile(student, position, "datos.txt");
                     getTXT(student, position, "activos.txt", 1);
                     flag = 0;
                     loadFileFlag = 1;
+                    printf("El archivo ha sido cargado correctamente\n");
                 }
                 else
                 {
@@ -201,7 +201,6 @@ int loadFile(Tstdnt stdnts[], int position, char txtName[])
     }
     else
     {
-        printf("El archivo no existe\n");
         return position;
     }
     return position;
