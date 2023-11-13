@@ -1,6 +1,27 @@
 /*
+Brayan Ivan Perez Ventura - 372781
 
-    ------ TO BE ADDED --------
+Created code: November 10th 2023 / Modified code: November 12th 2023
+
+    1.- Load File: The program should load the vector of records from the text file (the file can only be loaded once).
+
+    2.- Add: The program should be able to add 10 records to the array and to the end of the text file (automatically generate the data).
+
+    3.- Delete: In this function, the program will be able to pick an find method and delete the student, and then, it gets saved in an file called "eliminados.txt"
+
+    4.- Search: In this function, the program will be able to find the student by enrollment using binary search and sequential search.
+
+    5.- Sort: In this function, the program will be able to order the vector by using two methods. Bubblesort and quicksort.
+
+    6.- Show All: The function will display all the active registers.
+
+    7.- Generate File: This function generates two files, active students and deleted students depending. The user will be able to put file's name.
+
+    8.- Number of Records in File: Using "RegisterCounter.c", it will compile it and it will return the number of registers in a file.
+
+    9.- Show Deleted: The program should display the text file as it appears, including the number of records that were deleted from the original file and marked as deleted at that time.
+
+PVBI_Act12_1_932
 */
 
 // ------- LIBRARIES ----------
@@ -9,8 +30,8 @@
 // ------- NUMBER MAX OF REGISTERS -------
 #define N 1500
 
-// ------- STRUCTURES -------
-typedef struct _alumn
+    // ------- STRUCTURES -------
+    typedef struct _alumn
 
 {
     int status;
@@ -32,8 +53,9 @@ void displayReg(Tstdnt students[], int position);
 void findStdnt(Tstdnt students[], int position, int flag);
 void deleteStdnt(Tstdnt students[], int position, int flag);
 void orderStdnts(Tstdnt students[], int position, int flag);
-void getTXT(Tstdnt students[], int position);
-void counterRegisters();
+void generateTXT(Tstdnt students[], int position);
+int counterRegisters(char fileName[]);
+void loadFileDeletedStdnt();
 //***** NAMES *************
 void nameMen(char tempName[]);
 void nameWomen(char tempName[]);
@@ -47,6 +69,8 @@ int searchStdnt(Tstdnt students[], int position, int num, int flag);
 int existElem(Tstdnt students[], int longi, int num);
 int binarySearch(Tstdnt studentArray[], int left, int right, int number);
 void displayOneStdnt(Tstdnt students);
+void getTXT(Tstdnt students[], int position, char fileName[], int flag);
+void addOneStdntTxt(Tstdnt student, int position, FILE *fa);
 
 void swap(Tstdnt students[], int i, int j);
 int partition(Tstdnt students[], int low, int high);
@@ -56,7 +80,7 @@ void bubbleSort(Tstdnt studentArray[], int n);
 int main()
 {
     srand(time(NULL));
-    system("mingw32-gcc-6.3.0.exe RegisterCounter.c -o RegisterCounter"); // This line compile RegisterCounter.c.
+    system("mingw32-gcc-6.3.0.exe RegisterCounter.c -o RegisterCounter"); // This line compile RegisterCounter.c. This might change depening on what compiler you have.
     menu();
 
     return 0;
@@ -70,6 +94,7 @@ void menu()
     int loadFileFlag = 0;
     int position = 0;
     Tstdnt student[N];
+    char fileName[60];
     do
     {
         system("CLS");
@@ -84,10 +109,12 @@ void menu()
             }
             else
             {
-                if (position + 313 < N)
+                if (position + counterRegisters("datos.txt") < N)
                 {
                     position = loadFile(student, position, "datos.txt");
+                    getTXT(student, position, "activos.txt", 1);
                     flag = 0;
+                    loadFileFlag = 1;
                 }
                 else
                 {
@@ -97,10 +124,13 @@ void menu()
             break;
         case 2:
             position = tenReg(student, position);
+            getTXT(student, position, "activos.txt", 1);
             flag = 0;
             break;
         case 3:
             deleteStdnt(student, position, flag);
+            getTXT(student, position, "activos.txt", 1);
+            getTXT(student, position, "eliminados.txt", 0);
             flag = 0;
             break;
         case 4:
@@ -108,16 +138,25 @@ void menu()
             break;
         case 5:
             orderStdnts(student, position, flag);
+            getTXT(student, position, "activos.txt", 1);
+            getTXT(student, position, "eliminados.txt", 0);
             flag = 1;
             break;
         case 6:
             displayReg(student, position);
             break;
         case 7:
-            getTXT(student, position);
+            generateTXT(student, position);
             break;
         case 8:
-            counterRegisters();
+            do
+            {
+                ask("Ingrese el nombre del archivo que usted quiere saber la cantidad de registros: ", fileName);
+            } while (alfaSpace(fileName) == -1);
+            counterRegisters(fileName);
+            break;
+        case 9:
+            loadFileDeletedStdnt();
             break;
         }
         if (op != 0)
@@ -148,23 +187,24 @@ int loadFile(Tstdnt stdnts[], int position, char txtName[])
     FILE *fa;
     Tstdnt reg;
     int tempNo = 0;
+
     fa = fopen(txtName, "r");
     if (fa)
     {
-        do
+        while (!feof(fa))
         {
             fscanf(fa, "%d.- %d %s %s %s %d %s", &tempNo, &reg.enrollment, reg.name, reg.LastName1, reg.LastName2, &reg.age, reg.sex);
-            printf("%d.- %d %s %s %s %d %s\n", position, reg.enrollment, reg.name, reg.LastName1, reg.LastName2, reg.age, reg.sex);
             reg.status = 1;
             stdnts[position++] = reg;
-        } while (!feof(fa));
+        }
         fclose(fa);
     }
     else
     {
-        printf("El archivo no existe");
+        printf("El archivo no existe\n");
+        return position;
     }
-    return position - 1;
+    return position;
 }
 
 int tenReg(Tstdnt studentArray[], int position)
@@ -235,6 +275,7 @@ void deleteStdnt(Tstdnt students[], int position, int flag)
             if (valid("Deseas eliminar el registro (0.- No / 1.- Si): ", 0, 1))
             {
                 students[index].status = 0;
+
                 printf("El estudiante ha sido dado de baja correctamente.\n");
             }
         }
@@ -269,47 +310,10 @@ void orderStdnts(Tstdnt students[], int position, int flag)
     }
 }
 
-void getTXT(Tstdnt students[], int position)
-{
-    int i;
-    FILE *fa;
-    char fileName[30];
-    do
-    {
-        ask("Ingresa el nombre con el que deseas guardarlo: ", fileName);
-    } while (alfaSpace(fileName) == -1);
-
-    strcat(fileName, ".txt");
-    fa = fopen(fileName, "w");
-
-    fprintf(fa, "%-6s %-10s %-10s %-15s %-15s %-5s %s\n", "No.", "Matricula", "Nombre", "Ape Paterno", "Ape Materno", "Edad", "Sexo");
-
-    for (i = 0; i < position; i++)
-    {
-        fprintf(fa, "%2d%-5s%-10d %-10s %-15s %-15s %-5d %s\n",
-                i + 1,
-                ".-",
-                students[i].enrollment,
-                students[i].name,
-                students[i].LastName1,
-                students[i].LastName2,
-                students[i].age,
-                students[i].sex);
-    }
-
-    fclose(fa);
-    printf("Archivo generado exitosamente!\n");
-}
-
-void counterRegisters()
+int counterRegisters(char fileName[])
 {
     int count;
-    char fileName[50];
     char cmd[50];
-    do
-    {
-        ask("Ingrese el nombre del archivo que usted quiere saber la cantidad de registros: ", fileName);
-    } while (alfaSpace(fileName) == -1);
 
     sprintf(cmd, "RegisterCounter.exe %s", fileName);
     count = system(cmd);
@@ -322,6 +326,52 @@ void counterRegisters()
     {
         printf("El archivo no fue encontrado\n");
     }
+    return count;
+}
+
+void generateTXT(Tstdnt students[], int position)
+{
+    char fileName[30];
+    char temp[30];
+    do
+    {
+        ask("Ingresa el nombre con el que deseas guardarlo: ", fileName);
+    } while (alfaSpace(fileName) == -1 || strlen(fileName) > 30);
+    strcpy(temp, fileName);
+    strcat(fileName, "_activos.txt");
+    getTXT(students, position, fileName, 1);
+    strcat(temp, "_eliminados.txt");
+    getTXT(students, position, temp, 0);
+    printf("Archivos generados exitosamente!\n");
+}
+
+void loadFileDeletedStdnt()
+{
+    int i;
+    FILE *fa;
+    Tstdnt reg;
+    int temp = 0;
+    int tempNo = 0;
+    fa = fopen("eliminados.txt", "r");
+    i = 0;
+    if (fa)
+    {
+        printf("%-6s %-10s %-10s %-15s %-15s %-5s %s\n", "No.", "Matricula", "Nombre", "Ape Paterno", "Ape Materno", "Edad", "Sexo");
+        while (!feof(fa))
+        {
+            temp = fscanf(fa, "%d.- %d %s %s %s %d %s", &tempNo, &reg.enrollment, reg.name, reg.LastName1, reg.LastName2, &reg.age, reg.sex);
+            if (temp == 7)
+            {
+                printf("%2d%-5s%-10d %-10s %-15s %-15s %-5d %s\n", i, ".-", reg.enrollment, reg.name, reg.LastName1, reg.LastName2, reg.age, reg.sex);
+                i++;
+            }
+        }
+    }
+    else
+    {
+        printf("El archivo no existe\n");
+    }
+    fclose(fa);
 }
 // ********** USEFUL FUNCTIONS ***********
 Tstdnt genDataReg(Tstdnt studentArray[], int position)
@@ -433,6 +483,43 @@ void displayOneStdnt(Tstdnt students)
     printf("EDAD:       %02d\n", students.age);
     printf("SEXO:       %s\n", students.sex);
     printf("----------------------------------\n");
+}
+
+void getTXT(Tstdnt students[], int position, char fileName[], int flag)
+{
+    int i;
+    FILE *fa;
+    int j;
+    fa = fopen(fileName, "w");
+
+    if ((strcmp(fileName, "activos.txt") != 0) && (strcmp(fileName, "eliminados.txt") != 0))
+    {
+        fprintf(fa, "%-6s %-10s %-10s %-15s %-15s %-5s %s\n", "No.", "Matricula", "Nombre", "Ape Paterno", "Ape Materno", "Edad", "Sexo");
+    }
+    j = 0;
+    for (i = 0; i < position; i++)
+    {
+        if (students[i].status == flag)
+        {
+            addOneStdntTxt(students[i], j, fa);
+            j++;
+        }
+    }
+
+    fclose(fa);
+}
+
+void addOneStdntTxt(Tstdnt student, int position, FILE *fa)
+{
+    fprintf(fa, "%2d%-5s%-10d %-10s %-15s %-15s %-5d %s\n",
+            position,
+            ".-",
+            student.enrollment,
+            student.name,
+            student.LastName1,
+            student.LastName2,
+            student.age,
+            student.sex);
 }
 
 //******* ORDER FUNCTIONS ***********
