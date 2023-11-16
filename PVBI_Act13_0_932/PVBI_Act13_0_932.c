@@ -88,7 +88,6 @@ void menu()
 void addRegisters(TWrkr employee[], int position)
 {
     int i;
-    int 
     if (position + GEN_REGISTERS < MAX_REGISTERS)
     {
 
