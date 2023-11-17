@@ -18,7 +18,7 @@ void LastName(char tempLastName[])
     strcpy(tempLastName, LastName1[numRandom(0, 99)]);
 }
 
-void displayStates(char state[], char twoLetter[])
+void displayStates(char state[])
 {
     int i;
     int tempNum;
@@ -57,54 +57,16 @@ void displayStates(char state[], char twoLetter[])
             "Yucatan",
             "Zacatecas",
             "Extranjero"};
-    char twoLetterState[33][3] =
-        {
-            "AG", // Aguascalientes
-            "BC", // Baja California
-            "BS", // Baja California Sur
-            "CC", // Campeche
-            "CL", // Coahuila de Zaragoza
-            "CM", // Colima
-            "CS", // Chiapas
-            "CH", // Chihuahua
-            "DF", // Ciudad de México
-            "DG", // Durango
-            "GT", // Guanajuato
-            "GR", // Guerrero
-            "HG", // Hidalgo
-            "JC", // Jalisco
-            "MC", // México
-            "MN", // Michoacán de Ocampo
-            "MS", // Morelos
-            "NT", // Nayarit
-            "NL", // Nuevo León
-            "OC", // Oaxaca
-            "PL", // Puebla
-            "QT", // Querétaro
-            "QR", // Quintana Roo
-            "SP", // San Luis Potosí
-            "SL", // Sinaloa
-            "SR", // Sonora
-            "TC", // Tabasco
-            "TS", // Tamaulipas
-            "TL", // Tlaxcala
-            "VZ", // Veracruz de Ignacio de la Llave
-            "YN", // Yucatán
-            "ZS", // Zacatecas
-            "NE"  //Foreign
-        };
-
     printf("LISTA DE ESTADOS DE LOS ESTADOS UNIDOS MEXICANOS\n");
     for (i = 0; i < 33; i++)
     {
         printf("%d.- %s\n", i + 1, states[i]);
     }
     tempNum = valid("Introduce el estado en el que naciste: ", 1, 33);
-    strcpy(twoLetter, twoLetterState[tempNum-1]);
     strcpy(state,states[tempNum - 1]);
 }
 
-void getState(char state[], char twoLetter[])
+void getState(char state[])
 {
     char states[33][50] =
         {
@@ -114,7 +76,7 @@ void getState(char state[], char twoLetter[])
             "Campeche",
             "Chiapas",
             "Chihuahua",
-            "Coahuila de Zaragoza",
+            "Coahuila",
             "Colima",
             "Ciudad de Mexico",
             "Durango",
@@ -123,7 +85,7 @@ void getState(char state[], char twoLetter[])
             "Hidalgo",
             "Jalisco",
             "Mexico",
-            "Michoacan de Ocampo",
+            "Michoacan",
             "Morelos",
             "Nayarit",
             "Nuevo Leon",
@@ -137,50 +99,51 @@ void getState(char state[], char twoLetter[])
             "Tabasco",
             "Tamaulipas",
             "Tlaxcala",
-            "Veracruz de Ignacio de la Llave",
+            "Veracruz",
             "Yucatan",
             "Zacatecas",
             "Extranjero"};
-    char twoLetterState[33][3] =
-        {
-            "AG", // Aguascalientes
-            "BC", // Baja California
-            "BS", // Baja California Sur
-            "CC", // Campeche
-            "CL", // Coahuila de Zaragoza
-            "CM", // Colima
-            "CS", // Chiapas
-            "CH", // Chihuahua
-            "DF", // Ciudad de México
-            "DG", // Durango
-            "GT", // Guanajuato
-            "GR", // Guerrero
-            "HG", // Hidalgo
-            "JC", // Jalisco
-            "MC", // México
-            "MN", // Michoacán de Ocampo
-            "MS", // Morelos
-            "NT", // Nayarit
-            "NL", // Nuevo León
-            "OC", // Oaxaca
-            "PL", // Puebla
-            "QT", // Querétaro
-            "QR", // Quintana Roo
-            "SP", // San Luis Potosí
-            "SL", // Sinaloa
-            "SR", // Sonora
-            "TC", // Tabasco
-            "TS", // Tamaulipas
-            "TL", // Tlaxcala
-            "VZ", // Veracruz de Ignacio de la Llave
-            "YN", // Yucatán
-            "ZS",
-            "NE"  // Zacatecas
-        };
     int getNum;
     getNum = numRandom(0,32);
-    strcpy(twoLetter, twoLetterState[getNum]);
     strcpy(state, states[getNum]);
 }
 
+void getJobPositions(char Job[])
+{
+char Job_Positions[32][30] =
+    {
+        "Dev. de Software",
+        "Ing. de Redes",
+        "Analista de Datos",
+        "Disenador Grafico",
+        "Especialista RRHH",
+        "Gerente de Proyectos",
+        "Cons. Financiero",
+        "Medico General",
+        "Enfermero",
+        "Abogado",
+        "Analista Mkt Digital",
+        "Esp. Seg. Informatica",
+        "Ing. Civil",
+        "Contadora",
+        "Prof. Primaria",
+        "Chef Ejecutivo",
+        "Tec. Soporte Tecnico",
+        "Disenador UX",
+        "Asist. Administrativo/a",
+        "Analista de Ventas",
+        "Inv. Cientifico",
+        "Analista de Sistemas",
+        "Psic. Organizacional",
+        "Esp. Logistica",
+        "Ing. Electrico",
+        "Editor/a de Contenidos",
+        "Arquitecto/a",
+        "Asesor/a Serv. Cliente",
+        "Traductor/a",
+        "Esp. Energias Renovables",
+        "Rep. Ventas Internacionales",
+        "Trab. Social"};
+        strcpy(Job, Job_Positions[numRandom(0, 32)]);
+}
 

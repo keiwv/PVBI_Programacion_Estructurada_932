@@ -29,14 +29,18 @@ typedef struct _Wrkr
 int msge_menu();
 void menu();
 
-void addRegisters(TWrkr employee[], int position);
-
+int addRegisters(TWrkr employee[], int position, int ordFlag);
+void editRegister(TWrkr employee[], int position, int ordFlag);
 //****** USEFUL FUNCTIONS *********
-TWrkr getOneEmployee(TWrkr employee[], int position);
+TWrkr getOneEmployee(TWrkr employee[], int position, int ordFlag);
 int existElem(int employeesEnrollment[], int longi, int num);
 int binarySearch(int employeesEnrollment[], int left, int right, int number);
-int getNumSort(int num[], int position, int ri, int rs);
-
+void displayRegEmp(TWrkr employee);
+void displayListEmp(TWrkr employee);
+void getNumEnrollment(TWrkr employees[], int num1[], int position);
+void getNumCell(TWrkr employees[], int num1[], int position);
+TWrkr menuRegister(TWrkr employees[], int position);
+int menuEditRegister();
 //****** MAIN FUNCTION ************
 int main()
 {
@@ -68,6 +72,7 @@ void menu()
     int op;
     TWrkr employee[MAX_REGISTERS];
     int position = 0;
+    int ordFlag = 0;
     do
     {
         system("CLS");
@@ -76,16 +81,17 @@ void menu()
         switch (op)
         {
         case 1:
-            addRegisters(employee, position);
+            position = addRegisters(employee, position, ordFlag);
             break;
-
-        default:
+        case 2:
+            editRegister(employee, position, ordFlag);
             break;
         }
+        system("PAUSE");
     } while (op != 0);
 }
 
-void addRegisters(TWrkr employee[], int position)
+int addRegisters(TWrkr employee[], int position, int ordFlag)
 {
     int i;
     if (position + GEN_REGISTERS < MAX_REGISTERS)
@@ -93,24 +99,78 @@ void addRegisters(TWrkr employee[], int position)
 
         for (i = 0; i < GEN_REGISTERS; i++)
         {
-            employee[i] = getOneEmployee(employee, position);
+            employee[i] = getOneEmployee(employee, position, ordFlag);
+            displayListEmp(employee[i]);
+            position++;
         }
     }
     else
     {
         printf("El registro no puede añadir %d de registros debido a que ha sobrepasado el limite.\n", GEN_REGISTERS);
     }
+    return position;
 }
 
+void editRegister(TWrkr employee[], int position, int ordFlag)
+{
+    int index;
+    int num;
+    int enrollement[position];
+
+    getNumEnrollment(employee, enrollement, position);
+    num = valid("Ingresa la matricula de la persona para editar el registro: ", 300000, 399999);
+    if (ordFlag)
+    {
+        index = binarySearch(enrollement, 0, position, num);
+    }
+    else
+    {
+        index = existElem(enrollement, position, num);
+    }
+
+    if (index != -1)
+    {
+        printf("\n----------- ENCONTRADO ----------\n");
+        displayRegEmp(employee[index]);
+        printf("---------------------------------\n");
+        printf("MODIFICAR ALGUN CAMPO\n");
+        employee[index] = menuRegister(employee, position);
+    }
+}
 // ************* USEFUL FUNCTIONS DEVELOPEMENT ********
-TWrkr getOneEmployee(int num[], int position)
+TWrkr getOneEmployee(TWrkr employee[], int position, int ordFlag)
 {
     TWrkr tempEmployee;
+    int cellPhone[position];
+    int enrollment[position];
 
-    tempEmployee.age = numRandom(18, 70);
+    tempEmployee.age = numRandom(18, 50);
+    int i;
+    for (i = 0; i < position; i++)
+    {
+        cellPhone[i] = employee[i].cellPhone;
+        enrollment[i] = employee[i].enrollment;
+    }
 
-    tempEmployee.cellPhone = getNumSort(employee->cellPhone, position, 1000000, 1999999);
-    tempEmployee.enrollment = getNumSort(employee->enrollment, position, 1000000, 1999999);
+    do
+    {
+        tempEmployee.cellPhone = numRandom(1000000, 1999999);
+    } while (existElem(cellPhone, position, tempEmployee.cellPhone) != -1);
+
+    if (ordFlag)
+    {
+        do
+        {
+            tempEmployee.enrollment = numRandom(300000, 399999);
+        } while (binarySearch(enrollment, 0, position, tempEmployee.enrollment) != -1);
+    }
+    else
+    {
+        do
+        {
+            tempEmployee.enrollment = numRandom(300000, 399999);
+        } while (existElem(enrollment, position, tempEmployee.enrollment) != -1);
+    }
 
     if (numRandom(0, 1))
     {
@@ -123,15 +183,21 @@ TWrkr getOneEmployee(int num[], int position)
         strcpy(tempEmployee.sex, "MUJER");
     }
 
+    LastName(tempEmployee.LastName1);
+    LastName(tempEmployee.LastName2);
+    getState(tempEmployee.state);
+    getJobPositions(tempEmployee.JobPstion);
+    tempEmployee.status = 1;
+
     return tempEmployee;
 }
 
-int existElem(int employeesEnrollment[], int longi, int num)
+int existElem(int employee[], int longi, int num)
 {
     int i;
     for (i = 0; i < longi; i++)
     {
-        if (employeesEnrollment == num)
+        if (employee[i] == num)
         {
             return i;
         }
@@ -139,19 +205,19 @@ int existElem(int employeesEnrollment[], int longi, int num)
     return -1;
 }
 
-int binarySearch(int employeesEnrollment[], int left, int right, int number)
+int binarySearch(int employee[], int left, int right, int number)
 {
     int medium;
     while (left <= right)
     {
         medium = left + (right - left) / 2;
 
-        if (employeesEnrollment == number)
+        if (employee[medium] == number)
         {
             return medium;
         }
 
-        if (employeesEnrollment < number)
+        if (employee[medium] < number)
         {
             left = medium + 1;
         }
@@ -164,25 +230,112 @@ int binarySearch(int employeesEnrollment[], int left, int right, int number)
     return -1;
 }
 
-int getNumSort(int num[], int position, int ri, int rs)
+void displayRegEmp(TWrkr employee)
 {
-    int number;
-    if (position > 300)
-    {
-        do
-        {
-            number = numRandom(ri, rs);
-        } while (binarySearch(num, 0, position, number) != -1);
-    }
-    else
-    {
-        do
-        {
-            number = numRandom(ri, rs);
-        } while (existElem(num, position, number) != -1);
-    }
-    return number;
+    printf("Matricula:   %d\n", employee.enrollment);
+    printf("Nombre:      %s\n", employee.name);
+    printf("Ap. Paterno: %s", employee.LastName1);
+    printf("Ap. Materno: %s\n", employee.LastName2);
+    printf("Sexo:        %s\n", employee.sex);
+    printf("Edad:        %d\n", employee.age);
+    printf("Posicion:    %s\n", employee.JobPstion);
+    printf("Num. Cel:    646%d\n", employee.cellPhone);
 }
+
+void displayListEmp(TWrkr employee)
+{
+    printf("%-10s %-12s %-15s %-20s %-15s %-10s %-30s %-20s %-5s %-10s\n",
+           "Status",
+           "Enrollment",
+           "Name",
+           "Last Name 1",
+           "Last Name 2",
+           "Sex",
+           "Job Position",
+           "State",
+           "Age",
+           "Cell Phone");
+
+    printf("%-10d %-12d %-15s %-20s %-15s %-10s %-30s %-20s %-5d 646%-10d\n",
+           employee.status,
+           employee.enrollment,
+           employee.name,
+           employee.LastName1,
+           employee.LastName2,
+           employee.sex,
+           employee.JobPstion,
+           employee.state,
+           employee.age,
+           employee.cellPhone);
+}
+
+void getNumEnrollment(TWrkr employees[], int num1[], int position)
+{
+    int i;
+    for (i = 0; i < position; i++)
+    {
+        num1[i] = employees[i].enrollment;
+    }
+}
+
+void getNumCell(TWrkr employees[], int num1[], int position)
+{
+    int i;
+    for (i = 0; i < position; i++)
+    {
+        num1[i] = employees[i].cellPhone;
+    }
+}
+
+int menuEditRegister()
+{
+    printf("1.- Edad\n");
+    printf("2.- Lugar de nacimiento\n");
+    printf("3.- Num. Cel\n");
+    printf("4.- Sexo\n");
+    printf("5.- Posicion de trabajo\n");
+    printf("6.- Matricula\n");
+    printf("0.- Salir\n");
+    return valid("Selecciona una opcion: ", 0, 6);
+}
+
+TWrkr menuRegister(TWrkr employees[], int position)
+{
+    int op;
+    int cellPhone[position];
+    int enrollments[position];
+    TWrkr employee;
+    getNumCell(employees, cellPhone, position);
+    getNumEnrollment(employees, enrollments, position);
+
+    do
+    {
+        op = menuEditRegister();
+        system("CLS");
+        switch (op)
+        {
+        case 1:
+            employee.age = valid("Ingrese la edad correcta: ", 18, 40);
+            break;
+        case 2:
+            displayStates(employee.state);
+            break;
+        case 3:
+            do
+            {
+                employee.cellPhone = valid("Ingrese el numero de telefono: 646-", 1000000, 1999999);
+            } while (existElem(cellPhone, position, employee.cellPhone) != -1);
+            break;
+        }
+        if (op != 0)
+        {
+            system("PAUSE");
+        }
+    } while (op != 0);
+
+    return employee;
+}
+
 /*
   /\_/\  /\_/\  /\_/\  /\_/\  /\_/\  /\_/\  /\_/\  /\_/\  /\_/\
  ( o.o )( o.o )( o.o )( o.o )( o.o )( o.o )( o.o )( o.o )( o.o )
