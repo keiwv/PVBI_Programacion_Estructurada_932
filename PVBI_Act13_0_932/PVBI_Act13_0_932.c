@@ -23,24 +23,33 @@ typedef struct _Wrkr
     char JobPstion[30];
     char state[30];
     int age;
-    int cellPhone;
+    Tkey cellPhone;
 } TWrkr;
 //****** PROTOTYPE FUNCTIONS *******
 int msge_menu();
 void menu();
 
 int addRegisters(TWrkr employee[], int position, int ordFlag);
-void editRegister(TWrkr employee[], int position, int ordFlag);
+int editRegister(TWrkr employee[], int position, int ordFlag);
+int deleteEmployee(TWrkr employee[], int position, int ordFlag);
+void searchEmployee(TWrkr employee[], int position, int ordFlag);
+int ordRegister(TWrkr employee[], int position, int ordFlag);
+void displayRegister(TWrkr employee[], int position);
 //****** USEFUL FUNCTIONS *********
 TWrkr getOneEmployee(TWrkr employee[], int position, int ordFlag);
-int existElem(int employeesEnrollment[], int longi, int num);
-int binarySearch(int employeesEnrollment[], int left, int right, int number);
+int existElem(int employeesEnrollment[], int longi, Tkey num);
+int binarySearch(int employeesEnrollment[], int left, int right, Tkey number);
 void displayRegEmp(TWrkr employee);
 void displayListEmp(TWrkr employee);
 void getNumEnrollment(TWrkr employees[], int num1[], int position);
 void getNumCell(TWrkr employees[], int num1[], int position);
-TWrkr menuRegister(TWrkr employees[], int position);
+int menuRegister(TWrkr employees[], int position, int index, int enrollments[], int ordFlag);
 int menuEditRegister();
+
+void bubbleSort(TWrkr employees[], int n);
+void quicksort(TWrkr employees[], int low, int high);
+int partition(TWrkr employees[], int low, int high);
+void swap(TWrkr employees[], int i, int j);
 //****** MAIN FUNCTION ************
 int main()
 {
@@ -82,9 +91,22 @@ void menu()
         {
         case 1:
             position = addRegisters(employee, position, ordFlag);
+            ordFlag = 0;
             break;
         case 2:
-            editRegister(employee, position, ordFlag);
+            ordFlag = editRegister(employee, position, ordFlag);
+            break;
+        case 3:
+            deleteEmployee(employee, position, ordFlag);
+            break;
+        case 4:
+            searchEmployee(employee, position, ordFlag);
+            break;
+        case 5:
+            ordFlag = ordRegister(employee, position, ordFlag);
+            break;
+        case 6:
+            displayRegister(employee, position);
             break;
         }
         system("PAUSE");
@@ -99,10 +121,10 @@ int addRegisters(TWrkr employee[], int position, int ordFlag)
 
         for (i = 0; i < GEN_REGISTERS; i++)
         {
-            employee[i] = getOneEmployee(employee, position, ordFlag);
+            employee[position + i] = getOneEmployee(employee, position, ordFlag);
             displayListEmp(employee[i]);
-            position++;
         }
+        position += GEN_REGISTERS;
     }
     else
     {
@@ -111,30 +133,160 @@ int addRegisters(TWrkr employee[], int position, int ordFlag)
     return position;
 }
 
-void editRegister(TWrkr employee[], int position, int ordFlag)
+int editRegister(TWrkr employee[], int position, int ordFlag)
 {
     int index;
-    int num;
-    int enrollement[position];
+    Tkey num;
+    int enrollment[position];
 
-    getNumEnrollment(employee, enrollement, position);
+    getNumEnrollment(employee, enrollment, position);
     num = valid("Ingresa la matricula de la persona para editar el registro: ", 300000, 399999);
     if (ordFlag)
     {
-        index = binarySearch(enrollement, 0, position, num);
+        index = binarySearch(enrollment, 0, position, num);
     }
     else
     {
-        index = existElem(enrollement, position, num);
+        index = existElem(enrollment, position, num);
     }
 
     if (index != -1)
     {
-        printf("\n----------- ENCONTRADO ----------\n");
-        displayRegEmp(employee[index]);
-        printf("---------------------------------\n");
-        printf("MODIFICAR ALGUN CAMPO\n");
-        employee[index] = menuRegister(employee, position);
+        if (employee[index].status)
+        {
+            ordFlag = menuRegister(employee, position, index, enrollment, ordFlag);
+        }
+        else
+        {
+            printf("El trabajador ha sido de baja con anterioridad\n");
+        }
+    }
+    return ordFlag;
+}
+
+int deleteEmployee(TWrkr employee[], int position, int ordFlag)
+{
+    int index;
+    int enrollment[position];
+    Tkey num;
+    getNumEnrollment(employee, enrollment, position);
+    num = valid("Ingresa la matricula de la persona: ", 300000, 399999);
+    if (ordFlag)
+    {
+        index = binarySearch(enrollment, 0, position, num);
+    }
+    else
+    {
+        index = existElem(enrollment, position, num);
+    }
+
+    if (index != -1)
+    {
+        if (employee[index].status != 0)
+        {
+            printf("\n------ ENCONTRADO --------\n");
+            displayRegEmp(employee[index]);
+            printf("--------------------------\n");
+            if (valid("Deseas eliminar el registro (0.- No / 1.- Si): ", 0, 1))
+            {
+                employee[index].status = 0;
+
+                printf("El trabajador ha sido dado de baja correctamente.\n");
+                return 0;
+            }
+        }
+        else
+        {
+            printf("El trabajador ya sido dado de baja con anterioridad.\n");
+        }
+    }
+    else
+    {
+        printf("La enrollment ingresada no pertecene a ningun trabajador\n");
+    }
+    return ordFlag;
+}
+
+void searchEmployee(TWrkr employee[], int position, int ordFlag)
+{
+    int num[position];
+    Tkey index;
+    getNumEnrollment(employee, num, position);
+    index = valid("Ingresa la matricula del trabajador a buscar: ", 300000, 399999);
+    if (ordFlag)
+    {
+        index = binarySearch(num, 0, position, index);
+    }
+    else
+    {
+        index = existElem(num, position, index);
+    }
+
+    if (index != -1)
+    {
+        if (employee[index].status)
+        {
+            printf("------- ENCONTRADO ------\n");
+            displayRegEmp(employee[index]);
+            printf("-------------------------\n");
+        }
+        else
+        {
+            printf("El trabajador ha sido de baja con anterioridad.\n");
+        }
+    }
+    else
+    {
+        printf("El trabajador con esa matricula no existe\n");
+    }
+}
+
+int ordRegister(TWrkr employee[], int position, int ordFlag)
+{
+    if (!ordFlag)
+    {
+        if (!(position == 0))
+        {
+            if(position < 600)
+            {
+                bubbleSort(employee, position);
+            }
+            else
+            {
+                quicksort(employee, 0, position);
+            }
+            printf("Se han ordenado por matricula de menor a mayor\n");
+            return 1;
+        }
+        else
+        {
+            printf("No hay nada en el vector.\n");
+        }
+    }
+    else
+    {
+        printf("Ya esta ordenado.\n");
+    }
+    return ordFlag;
+}
+
+void displayRegister(TWrkr employee[], int position)
+{
+    int i;
+    printf("%-10s %-12s %-15s %-20s %-15s %-10s %-30s %-20s %-5s %-10s\n",
+           "Status",
+           "Enrollment",
+           "Name",
+           "Last Name 1",
+           "Last Name 2",
+           "Sex",
+           "Job Position",
+           "State",
+           "Age",
+           "Cell Phone");
+    for (i = 0; i < position; i++)
+    {
+        displayListEmp(employee[i]);
     }
 }
 // ************* USEFUL FUNCTIONS DEVELOPEMENT ********
@@ -192,7 +344,7 @@ TWrkr getOneEmployee(TWrkr employee[], int position, int ordFlag)
     return tempEmployee;
 }
 
-int existElem(int employee[], int longi, int num)
+int existElem(int employee[], int longi, Tkey num)
 {
     int i;
     for (i = 0; i < longi; i++)
@@ -205,7 +357,7 @@ int existElem(int employee[], int longi, int num)
     return -1;
 }
 
-int binarySearch(int employee[], int left, int right, int number)
+int binarySearch(int employee[], int left, int right, Tkey number)
 {
     int medium;
     while (left <= right)
@@ -234,28 +386,17 @@ void displayRegEmp(TWrkr employee)
 {
     printf("Matricula:   %d\n", employee.enrollment);
     printf("Nombre:      %s\n", employee.name);
-    printf("Ap. Paterno: %s", employee.LastName1);
+    printf("Ap. Paterno: %s\n", employee.LastName1);
     printf("Ap. Materno: %s\n", employee.LastName2);
     printf("Sexo:        %s\n", employee.sex);
     printf("Edad:        %d\n", employee.age);
     printf("Posicion:    %s\n", employee.JobPstion);
-    printf("Num. Cel:    646%d\n", employee.cellPhone);
+    printf("Num. Cel:    646-%d\n", employee.cellPhone);
+    printf("Lug. Nacim:  %s\n", employee.state);
 }
 
 void displayListEmp(TWrkr employee)
 {
-    printf("%-10s %-12s %-15s %-20s %-15s %-10s %-30s %-20s %-5s %-10s\n",
-           "Status",
-           "Enrollment",
-           "Name",
-           "Last Name 1",
-           "Last Name 2",
-           "Sex",
-           "Job Position",
-           "State",
-           "Age",
-           "Cell Phone");
-
     printf("%-10d %-12d %-15s %-20s %-15s %-10s %-30s %-20s %-5d 646%-10d\n",
            employee.status,
            employee.enrollment,
@@ -292,49 +433,118 @@ int menuEditRegister()
     printf("1.- Edad\n");
     printf("2.- Lugar de nacimiento\n");
     printf("3.- Num. Cel\n");
-    printf("4.- Sexo\n");
-    printf("5.- Posicion de trabajo\n");
-    printf("6.- Matricula\n");
+    printf("4.- Posicion de trabajo\n");
+    printf("5.- Matricula\n");
     printf("0.- Salir\n");
     return valid("Selecciona una opcion: ", 0, 6);
 }
 
-TWrkr menuRegister(TWrkr employees[], int position)
+int menuRegister(TWrkr employees[], int position, int index, int enrollments[], int ordFlag)
 {
     int op;
     int cellPhone[position];
-    int enrollments[position];
-    TWrkr employee;
     getNumCell(employees, cellPhone, position);
-    getNumEnrollment(employees, enrollments, position);
 
     do
     {
+        printf("\n----------- ENCONTRADO ----------\n");
+        displayRegEmp(employees[index]);
+        printf("---------------------------------\n");
+        printf("MODIFICAR ALGUN CAMPO\n");
         op = menuEditRegister();
         system("CLS");
         switch (op)
         {
         case 1:
-            employee.age = valid("Ingrese la edad correcta: ", 18, 40);
+            employees[index].age = valid("Ingrese la edad correcta: ", 18, 40);
             break;
         case 2:
-            displayStates(employee.state);
+            displayStates(employees[index].state);
             break;
         case 3:
             do
             {
-                employee.cellPhone = valid("Ingrese el numero de telefono: 646-", 1000000, 1999999);
-            } while (existElem(cellPhone, position, employee.cellPhone) != -1);
+                employees[index].cellPhone = valid("Ingrese el numero de telefono: 646-", 1000000, 1999999);
+            } while (existElem(cellPhone, position, employees[index].cellPhone) != -1);
+            break;
+        case 4:
+            displayJobPositions(employees[index].JobPstion);
+            break;
+        case 5:
+            do
+            {
+                employees[index].enrollment = valid("Ingrese la nueva matricula: ", 300000, 399999);
+            } while (existElem(enrollments, position, employees[index].enrollment) != -1);
+            ordFlag = 0;
             break;
         }
         if (op != 0)
         {
             system("PAUSE");
+            system("CLS");
         }
     } while (op != 0);
 
-    return employee;
+    return ordFlag;
 }
+
+//******* ORDER FUNCTIONS ***********
+
+void swap(TWrkr employees[], int i, int j)
+{
+    TWrkr temp = employees[i];
+    employees[i] = employees[j];
+    employees[j] = temp;
+}
+
+int partition(TWrkr employees[], int low, int high)
+{
+    TWrkr pivot;
+    pivot.enrollment = employees[high].enrollment;
+    int i = low - 1;
+
+    for (int j = low; j <= high - 1; j++)
+    {
+        if (employees[j].enrollment <= pivot.enrollment)
+        {
+            i++;
+            swap(employees, i, j);
+        }
+    }
+    swap(employees, i + 1, high);
+    return i + 1;
+}
+
+void quicksort(TWrkr employees[], int low, int high)
+{
+    if (low < high)
+    {
+        int pi = partition(employees, low, high);
+
+        quicksort(employees, low, pi - 1);
+        quicksort(employees, pi + 1, high);
+    }
+}
+
+void bubbleSort(TWrkr employees[], int n)
+{
+    int i, j;
+    TWrkr temp;
+    for (i = 0; i < n - 1; i++)
+    {
+        for (j = i + 1; j < n; j++)
+        {
+            if (employees[j].enrollment < employees[i].enrollment)
+            {
+                temp = employees[i];
+                employees[i] = employees[j];
+                employees[j] = temp;
+            }
+        }
+    }
+}
+
+
 
 /*
   /\_/\  /\_/\  /\_/\  /\_/\  /\_/\  /\_/\  /\_/\  /\_/\  /\_/\

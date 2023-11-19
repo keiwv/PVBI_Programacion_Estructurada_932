@@ -63,7 +63,7 @@ void displayStates(char state[])
         printf("%d.- %s\n", i + 1, states[i]);
     }
     tempNum = valid("Introduce el estado en el que naciste: ", 1, 33);
-    strcpy(state,states[tempNum - 1]);
+    strcpy(state, states[tempNum - 1]);
 }
 
 void getState(char state[])
@@ -104,46 +104,91 @@ void getState(char state[])
             "Zacatecas",
             "Extranjero"};
     int getNum;
-    getNum = numRandom(0,32);
+    getNum = numRandom(0, 32);
     strcpy(state, states[getNum]);
 }
 
 void getJobPositions(char Job[])
 {
-char Job_Positions[32][30] =
-    {
-        "Dev. de Software",
-        "Ing. de Redes",
-        "Analista de Datos",
-        "Disenador Grafico",
-        "Especialista RRHH",
-        "Gerente de Proyectos",
-        "Cons. Financiero",
-        "Medico General",
-        "Enfermero",
-        "Abogado",
-        "Analista Mkt Digital",
-        "Esp. Seg. Informatica",
-        "Ing. Civil",
-        "Contadora",
-        "Prof. Primaria",
-        "Chef Ejecutivo",
-        "Tec. Soporte Tecnico",
-        "Disenador UX",
-        "Asist. Administrativo/a",
-        "Analista de Ventas",
-        "Inv. Cientifico",
-        "Analista de Sistemas",
-        "Psic. Organizacional",
-        "Esp. Logistica",
-        "Ing. Electrico",
-        "Editor/a de Contenidos",
-        "Arquitecto/a",
-        "Asesor/a Serv. Cliente",
-        "Traductor/a",
-        "Esp. Energias Renovables",
-        "Rep. Ventas Internacionales",
-        "Trab. Social"};
-        strcpy(Job, Job_Positions[numRandom(0, 32)]);
+    char Job_Positions[32][30] =
+        {
+            "Dev. de Software",
+            "Ing. de Redes",
+            "Analista de Datos",
+            "Disenador Grafico",
+            "Especialista RRHH",
+            "Gerente de Proyectos",
+            "Cons. Financiero",
+            "Medico General",
+            "Enfermero",
+            "Abogado",
+            "Analista Mkt Digital",
+            "Esp. Seg. Informatica",
+            "Ing. Civil",
+            "Contadora",
+            "Prof. Primaria",
+            "Chef Ejecutivo",
+            "Tec. Soporte Tecnico",
+            "Disenador UX",
+            "Asist. Administrativo/a",
+            "Analista de Ventas",
+            "Inv. Cientifico",
+            "Analista de Sistemas",
+            "Psic. Organizacional",
+            "Esp. Logistica",
+            "Ing. Electrico",
+            "Editor/a de Contenidos",
+            "Arquitecto/a",
+            "Asesor/a Serv. Cliente",
+            "Traductor/a",
+            "Esp. Energias Renovables",
+            "Rep. Ventas Internacionales",
+            "Trab. Social"};
+    strcpy(Job, Job_Positions[numRandom(0, 31)]);
 }
 
+void displayJobPositions(char Job[])
+{
+    int tempNum, i;
+    char Job_Positions[32][30] =
+        {
+            "Dev. de Software",
+            "Ing. de Redes",
+            "Analista de Datos",
+            "Disenador Grafico",
+            "Especialista RRHH",
+            "Gerente de Proyectos",
+            "Cons. Financiero",
+            "Medico General",
+            "Enfermero",
+            "Abogado",
+            "Analista Mkt Digital",
+            "Esp. Seg. Informatica",
+            "Ing. Civil",
+            "Contadora",
+            "Prof. Primaria",
+            "Chef Ejecutivo",
+            "Tec. Soporte Tecnico",
+            "Disenador UX",
+            "Asist. Administrativo/a",
+            "Analista de Ventas",
+            "Inv. Cientifico",
+            "Analista de Sistemas",
+            "Psic. Organizacional",
+            "Esp. Logistica",
+            "Ing. Electrico",
+            "Editor/a de Contenidos",
+            "Arquitecto/a",
+            "Asesor/a Serv. Cliente",
+            "Traductor/a",
+            "Esp. Energias Renovables",
+            "Rep. Ventas Internacionales",
+            "Trab. Social"};
+    printf("LISTA DE PUESTOS DE TRABAJO\n");
+    for (i = 0; i < 33; i++)
+    {
+        printf("%d.- %s\n", i + 1, Job_Positions[i]);
+    }
+    tempNum = valid("Selecciona el estado: ", 1, 33);
+    strcpy(Job, Job_Positions[tempNum - 1]);
+}
