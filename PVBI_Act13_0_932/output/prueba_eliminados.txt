@@ -1,0 +1,2 @@
+No.        Matricula    Nombre          Ap. Paterno          Ao. Materno     Sexo       Posicion   Estado   Edad  Num. Cel  
+1          309976       JUAN            CHACON               SOTO            HOMBRE     EspLog                         CM                   40    6461026927   
