@@ -25,27 +25,27 @@ typedef struct _Wrkr
 // *** PROTOTYPE FUNCTIONS ****
 int msge_menu();
 void menu();
-void LoadBinaryFile();
-
+int LoadBinaryFile();
 
 // *** MAIN FUNCTION ***
 int main()
 {
+    system("gcc.exe RegisterCounter.c -o RegisterCounter.exe");
     menu();
     return 0;
 }
 
 int msge_menu()
 {
-    printf("----- M E N U ------\n");
+    printf("------ M E N U ------\n");
     printf("1.- Agregar\n");
     printf("2.- Eliminar\n");
     printf("3.- Buscar\n");
-    printf("4. Ordenar\n");
-    printf("5.- Mostrar");
+    printf("4.- Ordenar\n");
+    printf("5.- Mostrar\n");
     printf("6.- Generar archivo de texto\n");
     printf("7.- Empaquetar\n");
-    printf("0.- Salir");
+    printf("0.- Salir\n");
     return valid("Selecciona una opcion: ", 0, 7);
 }
 
@@ -54,11 +54,13 @@ void menu()
     int op;
     int max_registers;
     max_registers = LoadBinaryFile();
+    max_registers += max_registers * 0.25;
     TWrkr employees[max_registers];
 
     do
     {
         system("CLS");
+        printf("registros: %d\n",max_registers);
         op = msge_menu();
         system("CLS");
 
@@ -67,15 +69,22 @@ void menu()
         case 1:
 
             break;
-        
+
         default:
             break;
         }
     } while (op != 0);
-    
 }
 
-void LoadBinaryFile()
+int LoadBinaryFile()
 {
-
+    int count = 0;
+    char cmd[50];
+    sprintf(cmd, "RegisterCounter.exe %s", "datos.dat");
+    count = system(cmd);
+    if (count == -1)
+    {
+        printf("El archivo no fue encontrado\n");
+    }
+    return count;
 }
