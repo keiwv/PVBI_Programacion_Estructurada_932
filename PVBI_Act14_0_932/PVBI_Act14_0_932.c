@@ -6,6 +6,10 @@
 // ******** LIBRARIES *********
 #include "dataFunctions.h"
 
+#define TRUE 1
+#define FALSE 0
+
+
 // ******** STRUCTURES ********
 typedef int Tkey;
 typedef struct _Wrkr
@@ -113,16 +117,15 @@ void getIndexFile(int max_registers)
         {
             index[i].enrollment = reg.enrollment;
             index[i].index = i;
-            //printf("index = %d ----- enrollment = %d\n", i, index[i].enrollment);
+            // printf("index = %d ----- enrollment = %d\n", i, index[i].enrollment);
             i++;
         }
         fclose(fa);
+
         pa = fopen("datos_index.dat", "wb");
-        if (pa)
-        {
-            fwrite(index, sizeof(TIndexStrct), i, pa);
-            fclose(pa);
-        }
+        fwrite(index, sizeof(TIndexStrct), i, pa);
+        fclose(pa);
+    
     }
     else
     {
