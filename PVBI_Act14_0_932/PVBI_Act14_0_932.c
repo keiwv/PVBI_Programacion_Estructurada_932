@@ -60,7 +60,6 @@ void menu()
     do
     {
         system("CLS");
-        printf("registros: %d\n",max_registers);
         op = msge_menu();
         system("CLS");
 
