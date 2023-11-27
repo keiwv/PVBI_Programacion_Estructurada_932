@@ -22,10 +22,17 @@ typedef struct _Wrkr
     Tkey cellPhone;
 } TWrkr;
 
+typedef struct _IndexStrct
+{
+    Tkey enrollment;
+    int index;
+} TIndexStrct;
+
 // *** PROTOTYPE FUNCTIONS ****
 int msge_menu();
 void menu();
 int LoadBinaryFile();
+void getIndexFile(int max_registers);
 
 // *** MAIN FUNCTION ***
 int main()
@@ -54,12 +61,13 @@ void menu()
     int op;
     int max_registers;
     max_registers = LoadBinaryFile();
+    getIndexFile(max_registers);
     max_registers += max_registers * 0.25;
     TWrkr employees[max_registers];
-
     do
     {
         system("CLS");
+        // printf("Registros: %d\n", max_registers);
         op = msge_menu();
         system("CLS");
 
@@ -84,6 +92,40 @@ int LoadBinaryFile()
     if (count == -1)
     {
         printf("El archivo no fue encontrado\n");
+        count = 0;
     }
     return count;
+}
+
+void getIndexFile(int max_registers)
+{
+    TIndexStrct index[max_registers];
+    TWrkr reg;
+    int i = 0;
+
+    FILE *fa;
+    FILE *pa;
+
+    fa = fopen("datos.dat", "rb");
+    if (fa)
+    {
+        while (fread(&reg, sizeof(TWrkr), 1, fa))
+        {
+            index[i].enrollment = reg.enrollment;
+            index[i].index = i;
+            //printf("index = %d ----- enrollment = %d\n", i, index[i].enrollment);
+            i++;
+        }
+        fclose(fa);
+        pa = fopen("datos_index.dat", "wb");
+        if (pa)
+        {
+            fwrite(index, sizeof(TIndexStrct), i, pa);
+            fclose(pa);
+        }
+    }
+    else
+    {
+        printf("Archivno no encontrado\n");
+    }
 }
