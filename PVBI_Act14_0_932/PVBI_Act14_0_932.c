@@ -38,6 +38,12 @@ void menu();
 int LoadBinaryFile();
 void getIndexFile(int max_registers);
 
+void addRegister();
+
+
+//***** USEFUL FUNCTIONS ******
+TWrkr generateRegister();
+
 // *** MAIN FUNCTION ***
 int main()
 {
@@ -131,4 +137,15 @@ void getIndexFile(int max_registers)
     {
         printf("Archivno no encontrado\n");
     }
+}
+
+void addRegister()
+{
+
+}
+
+// ****** USEFUL FUNCTIONS DEVELOPMENT ****
+TWrkr generateRegister()
+{
+    
 }
