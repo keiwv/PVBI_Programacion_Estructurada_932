@@ -1,0 +1,2 @@
+No.        Matricula    Nombre          Ap. Paterno          Ao. Materno     Sexo       Posicion   Estado   Edad  Num. Cel  
+1          319601       LUIS            ROJAS                ESTRELLA        HOMBRE     Abogado    MS         34    6461012697   
